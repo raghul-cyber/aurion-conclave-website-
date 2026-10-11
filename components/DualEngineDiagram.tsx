@@ -2,7 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Cpu, Sparkles, TrendingUp, Layers, ArrowUpRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, Cpu, Sparkles, TrendingUp, Layers, ArrowUpRight } from "lucide-react";
+import { ScrollReveal } from "@/components/framer/ScrollAnimations";
 
 export const DualEngineDiagram: React.FC = () => {
   const [activeEngine, setActiveEngine] = useState<"consultancy" | "product">("consultancy");
@@ -23,6 +25,8 @@ export const DualEngineDiagram: React.FC = () => {
     { step: "05", label: "Scalable Flagships", desc: "Global software assets compounding company valuation." },
   ];
 
+  const currentSteps = activeEngine === "consultancy" ? consultancySteps : productSteps;
+
   return (
     <section className="relative py-24 bg-[#070A0B] border-y border-surface-border overflow-hidden">
       {/* Background technical accents */}
@@ -32,62 +36,82 @@ export const DualEngineDiagram: React.FC = () => {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="max-w-3xl mb-16">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="font-mono text-accent text-xs tracking-widest uppercase">
-              AURION / ARCHITECTURAL PHILOSOPHY
-            </span>
-            <span className="text-surface-border">•</span>
-            <span className="font-mono text-xs text-primary-muted">THE DUAL-WING ENGINE</span>
+        <ScrollReveal>
+          <div className="max-w-3xl mb-16">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="font-mono text-accent text-xs tracking-widest uppercase">
+                AURION / ARCHITECTURAL PHILOSOPHY
+              </span>
+              <span className="text-surface-border">•</span>
+              <span className="font-mono text-xs text-primary-muted">THE DUAL-WING ENGINE</span>
+            </div>
+
+            <h2 className="font-sans text-3xl sm:text-5xl font-extrabold tracking-tight text-primary leading-tight">
+              FROM REAL-WORLD PROBLEMS <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-tech-cyan">
+                TO TECHNOLOGY PRODUCTS.
+              </span>
+            </h2>
+
+            <p className="text-primary-muted text-base sm:text-lg mt-4 leading-relaxed">
+              Aurion Conclave is not an IT body-shop, nor a detached theoretical incubator.
+              We operate through two mutually reinforcing engines: our consultancy grounds us in real enterprise problems,
+              while our product engine transforms recurring friction into proprietary global IP.
+            </p>
           </div>
-
-          <h2 className="font-sans text-3xl sm:text-5xl font-extrabold tracking-tight text-primary leading-tight">
-            FROM REAL-WORLD PROBLEMS <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-tech-cyan">
-              TO TECHNOLOGY PRODUCTS.
-            </span>
-          </h2>
-
-          <p className="text-primary-muted text-base sm:text-lg mt-4 leading-relaxed">
-            Aurion Conclave is not an IT body-shop, nor a detached theoretical incubator.
-            We operate through two mutually reinforcing engines: our consultancy grounds us in real enterprise problems,
-            while our product engine transforms recurring friction into proprietary global IP.
-          </p>
-        </div>
+        </ScrollReveal>
 
         {/* Engine Switcher Tabs */}
         <div className="flex flex-wrap items-center gap-3 mb-8">
-          <button
+          <motion.button
             type="button"
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => setActiveEngine("consultancy")}
-            className={`flex items-center gap-2.5 px-5 py-3 font-mono text-xs tracking-wider transition-all border ${
+            className={`relative flex items-center gap-2.5 px-5 py-3 font-mono text-xs tracking-wider transition-all border ${
               activeEngine === "consultancy"
-                ? "bg-accent/15 border-accent text-accent shadow-[0_0_20px_rgba(217,164,65,0.2)]"
+                ? "border-accent text-accent shadow-[0_0_20px_rgba(217,164,65,0.2)]"
                 : "bg-surface border-surface-border text-primary-muted hover:text-primary"
             }`}
           >
+            {activeEngine === "consultancy" && (
+              <motion.div
+                layoutId="dual-engine-tab-pill"
+                className="absolute inset-0 bg-accent/15 z-[-1]"
+                transition={{ type: "spring", bounce: 0.15, duration: 0.3 }}
+              />
+            )}
             <span className="font-bold">01 /</span>
             <span>THE CONSULTANCY ENGINE</span>
             <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#050607] border border-surface-border">
               SOLUTIONS & REVENUE
             </span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
             type="button"
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => setActiveEngine("product")}
-            className={`flex items-center gap-2.5 px-5 py-3 font-mono text-xs tracking-wider transition-all border ${
+            className={`relative flex items-center gap-2.5 px-5 py-3 font-mono text-xs tracking-wider transition-all border ${
               activeEngine === "product"
-                ? "bg-tech-cyan/15 border-tech-cyan text-tech-cyan shadow-[0_0_20px_rgba(97,199,192,0.2)]"
+                ? "border-tech-cyan text-tech-cyan shadow-[0_0_20px_rgba(97,199,192,0.2)]"
                 : "bg-surface border-surface-border text-primary-muted hover:text-primary"
             }`}
           >
+            {activeEngine === "product" && (
+              <motion.div
+                layoutId="dual-engine-tab-pill"
+                className="absolute inset-0 bg-tech-cyan/15 z-[-1]"
+                transition={{ type: "spring", bounce: 0.15, duration: 0.3 }}
+              />
+            )}
             <span className="font-bold">02 /</span>
             <span>THE PRODUCT ENGINE</span>
             <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#050607] border border-surface-border">
               PROPRIETARY IP & SCALE
             </span>
-          </button>
+          </motion.button>
         </div>
 
         {/* Interactive Dual-Wing Diagram Display */}
@@ -112,34 +136,46 @@ export const DualEngineDiagram: React.FC = () => {
               </span>
             </div>
 
-            {/* Stepper items */}
-            <div className="mt-8 space-y-4">
-              {(activeEngine === "consultancy" ? consultancySteps : productSteps).map((step, idx) => (
-                <div
-                  key={step.step}
-                  className="group flex items-start gap-4 p-4 rounded bg-surface/40 border border-surface-border/40 hover:border-surface-border hover:bg-surface/70 transition-colors"
-                >
-                  <div
-                    className={`font-mono text-xs font-bold px-2.5 py-1 rounded shrink-0 border ${
-                      activeEngine === "consultancy"
-                        ? "bg-accent/10 border-accent/30 text-accent"
-                        : "bg-tech-cyan/10 border-tech-cyan/30 text-tech-cyan"
-                    }`}
+            {/* Stepper items with AnimatePresence */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeEngine}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="mt-8 space-y-4"
+              >
+                {currentSteps.map((step, idx) => (
+                  <motion.div
+                    key={step.step}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.06 }}
+                    className="group flex items-start gap-4 p-4 rounded bg-surface/40 border border-surface-border/40 hover:border-surface-border hover:bg-surface/70 transition-colors"
                   >
-                    STAGE {step.step}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-mono text-sm font-semibold text-primary group-hover:text-accent transition-colors">
-                      {step.label}
-                    </h4>
-                    <p className="font-sans text-xs text-primary-muted mt-1 leading-relaxed">
-                      {step.desc}
-                    </p>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-surface-border group-hover:text-primary transition-colors shrink-0 mt-1" />
-                </div>
-              ))}
-            </div>
+                    <div
+                      className={`font-mono text-xs font-bold px-2.5 py-1 rounded shrink-0 border ${
+                        activeEngine === "consultancy"
+                          ? "bg-accent/10 border-accent/30 text-accent"
+                          : "bg-tech-cyan/10 border-tech-cyan/30 text-tech-cyan"
+                      }`}
+                    >
+                      STAGE {step.step}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-mono text-sm font-semibold text-primary group-hover:text-accent transition-colors">
+                        {step.label}
+                      </h4>
+                      <p className="font-sans text-xs text-primary-muted mt-1 leading-relaxed">
+                        {step.desc}
+                      </p>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-surface-border group-hover:text-primary transition-colors shrink-0 mt-1" />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
 
             {/* Bottom conduit annotation */}
             <div className="mt-8 pt-6 border-t border-surface-border/60 flex items-center justify-between font-mono text-xs text-primary-muted">

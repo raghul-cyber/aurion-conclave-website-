@@ -1,13 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export const CustomCursor: React.FC = () => {
-  const [position, setPosition] = useState({ x: -100, y: -100 });
   const [isPointer, setIsPointer] = useState(false);
   const [cursorText, setCursorText] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // High performance Motion Values that avoid React re-renders on every mouse move
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+
+  // Butter-smooth spring physics for trailing outer ring
+  const springX = useSpring(mouseX, { stiffness: 450, damping: 28 });
+  const springY = useSpring(mouseY, { stiffness: 450, damping: 28 });
 
   useEffect(() => {
     // Disable on touch devices
@@ -17,8 +25,9 @@ export const CustomCursor: React.FC = () => {
     }
 
     const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      setIsVisible(true);
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+      if (!isVisible) setIsVisible(true);
 
       // Check hover targets for customized text
       const target = e.target as HTMLElement | null;
@@ -56,40 +65,56 @@ export const CustomCursor: React.FC = () => {
       document.removeEventListener("mouseleave", handleMouseLeave);
       document.removeEventListener("mouseenter", handleMouseEnter);
     };
-  }, []);
+  }, [isVisible, mouseX, mouseY]);
 
   if (isTouchDevice || !isVisible) return null;
 
   return (
-    <div
-      className="fixed pointer-events-none z-50 transition-transform duration-75 ease-out -translate-x-1/2 -translate-y-1/2 flex items-center justify-center"
-      style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-      }}
-    >
-      {/* Outer subtle ring */}
-      <div
-        className={`rounded-full border transition-all duration-200 flex items-center justify-center ${
-          isPointer
-            ? "w-12 h-12 bg-accent/15 border-accent/70 scale-125"
-            : "w-6 h-6 bg-transparent border-accent/40"
-        }`}
+    <>
+      {/* Outer Spring-Lagged Ring */}
+      <motion.div
+        className="fixed pointer-events-none z-[120] -translate-x-1/2 -translate-y-1/2 flex items-center justify-center"
+        style={{
+          x: springX,
+          y: springY,
+        }}
       >
-        {/* Center dot */}
-        <div
-          className={`rounded-full transition-all duration-150 ${
-            isPointer ? "w-1 h-1 bg-accent" : "w-1.5 h-1.5 bg-accent"
+        <motion.div
+          animate={{
+            scale: isPointer ? 1.4 : 1,
+            borderColor: isPointer ? "rgba(201, 148, 62, 0.9)" : "rgba(201, 148, 62, 0.4)",
+            backgroundColor: isPointer ? "rgba(201, 148, 62, 0.12)" : "rgba(201, 148, 62, 0)",
+          }}
+          transition={{ type: "spring", stiffness: 350, damping: 25 }}
+          className={`rounded-full border flex items-center justify-center ${
+            isPointer ? "w-11 h-11" : "w-6 h-6"
           }`}
         />
-      </div>
 
-      {/* Dynamic Cursor Label */}
-      {cursorText && (
-        <span className="absolute -bottom-5 font-mono text-[9px] tracking-wider text-accent font-bold px-1.5 py-0.2 bg-[#050607]/90 border border-surface-border whitespace-nowrap">
-          {cursorText}
-        </span>
-      )}
-    </div>
+        {/* Dynamic Cursor Label */}
+        {cursorText && (
+          <motion.span
+            initial={{ opacity: 0, y: 4, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.9 }}
+            className="absolute -bottom-6 font-mono text-[9px] tracking-wider text-accent font-bold px-1.5 py-0.5 bg-[#050607]/95 border border-surface-border whitespace-nowrap shadow-lg"
+          >
+            {cursorText}
+          </motion.span>
+        )}
+      </motion.div>
+
+      {/* Center Immediate Dot */}
+      <motion.div
+        className="fixed pointer-events-none z-[121] -translate-x-1/2 -translate-y-1/2"
+        style={{
+          x: mouseX,
+          y: mouseY,
+        }}
+      >
+        <div className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(201,148,62,0.9)]" />
+      </motion.div>
+    </>
   );
 };
+
