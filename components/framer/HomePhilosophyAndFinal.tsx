@@ -6,7 +6,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { AurionCore } from "@/components/AurionCore";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
-import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
+import { TypographicWall } from "@/components/reactbits/text/TypographicWall";
 
 export const HomePhilosophyAndFinal: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -21,8 +22,8 @@ export const HomePhilosophyAndFinal: React.FC = () => {
     <div ref={containerRef} className="relative w-full">
       {/* SECTION 07 / PRODUCT EVOLUTION PRINCIPLE */}
       <section className="relative py-24 sm:py-32 bg-gradient-to-b from-[#080a0b] via-[#0c0f10] to-[#080a0b] border-b border-surface-border overflow-hidden">
-        {/* Background Ghost Fibers Atmosphere */}
-        <PageBackground preset="ghost-fibers" opacity={0.85} />
+        {/* Background Spectral Drape from React Bits Pro */}
+        <SpectralDrape opacity={0.8} />
         <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
           <div className="max-w-3xl space-y-8">
             <div className="flex items-center gap-2.5 font-mono text-[11px] text-accent tracking-widest uppercase">
@@ -47,7 +48,17 @@ export const HomePhilosophyAndFinal: React.FC = () => {
       </section>
 
       {/* SECTION 08 / RESTRAINED FINAL CTA */}
-      <section className="relative min-h-[70vh] flex items-center justify-center bg-[#060708] border-b border-warm-border overflow-hidden">
+      <section className="relative min-h-[70vh] flex items-center justify-center bg-gradient-to-b from-[#080a0b] via-[#0d1011] to-[#060708] border-b border-warm-border overflow-hidden">
+        {/* Background Typographic Wall from React Bits Pro */}
+        <TypographicWall
+          words={[
+            "AURION CONCLAVE",
+            "START A PROJECT",
+            "LET'S BUILD SOMETHING USEFUL",
+            "DISCOVERY AND RIGOR"
+          ]}
+          opacity={0.65}
+        />
         {/* Subtle 3D Aurion Core in background */}
         <motion.div
           style={{ scale: backgroundScale }}

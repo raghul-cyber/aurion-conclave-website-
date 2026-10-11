@@ -1,7 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { ProjectIntakeTerminal } from "@/components/ProjectIntakeTerminal";
-import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { TypographicWall } from "@/components/reactbits/text/TypographicWall";
 import { BlurText } from "@/components/reactbits/text/BlurText";
 import { TechnicalGrid } from "@/components/framer/TechnicalGrid";
 import { ScrollReveal } from "@/components/framer/ScrollAnimations";
@@ -15,8 +15,23 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#0b0e0f] via-[#0f1314] to-[#090b0c] overflow-hidden">
-      {/* Background: Dot Field ambient environment */}
-      <PageBackground preset="dot-field" opacity={0.85} />
+      {/* Typographic Wall Background */}
+      <TypographicWall
+        words={[
+          "INTAKE",
+          "ARCHITECTURAL",
+          "DISCOVERY",
+          "SYSTEM_SPEC",
+          "SECURITY",
+          "INFRASTRUCTURE",
+          "TRANSMIT",
+          "BOUNDARIES",
+          "AURION",
+        ]}
+        color="#648E8B"
+        highlightColor="#D9B874"
+        opacity={0.8}
+      />
       <TechnicalGrid crosshairs={true} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 py-20 lg:py-28 space-y-16">

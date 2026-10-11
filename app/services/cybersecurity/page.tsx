@@ -1,8 +1,9 @@
 import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, ShieldCheck } from "lucide-react";
-import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { ShieldCheck, ArrowUpRight } from "lucide-react";
+import { AsciiWaves } from "@/components/reactbits/backgrounds/AsciiWaves";
+import { GlyphOrb } from "@/components/reactbits/components/GlyphOrb";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 
@@ -58,8 +59,14 @@ const SECURITY_PILLARS = [
 export default function CybersecurityServicesPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#111415] via-[#0b0e0f] to-[#060708] overflow-hidden">
-      {/* Scanner Background (Category G4) */}
-      <PageBackground preset="scanner" opacity={0.85} />
+      {/* ASCII Waves Background */}
+      <AsciiWaves
+        characters=" 01#@%*░▒▓"
+        color="#648E8B"
+        accentColor="#D9B874"
+        opacity={0.8}
+        hasCursorInteraction={true}
+      />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28">
         {/* Breadcrumb */}
@@ -71,22 +78,35 @@ export default function CybersecurityServicesPage() {
           <span className="text-accent">CYBERSECURITY</span>
         </div>
 
-        {/* Hero Header with Clamped Typography */}
-        <div className="max-w-3xl mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full luxury-glass border border-white/10 font-mono text-[11px] text-accent tracking-widest uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            <span>CRYPTOGRAPHIC DEFENSE • ZERO-TRUST ARCHITECTURE</span>
+        {/* Hero Header with Clamped Typography and GlyphOrb */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-16">
+          <div className="lg:col-span-8 space-y-4">
+            <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full luxury-glass border border-white/10 font-mono text-[11px] text-accent tracking-widest uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              <span>CRYPTOGRAPHIC DEFENSE • ZERO-TRUST ARCHITECTURE</span>
+            </div>
+
+            <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary leading-[1.1]">
+              DEFENSE THROUGH <br />
+              <span className="text-accent">MATHEMATICAL PROOF.</span>
+            </h1>
+
+            <p className="font-sans text-sm sm:text-base text-primary-muted max-w-xl leading-relaxed font-normal">
+              We build zero-trust security postures based on cryptographic identity, kernel-level eBPF observability,
+              and continuous policy verification. No fear-based marketing — only rigorous, verifiable defensive engineering.
+            </p>
           </div>
 
-          <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary leading-[1.1]">
-            DEFENSE THROUGH <br />
-            <span className="text-accent">MATHEMATICAL PROOF.</span>
-          </h1>
-
-          <p className="font-sans text-sm sm:text-base text-primary-muted max-w-xl leading-relaxed font-normal">
-            We build zero-trust security postures based on cryptographic identity, kernel-level eBPF observability,
-            and continuous policy verification. No fear-based marketing — only rigorous, verifiable defensive engineering.
-          </p>
+          <div className="lg:col-span-4 flex justify-center lg:justify-end">
+            <div className="p-4 rounded-2xl luxury-glass border border-white/10 shadow-2xl flex flex-col items-center">
+              <GlyphOrb
+                size={200}
+                color="#648E8B"
+                glowColor="#D9B874"
+                draggable={true}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Pillars Grid */}

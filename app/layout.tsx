@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { CustomCursor } from "@/components/CustomCursor";
 import { CommandPalette } from "@/components/CommandPalette";
 import { ClientShell } from "@/components/ClientShell";
 

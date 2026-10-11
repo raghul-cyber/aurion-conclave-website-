@@ -5,7 +5,8 @@ import { ArrowUpRight } from "lucide-react";
 import { AgentLabConsole } from "@/components/AgentLabConsole";
 import { AgentFilmScroll } from "@/components/AgentFilmScroll";
 import { TechnicalGrid } from "@/components/framer/TechnicalGrid";
-import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { GlyphTide } from "@/components/reactbits/backgrounds/GlyphTide";
+import { GlyphOrb } from "@/components/reactbits/components/GlyphOrb";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 import { BlurText } from "@/components/reactbits/text/BlurText";
 import { ScrollReveal } from "@/components/framer/ScrollAnimations";
@@ -19,24 +20,25 @@ export const metadata: Metadata = {
 export default function AgentsPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#090c0d] via-[#0d1011] to-[#07090a] overflow-hidden">
-      {/* Background: Particles — sparse Agent Lab atmosphere */}
-      <PageBackground preset="particles" opacity={0.85} />
+      {/* Background Glyph Tide from React Bits Pro */}
+      <GlyphTide />
       <TechnicalGrid crosshairs={true} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 space-y-24">
-        {/* Editorial Hero Header */}
+        {/* Editorial Hero Header with Glyph Orb */}
         <ScrollReveal>
-          <div className="max-w-4xl space-y-6">
-            <div className="inline-flex items-center gap-3 px-3 py-1.5 luxury-glass border border-surface-border font-mono text-[11px] text-accent tracking-widest uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              <span>AURION AGENT LAB</span>
-              <span className="text-primary-muted/40">•</span>
-              <span className="text-primary-muted">AUTONOMOUS ORCHESTRATION</span>
-            </div>
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+            <div className="max-w-3xl space-y-6">
+              <div className="inline-flex items-center gap-3 px-3 py-1.5 luxury-glass border border-surface-border font-mono text-[11px] text-accent tracking-widest uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                <span>AURION AGENT LAB</span>
+                <span className="text-primary-muted/40">•</span>
+                <span className="text-primary-muted">AUTONOMOUS ORCHESTRATION</span>
+              </div>
 
-            <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary leading-tight">
-              Aurion <span className="text-accent">Agent Lab.</span>
-            </h1>
+              <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary leading-tight">
+                Aurion <span className="text-accent">Agent Lab.</span>
+              </h1>
 
             <div className="font-mono text-xs sm:text-sm text-accent font-semibold tracking-widest uppercase">
               WORKING SYSTEMS. NOT STATIC MOCKUPS.
@@ -48,7 +50,13 @@ export default function AgentsPage() {
               delay={20}
             />
           </div>
-        </ScrollReveal>
+
+          {/* 3D Turning ASCII Planet from React Bits Pro */}
+          <div className="shrink-0 flex items-center justify-center">
+            <GlyphOrb size={200} draggable={true} />
+          </div>
+        </div>
+      </ScrollReveal>
 
         {/* The Live Interactive Agent Console (Viewport with Side Selector) */}
         <ScrollReveal delay={0.1}>

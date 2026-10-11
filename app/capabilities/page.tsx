@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { TechConstellation } from "@/components/TechConstellation";
 import { ConsultancyProcessTimeline } from "@/components/ConsultancyProcessTimeline";
-import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { MosaicWaves } from "@/components/reactbits/backgrounds/MosaicWaves";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
 import { Workflow, ArrowUpRight } from "lucide-react";
@@ -27,8 +27,8 @@ export default function CapabilitiesPage() {
 
   return (
     <div className="relative min-h-screen py-16 bg-gradient-to-b from-[#111415] via-[#0b0e0f] to-[#060708] overflow-hidden">
-      {/* Background: Beams */}
-      <PageBackground preset="beams" opacity={0.85} />
+      {/* Background Mosaic Waves from React Bits Pro */}
+      <MosaicWaves opacity={0.85} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
         {/* Header with ScrollReveal */}

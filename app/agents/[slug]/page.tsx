@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { AGENT_REGISTRY } from "@/data/agents";
 import { AgentLabConsole } from "@/components/AgentLabConsole";
-import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { AsciiWaves } from "@/components/reactbits/backgrounds/AsciiWaves";
+import { GlyphOrb } from "@/components/reactbits/components/GlyphOrb";
 import { ArrowLeft } from "lucide-react";
 
 const SHORT_SLUG_MAP: Record<string, string> = {
@@ -43,8 +44,8 @@ export default async function AgentDetailPage({
 
   return (
     <div className="relative min-h-screen py-16 bg-gradient-to-b from-[#111415] via-[#0b0e0f] to-[#060708] overflow-hidden">
-      {/* Background: Particles */}
-      <PageBackground preset="particles" opacity={0.85} />
+      {/* Background Ascii Waves from React Bits Pro */}
+      <AsciiWaves characters=" .:-+*=%@#" opacity={0.8} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div>
@@ -57,23 +58,29 @@ export default async function AgentDetailPage({
           </Link>
         </div>
 
-        <div className="space-y-3 pb-6 border-b border-surface-border">
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold px-2 py-0.5 bg-accent/20 border border-accent text-accent">
-              AGENT {agent.code}
-            </span>
-            <span className="font-mono text-xs text-tech-cyan">
-              {agent.category}
-            </span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-surface-border">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-xs font-bold px-2 py-0.5 bg-accent/20 border border-accent text-accent">
+                AGENT {agent.code}
+              </span>
+              <span className="font-mono text-xs text-tech-cyan">
+                {agent.category}
+              </span>
+            </div>
+
+            <h1 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary tracking-tight">
+              {agent.name}
+            </h1>
+
+            <p className="font-mono text-sm text-accent max-w-2xl">
+              {agent.tagline}
+            </p>
           </div>
 
-          <h1 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary tracking-tight">
-            {agent.name}
-          </h1>
-
-          <p className="font-mono text-sm text-accent max-w-2xl">
-            {agent.tagline}
-          </p>
+          <div className="shrink-0 flex items-center justify-center">
+            <GlyphOrb size={120} draggable={true} />
+          </div>
         </div>
 
         {/* Embedded Console Focused on This Agent */}

@@ -3,7 +3,8 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { GlyphTide } from "@/components/reactbits/backgrounds/GlyphTide";
+import { GlyphOrb } from "@/components/reactbits/components/GlyphOrb";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 import { BlurText } from "@/components/reactbits/text/BlurText";
@@ -46,29 +47,46 @@ const PHILOSOPHY_PILLARS = [
 export default function CompanyPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#0b0e0f] via-[#0f1314] to-[#090b0c] overflow-hidden">
-      {/* Background: Ghost Fibers atmospheric field */}
-      <PageBackground preset="ghost-fibers" opacity={0.85} />
+      {/* Glyph Tide Background */}
+      <GlyphTide
+        color="#D9B874"
+        accentColor="#648E8B"
+        interactive={true}
+      />
       <TechnicalGrid crosshairs={true} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 space-y-20">
-        {/* Editorial Hero Header with ScrollReveal */}
+        {/* Editorial Hero Header with ScrollReveal & GlyphOrb */}
         <ScrollReveal direction="up" distance={24}>
-          <div className="max-w-4xl space-y-6">
-            <div className="inline-flex items-center gap-3 px-3 py-1.5 luxury-glass border border-surface-border font-mono text-[11px] text-accent tracking-widest uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              <span>AURION PHILOSOPHY • CORPORATE EVOLUTION</span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-8 space-y-6">
+              <div className="inline-flex items-center gap-3 px-3 py-1.5 luxury-glass border border-surface-border font-mono text-[11px] text-accent tracking-widest uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                <span>AURION PHILOSOPHY • CORPORATE EVOLUTION</span>
+              </div>
+
+              <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary leading-tight">
+                Building a technology company <br />
+                around <span className="text-accent">real problems.</span>
+              </h1>
+
+              <BlurText
+                text="Most technology companies start with abstract pitch decks or venture debt. We started with real problems. Our dual-wing model combines client advisory with proprietary software incubation, compounding enterprise value without speculative dilution."
+                className="font-sans text-base sm:text-lg text-primary-muted max-w-2xl leading-relaxed font-normal"
+                delay={20}
+              />
             </div>
 
-            <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary leading-tight">
-              Building a technology company <br />
-              around <span className="text-accent">real problems.</span>
-            </h1>
-
-            <BlurText
-              text="Most technology companies start with abstract pitch decks or venture debt. We started with real problems. Our dual-wing model combines client advisory with proprietary software incubation, compounding enterprise value without speculative dilution."
-              className="font-sans text-base sm:text-lg text-primary-muted max-w-2xl leading-relaxed font-normal"
-              delay={20}
-            />
+            <div className="lg:col-span-4 flex justify-center lg:justify-end">
+              <div className="p-4 rounded-2xl luxury-glass border border-white/10 shadow-2xl flex flex-col items-center">
+                <GlyphOrb
+                  size={210}
+                  color="#D9B874"
+                  glowColor="#648E8B"
+                  draggable={true}
+                />
+              </div>
+            </div>
           </div>
         </ScrollReveal>
 

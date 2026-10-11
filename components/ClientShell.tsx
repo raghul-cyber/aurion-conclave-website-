@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { MotionConfig } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { CustomCursor } from "@/components/CustomCursor";
 import { CommandPalette } from "@/components/CommandPalette";
 import { ScrollProgressIndicator } from "@/components/framer/ScrollProgressIndicator";
 
@@ -27,7 +26,6 @@ export const ClientShell: React.FC<{ children: React.ReactNode }> = ({ children 
       }}
     >
       <ScrollProgressIndicator />
-      <CustomCursor />
       <Navbar onOpenCommandPalette={() => setCommandPaletteOpen(true)} />
       <main className="min-h-screen pt-20">
         {children}

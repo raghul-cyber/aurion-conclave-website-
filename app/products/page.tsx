@@ -4,15 +4,20 @@ import React from "react";
 import Link from "next/link";
 import { PRODUCTS } from "@/data/products";
 import { ArrowUpRight } from "lucide-react";
-import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 
 export default function ProductsPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#0a0d0e] via-[#0f1314] to-[#080a0b] overflow-hidden">
-      {/* Light Rays Background (Category G4) */}
-      <PageBackground preset="light-rays" opacity={0.85} />
+      {/* Spectral Drape Background */}
+      <SpectralDrape
+        color="#D9B874"
+        accentColor="#648E8B"
+        opacity={0.85}
+        interactive={true}
+      />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 space-y-16">
         {/* Editorial Hero Header with Clamped Typography */}
