@@ -103,14 +103,14 @@ export const ContourTide: React.FC<ContourTideProps> = ({
 
       const time = frame * waveSpeed;
 
-      // Draw rolling oceanic contour lines
-      const laneCount = 8;
+      // Draw rolling oceanic contour lines across full height and width
+      const laneCount = 14;
       for (let l = 0; l < laneCount; l++) {
-        const laneYBase = height * 0.25 + (height * 0.55 * (l / (laneCount - 1)));
+        const laneYBase = height * 0.04 + (height * 0.92 * (l / (laneCount - 1)));
         ctx.beginPath();
 
-        for (let x = 0; x <= width; x += 14) {
-          const normX = x / width;
+        for (let x = -40; x <= width + 40; x += 14) {
+          const normX = (x + 40) / (width + 80);
           const oceanSwell =
             Math.sin(normX * Math.PI * 3.5 + time * 1.2 + l * 0.6) * (24 + l * 6) +
             Math.cos(normX * Math.PI * 5.0 - time * 0.8) * 12;
@@ -126,11 +126,11 @@ export const ContourTide: React.FC<ContourTideProps> = ({
             }
           }
 
-          if (x === 0) ctx.moveTo(x, y);
+          if (x === -40) ctx.moveTo(x, y);
           else ctx.lineTo(x, y);
         }
 
-        const alpha = 0.18 + (l / laneCount) * 0.25;
+        const alpha = 0.16 + (l / laneCount) * 0.26;
         ctx.strokeStyle = l % 2 === 0 ? `rgba(217, 184, 116, ${alpha})` : `rgba(100, 142, 139, ${alpha * 1.3})`;
         ctx.lineWidth = 1.3;
         ctx.stroke();
@@ -197,11 +197,12 @@ export const ContourTide: React.FC<ContourTideProps> = ({
       style={{ opacity }}
       aria-hidden="true"
     >
+      {/* Oceanic Ambient Swell Glow - Fully spread edge-to-edge */}
       <div
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 90% 65% at 50% -10%, rgba(217, 184, 116, 0.22), rgba(100, 142, 139, 0.14) 45%, transparent 80%)",
+            "radial-gradient(ellipse 130% 95% at 50% 50%, rgba(217, 184, 116, 0.22), rgba(100, 142, 139, 0.14) 55%, transparent 85%)",
         }}
       />
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />

@@ -9,6 +9,7 @@ export interface SpectralDrapeProps {
   dotSize?: number;
   density?: number;
   speed?: number;
+  spreadMultiplier?: number;
   className?: string;
   opacity?: number;
   children?: React.ReactNode;
@@ -21,6 +22,7 @@ export const SpectralDrape: React.FC<SpectralDrapeProps> = ({
   dotSize = 1.6,
   density = 52,
   speed = 0.018,
+  spreadMultiplier = 2.35,
   className = "",
   opacity = 0.85,
   children,
@@ -83,8 +85,6 @@ export const SpectralDrape: React.FC<SpectralDrapeProps> = ({
     }
 
     let frame = 0;
-    const cols = density;
-    const rows = Math.floor(density * 0.7);
 
     const render = () => {
       frame++;
@@ -101,22 +101,31 @@ export const SpectralDrape: React.FC<SpectralDrapeProps> = ({
       const fov = 380;
       const cameraZ = 280;
 
-      // Render 3D folding drape grid
+      // Broadness scaling: calculate cols and rows dynamically to maintain crisp, dense dot spacing across full width
+      const targetSpacing = 22;
+      const cols = Math.max(68, Math.min(130, Math.round((width * 1.35) / targetSpacing)));
+      const rows = Math.max(46, Math.min(92, Math.round((height * 1.35) / targetSpacing)));
+
+      // Spread world dimensions so perspective projection fully blankets the entire screen edge-to-edge
+      const worldW = width * spreadMultiplier + 260;
+      const worldH = height * 2.25 + 180;
+
+      // Render 3D folding drape grid across the entire broadened world plane
       for (let r = 0; r < rows; r++) {
         const v = r / (rows - 1); // 0 to 1
-        const yWorld = (v - 0.5) * (height * 0.95);
+        const yWorld = (v - 0.5) * worldH;
 
         for (let c = 0; c < cols; c++) {
           const u = c / (cols - 1); // 0 to 1
-          const xWorld = (u - 0.5) * (width * 1.05);
+          const xWorld = (u - 0.5) * worldW;
 
-          // 3D folding cloth wave harmonics
-          const fold1 = Math.sin(u * Math.PI * 3.2 + t) * Math.cos(v * Math.PI * 2.1 + t * 0.7);
-          const fold2 = Math.cos(u * Math.PI * 5.4 - t * 1.2) * 0.5;
-          const fold3 = Math.sin((u + v) * Math.PI * 4.0 + t * 1.5) * 0.35;
-          const drapeSag = Math.sin(u * Math.PI) * Math.sin(v * Math.PI) * 70;
+          // 3D folding cloth wave harmonics spanning the full horizon
+          const fold1 = Math.sin(u * Math.PI * 4.2 + t) * Math.cos(v * Math.PI * 2.8 + t * 0.7);
+          const fold2 = Math.cos(u * Math.PI * 6.5 - t * 1.1) * 0.45;
+          const fold3 = Math.sin((u * 1.6 + v * 1.2) * Math.PI * 3.6 + t * 1.4) * 0.35;
+          const drapeSag = Math.sin(u * Math.PI) * Math.sin(v * Math.PI) * 45;
 
-          const zWorld = (fold1 + fold2 + fold3) * 65 + drapeSag;
+          const zWorld = (fold1 + fold2 + fold3) * 75 + drapeSag;
 
           // Apply interactive tilt rotation in 3D
           const rotX = xWorld * Math.cos(tiltX) - zWorld * Math.sin(tiltX);
@@ -129,12 +138,19 @@ export const SpectralDrape: React.FC<SpectralDrapeProps> = ({
           const projX = width / 2 + rotX * scale;
           const projY = height / 2 + rotY * scale;
 
-          if (scale > 0 && projX >= -10 && projX <= width + 10 && projY >= -10 && projY <= height + 10) {
+          if (scale > 0 && projX >= -30 && projX <= width + 30 && projY >= -30 && projY <= height + 30) {
+            // Smooth edge alpha fade margin so dots fade gracefully at the absolute outer boundaries
+            const fadeLeft = Math.min(1, Math.max(0, (projX + 30) / 70));
+            const fadeRight = Math.min(1, Math.max(0, (width + 30 - projX) / 70));
+            const fadeTop = Math.min(1, Math.max(0, (projY + 30) / 60));
+            const fadeBottom = Math.min(1, Math.max(0, (height + 30 - projY) / 60));
+            const edgeAlpha = fadeLeft * fadeRight * fadeTop * fadeBottom;
+
             // Depth brightness calculation
-            const depthFactor = Math.max(0.2, Math.min(1, (zWorld + 80) / 160));
+            const depthFactor = Math.max(0.25, Math.min(1, (zWorld + 80) / 160));
             const isHighlight = (c + r) % 5 === 0;
 
-            const radius = Math.max(0.8, dotSize * scale * (0.8 + depthFactor * 0.6));
+            const radius = Math.max(0.85, dotSize * scale * (0.85 + depthFactor * 0.65));
             ctx.beginPath();
             ctx.arc(projX, projY, radius, 0, Math.PI * 2);
 
@@ -148,7 +164,7 @@ export const SpectralDrape: React.FC<SpectralDrapeProps> = ({
               ctx.shadowBlur = 4 * scale;
             }
 
-            ctx.globalAlpha = depthFactor * 0.85;
+            ctx.globalAlpha = depthFactor * 0.9 * edgeAlpha;
             ctx.fill();
             ctx.shadowBlur = 0;
             ctx.globalAlpha = 1.0;
@@ -168,7 +184,7 @@ export const SpectralDrape: React.FC<SpectralDrapeProps> = ({
         window.removeEventListener("pointermove", handlePointerMove);
       }
     };
-  }, [interactive, color, accentColor, dotSize, density, speed, reducedMotion]);
+  }, [interactive, color, accentColor, dotSize, density, speed, spreadMultiplier, reducedMotion]);
 
   return (
     <div
@@ -177,12 +193,12 @@ export const SpectralDrape: React.FC<SpectralDrapeProps> = ({
       style={{ opacity }}
       aria-hidden="true"
     >
-      {/* Radiant Atmospheric Backdrop Glow */}
+      {/* Radiant Atmospheric Backdrop Glow - Fully spread edge-to-edge */}
       <div
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 90% 65% at 50% -10%, rgba(217, 184, 116, 0.25), rgba(100, 142, 139, 0.12) 50%, transparent 80%)",
+            "radial-gradient(ellipse 130% 90% at 50% 20%, rgba(217, 184, 116, 0.22), rgba(100, 142, 139, 0.12) 55%, transparent 85%)",
         }}
       />
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
