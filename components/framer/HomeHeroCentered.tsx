@@ -2,40 +2,41 @@
 
 import React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { HeroNetworkBackground } from "@/components/framer/HeroNetworkBackground";
-import { TechnicalGrid } from "@/components/framer/TechnicalGrid";
+import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { BlurText } from "@/components/reactbits/text/BlurText";
+import { CountUp } from "@/components/reactbits/text/CountUp";
+import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 
 export const HomeHeroCentered: React.FC = () => {
   return (
-    <section className="relative min-h-[calc(100vh-4.5rem)] flex items-center justify-center border-b border-surface-border overflow-hidden bg-[#050607]">
-      {/* 01 & 02: Network & Background Sitting Behind & Around */}
-      <HeroNetworkBackground />
-      <TechnicalGrid crosshairs={true} />
+    <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center border-b border-warm-border overflow-hidden bg-[#060708]">
+      {/* 01: Looping Connected Network Background (Web Threads preset) */}
+      <PageBackground preset="web-threads" opacity={0.28} />
 
-      {/* Centered Hero Content Container (Max width 1280px, centered text, clean vertical hierarchy) */}
+      {/* Centered Hero Content Container (Max width 1280px, strictly clamped typography) */}
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 flex flex-col items-center text-center">
         <div className="max-w-4xl mx-auto space-y-8 flex flex-col items-center">
-          {/* 03: Small Technical Eyebrow Label */}
+          {/* 02: Small Technical Eyebrow Label */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center gap-3 px-3.5 py-1.5 luxury-glass border border-surface-border font-mono text-[11px] text-accent tracking-widest uppercase select-none"
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full luxury-glass border border-white/10 font-mono text-[11px] text-accent tracking-widest uppercase select-none"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
             <span>AURION CONCLAVE</span>
-            <span className="text-primary-muted/40">•</span>
+            <span className="text-white/20">•</span>
             <span className="text-primary-muted">TECHNOLOGY PRODUCTS • CONSULTANCY • INNOVATION</span>
           </motion.div>
 
-          {/* 04: Main Centered Headline (Large Editorial Typography) */}
+          {/* 03: Main Centered Headline (Controlled scale: max text-4xl mobile, text-5xl desktop) */}
           <motion.h1
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.95, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="font-sans text-5xl sm:text-7xl lg:text-[5.5rem] font-extrabold tracking-tighter text-primary leading-[0.94] text-center"
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary leading-[1.1] text-center"
           >
             WE BUILD <br />
             <span className="text-accent">TECHNOLOGY</span> <br />
@@ -43,66 +44,63 @@ export const HomeHeroCentered: React.FC = () => {
             <span className="text-primary-muted">REAL WORLD.</span>
           </motion.h1>
 
-          {/* 05: Centered Supporting Paragraph */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.85, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="font-sans text-base sm:text-xl text-primary-muted max-w-2xl mx-auto leading-relaxed font-normal text-center"
-          >
-            Aurion Conclave builds software, AI systems, cloud infrastructure, automation
-            and technology products around real-world problems.
-          </motion.p>
+          {/* 04: Centered Supporting Paragraph (BlurText soft-focus reveal) */}
+          <div className="max-w-2xl mx-auto text-center font-sans text-base sm:text-lg text-primary-muted leading-relaxed font-normal">
+            <BlurText
+              text="Aurion Conclave builds software, artificial intelligence, cloud infrastructure, automation, and technology products around real-world problems."
+              delay={35}
+              className="justify-center text-center"
+            />
+          </div>
 
-          {/* 06: Centered Action Buttons */}
+          {/* 05: Action Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.05, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="pt-2 flex flex-wrap items-center justify-center gap-4"
           >
-            <Link
-              href="/capabilities"
-              className="group inline-flex items-center gap-3 px-7 py-4 bg-accent hover:bg-accent-mid text-[#060708] font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 shadow-[0_2px_24px_rgba(201,148,62,0.22)] hover:scale-[1.02]"
-            >
-              <span>EXPLORE CAPABILITIES</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            <Link href="/capabilities">
+              <SpecularButton variant="primary">
+                <span>EXPLORE CAPABILITIES</span>
+                <ArrowRight className="w-4 h-4" />
+              </SpecularButton>
             </Link>
 
-            <Link
-              href="/contact"
-              className="group inline-flex items-center gap-2.5 px-7 py-4 bg-surface hover:bg-surface-elevated border border-surface-border hover:border-accent text-primary font-mono text-xs tracking-widest uppercase transition-all duration-300"
-            >
-              <span>START A PROJECT</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-accent transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <Link href="/contact">
+              <SpecularButton variant="outline">
+                <span>START A PROJECT</span>
+                <ArrowUpRight className="w-4 h-4 text-accent" />
+              </SpecularButton>
             </Link>
           </motion.div>
 
-          {/* 07: Centered Metadata Telemetry */}
+          {/* 06: Verified Institutional Telemetry */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.25 }}
-            className="pt-8 flex flex-wrap items-center justify-center gap-6 sm:gap-10 border-t border-surface-border/40 font-mono text-xs text-primary-muted/80"
+            transition={{ duration: 0.8, delay: 1.0 }}
+            className="pt-8 flex flex-wrap items-center justify-center gap-6 sm:gap-10 border-t border-white/10 font-mono text-xs text-primary-muted"
           >
             <div className="flex items-center gap-2">
-              <span className="text-accent font-bold">140+</span>
-              <span className="text-[10px] tracking-wider uppercase">SERVICES</span>
+              <span className="text-accent font-bold text-sm">
+                <CountUp to={164} duration={1.5} />
+              </span>
+              <span className="text-[10px] tracking-wider uppercase">SERVICES CATALOGED</span>
             </div>
-            <div className="text-surface-border">•</div>
+            <div className="text-white/20">•</div>
             <div className="flex items-center gap-2">
-              <span className="text-tech-teal font-bold">12 AGENTS</span>
-              <span className="text-[10px] tracking-wider uppercase">WORKING LAB</span>
+              <span className="text-tech-teal font-bold text-sm">
+                <CountUp to={12} duration={1.2} />
+              </span>
+              <span className="text-[10px] tracking-wider uppercase">AUTONOMOUS AGENTS</span>
             </div>
-            <div className="text-surface-border">•</div>
+            <div className="text-white/20">•</div>
             <div className="flex items-center gap-2">
-              <span className="text-success font-bold">99.99%</span>
-              <span className="text-[10px] tracking-wider uppercase">UPTIME SLA</span>
-            </div>
-            <div className="text-surface-border">•</div>
-            <div className="flex items-center gap-2">
-              <span className="text-primary font-bold">DUAL-WING</span>
-              <span className="text-[10px] tracking-wider uppercase">ARCH</span>
+              <span className="text-success font-bold text-sm">
+                <CountUp to={100} duration={1.8} />%
+              </span>
+              <span className="text-[10px] tracking-wider uppercase">SOURCE TESTED</span>
             </div>
           </motion.div>
         </div>
@@ -110,3 +108,5 @@ export const HomeHeroCentered: React.FC = () => {
     </section>
   );
 };
+
+export default HomeHeroCentered;

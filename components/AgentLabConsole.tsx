@@ -1,544 +1,409 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { AGENT_REGISTRY, AgentDefinition } from "@/data/agents";
-import { AgentEngine, AgentExecutionLog, AgentExecutionResult } from "@/lib/agentEngine";
+import { AgentExecutionLog, AgentExecutionResult } from "@/lib/agentEngine";
+import { StatusMark } from "@/components/reactbits/micro/StatusMark";
+import { CallChip } from "@/components/reactbits/micro/CallChip";
+import { ThoughtLine } from "@/components/reactbits/micro/ThoughtLine";
+import { PromptBar } from "@/components/reactbits/micro/PromptBar";
+import { RubberSegment } from "@/components/reactbits/micro/RubberSegment";
+import { LatticeLoader } from "@/components/reactbits/micro/LatticeLoader";
+import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 import {
-  Play,
   RotateCcw,
-  Trash2,
-  Terminal,
-  Activity,
-  Cpu,
-  Layers,
-  CheckCircle,
-  Clock,
   Sparkles,
-  Sliders,
-  ShieldAlert,
+  Shield,
+  FileText,
   Code,
   Table as TableIcon,
-  Volume2
+  Volume2,
+  Terminal,
+  Activity,
+  Layers,
 } from "lucide-react";
 
 interface AgentLabConsoleProps {
   initialAgentId?: string;
 }
 
-export const AgentLabConsole: React.FC<AgentLabConsoleProps> = ({ initialAgentId = "aurion-receptionist" }) => {
+export const AgentLabConsole: React.FC<AgentLabConsoleProps> = ({
+  initialAgentId = "aurion-receptionist",
+}) => {
   const [selectedAgent, setSelectedAgent] = useState<AgentDefinition>(() => {
     return AGENT_REGISTRY.find((a) => a.id === initialAgentId) || AGENT_REGISTRY[0];
   });
-  const [prompt, setPrompt] = useState<string>(selectedAgent.defaultPrompt);
-  const [mode, setMode] = useState<"DEMO" | "LIVE">("DEMO");
+  const [mode, setMode] = useState<string>("LIVE");
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [currentLogs, setCurrentLogs] = useState<AgentExecutionLog[]>([]);
   const [executionResult, setExecutionResult] = useState<AgentExecutionResult | null>(null);
-  const [showLiveConfig, setShowLiveConfig] = useState<boolean>(false);
-  const [apiKeyInput, setApiKeyInput] = useState<string>("");
-  const logContainerRef = useRef<HTMLDivElement>(null);
+  const [customFileContent, setCustomFileContent] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<"trace" | "output" | "artifacts">("trace");
 
-  // Sync prompt when selected agent changes
+  // Voice speech state
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
   useEffect(() => {
-    setPrompt(selectedAgent.defaultPrompt);
     setCurrentLogs([]);
     setExecutionResult(null);
   }, [selectedAgent]);
 
-  // Auto-scroll logs
-  useEffect(() => {
-    if (logContainerRef.current) {
-      logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
-    }
-  }, [currentLogs]);
-
-  const handleRun = async () => {
-    if (!prompt.trim() || isRunning) return;
+  const handleRun = async (promptInput: string) => {
+    if (!promptInput.trim() || isRunning) return;
     setIsRunning(true);
     setCurrentLogs([]);
     setExecutionResult(null);
+    setActiveTab("trace");
 
     try {
-      const result = await AgentEngine.executeAgent(
-        selectedAgent.id,
-        prompt,
-        mode,
-        apiKeyInput ? { openai: apiKeyInput } : undefined,
-        (newLog) => {
-          setCurrentLogs((prev) => [...prev, newLog]);
-        }
-      );
+      const response = await fetch(`/api/agents/${selectedAgent.id}/run`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: promptInput,
+          mode,
+          fileContent: customFileContent || undefined,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Execution error: ${response.statusText}`);
+      }
+
+      const result: AgentExecutionResult = await response.json();
+      setCurrentLogs(result.logs || []);
       setExecutionResult(result);
-    } catch (err) {
+      setActiveTab("output");
+    } catch (err: any) {
       console.error(err);
+      setCurrentLogs((prev) => [
+        ...prev,
+        {
+          timestamp: new Date().toLocaleTimeString(),
+          stage: "ERROR",
+          message: err?.message || "Execution encountered an unhandled fault",
+          status: "error",
+        },
+      ]);
     } finally {
       setIsRunning(false);
     }
   };
 
-  const handleReset = () => {
-    setPrompt(selectedAgent.defaultPrompt);
-    setCurrentLogs([]);
-    setExecutionResult(null);
-  };
-
-  const handleClear = () => {
-    setPrompt("");
-    setCurrentLogs([]);
-    setExecutionResult(null);
+  const handleVoiceSpeak = (textToSpeak: string) => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    setIsSpeaking(true);
+    window.speechSynthesis.speak(utterance);
   };
 
   return (
-    <div className="relative w-full bg-[#070A0B] border border-surface-border shadow-2xl overflow-hidden">
-      {/* Top Header Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between p-4 sm:px-6 bg-[#0A0D0E] border-b border-surface-border gap-4">
+    <div className="w-full rounded-2xl border border-[rgba(244,241,233,0.12)] bg-[#0C0F10] overflow-hidden shadow-2xl">
+      {/* Top Console Navigation Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-[#111516]">
         <div className="flex items-center gap-3">
-          <div className="w-2.5 h-2.5 rounded-full bg-tech-cyan animate-pulse" />
+          <div className="w-3 h-3 rounded-full bg-accent animate-pulse" />
+          <span className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
+            AGENT EXECUTION LAB
+          </span>
+          <span className="text-white/20">|</span>
+          <StatusMark
+            status={isRunning ? "RUNNING" : executionResult ? "SUCCESS" : "IDLE"}
+          />
+        </div>
+
+        <div className="flex items-center gap-3">
+          <RubberSegment
+            options={[
+              { value: "LIVE", label: "LIVE ENGINE" },
+              { value: "SANDBOX", label: "SANDBOX" },
+            ]}
+            value={mode}
+            onChange={setMode}
+          />
+
+          <button
+            type="button"
+            onClick={() => {
+              setCurrentLogs([]);
+              setExecutionResult(null);
+            }}
+            className="p-1.5 rounded-lg border border-white/10 text-primary-muted hover:text-primary hover:border-white/20 transition-colors"
+            title="Reset Terminal"
+          >
+            <RotateCcw className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Agent Selector Ribbon */}
+      <div className="flex items-center gap-2 px-6 py-3 border-b border-white/10 bg-[#151A1B] overflow-x-auto no-scrollbar">
+        <span className="font-mono text-[11px] text-accent uppercase tracking-wider shrink-0 flex items-center gap-1.5">
+          <Layers className="w-3.5 h-3.5" />
+          <span>ROSTER:</span>
+        </span>
+        {AGENT_REGISTRY.map((a) => {
+          const isSelected = a.id === selectedAgent.id;
+          return (
+            <button
+              key={a.id}
+              onClick={() => setSelectedAgent(a)}
+              className={`shrink-0 px-3 py-1.5 rounded-lg font-mono text-xs transition-all ${
+                isSelected
+                  ? "bg-accent text-[#191E1E] font-semibold shadow-sm"
+                  : "bg-white/5 text-primary-muted hover:text-primary hover:bg-white/10"
+              }`}
+            >
+              {a.name}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Main Console Workspace */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[500px]">
+        {/* Left Specification & Context Panel */}
+        <div className="lg:col-span-4 p-6 border-b lg:border-b-0 lg:border-r border-white/10 bg-[#0E1112] space-y-6">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs font-bold text-primary tracking-widest uppercase">
-                THE AURION AGENT LAB
+            <div className="flex items-center gap-2 mb-2">
+              <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-accent/20 border border-accent/40 text-accent font-semibold">
+                AGENT {selectedAgent.code}
               </span>
-              <span className="font-mono text-[9px] px-1.5 py-0.2 rounded bg-surface border border-surface-border text-accent">
-                V3.4 RUNTIME
-              </span>
+              <span className="font-mono text-[11px] text-tech-teal">{selectedAgent.category}</span>
             </div>
-            <p className="font-mono text-[11px] text-primary-muted -mt-0.5">
-              12 Functional Autonomous Agent Systems
+            <h3 className="font-sans text-xl font-bold text-primary">{selectedAgent.name}</h3>
+            <p className="text-xs text-primary-muted font-sans mt-1 leading-relaxed">
+              {selectedAgent.description}
             </p>
           </div>
-        </div>
 
-        {/* Mode Switcher & System Telemetry */}
-        <div className="flex items-center gap-3 self-end sm:self-center">
-          <div className="relative flex items-center bg-[#050607] border border-surface-border p-1 rounded font-mono text-[11px]">
-            <button
-              type="button"
-              onClick={() => setMode("DEMO")}
-              className={`relative px-3 py-1 rounded transition-colors z-10 ${
-                mode === "DEMO"
-                  ? "text-[#050607] font-bold"
-                  : "text-primary-muted hover:text-primary"
-              }`}
-            >
-              {mode === "DEMO" && (
-                <motion.div
-                  layoutId="agent-mode-pill"
-                  className="absolute inset-0 bg-accent rounded z-[-1]"
-                  transition={{ type: "spring", bounce: 0.15, duration: 0.3 }}
-                />
-              )}
-              DEMO MODE
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setMode("LIVE");
-                setShowLiveConfig(true);
-              }}
-              className={`relative px-3 py-1 rounded transition-colors z-10 ${
-                mode === "LIVE"
-                  ? "text-[#050607] font-bold"
-                  : "text-primary-muted hover:text-primary"
-              }`}
-            >
-              {mode === "LIVE" && (
-                <motion.div
-                  layoutId="agent-mode-pill"
-                  className="absolute inset-0 bg-tech-cyan rounded z-[-1]"
-                  transition={{ type: "spring", bounce: 0.15, duration: 0.3 }}
-                />
-              )}
-              LIVE API MODE
-            </button>
-          </div>
-
-          <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#050607] border border-surface-border font-mono text-[10px] text-success">
-            <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-            <span>LATENCY: {selectedAgent.latencyAvg}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Grid: 12-Agent Selector Strip (Left) + Interactive Agent Workspace (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[680px]">
-        {/* Left Column: 12 Agents Selector Rail */}
-        <div className="lg:col-span-4 border-r border-surface-border bg-[#070A0B] overflow-y-auto max-h-[300px] lg:max-h-[720px] terminal-scroll p-2 divide-y divide-surface-border/20">
-          <div className="p-2 font-mono text-[10px] text-primary-muted uppercase tracking-wider flex items-center justify-between">
-            <span>REGISTERED AGENTS ({AGENT_REGISTRY.length})</span>
-            <span className="text-accent">ONLINE</span>
-          </div>
-
-          {AGENT_REGISTRY.map((agent) => {
-            const isSelected = selectedAgent.id === agent.id;
-            return (
-              <div
-                key={agent.id}
-                onClick={() => setSelectedAgent(agent)}
-                className="relative p-3 rounded cursor-pointer transition-colors duration-150 flex items-start gap-3"
-              >
-                {isSelected && (
-                  <motion.div
-                    layoutId="agent-rail-active-pill"
-                    className="absolute inset-0 bg-[#101415] border border-accent/40 shadow-[0_0_15px_rgba(217,164,65,0.1)] rounded pointer-events-none"
-                    transition={{ type: "spring", bounce: 0.15, duration: 0.35 }}
-                  />
-                )}
-                <div
-                  className={`relative z-10 font-mono text-[11px] font-bold px-1.5 py-0.5 rounded border shrink-0 transition-colors ${
-                    isSelected
-                      ? "bg-accent text-[#050607] border-accent"
-                      : "bg-[#050607] text-primary-muted border-surface-border"
-                  }`}
-                >
-                  {agent.code}
-                </div>
-                <div className="relative z-10 min-w-0 flex-1">
-                  <div className="flex items-center justify-between">
-                    <span
-                      className={`font-mono text-xs font-semibold truncate transition-colors ${
-                        isSelected ? "text-accent" : "text-primary"
-                      }`}
-                    >
-                      {agent.name}
-                    </span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-success shrink-0" />
-                  </div>
-                  <p className="font-mono text-[10px] text-primary-muted truncate mt-0.5">
-                    {agent.role}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Right Column: Execution Workspace */}
-        <div className="lg:col-span-8 flex flex-col justify-between bg-[#0A0D0E] p-4 sm:p-6 space-y-6">
-          {/* Agent Meta & Capabilities with AnimatePresence */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={selectedAgent.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25 }}
-            >
-              <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-surface-border/60">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold text-accent">
-                    {selectedAgent.code} / {selectedAgent.name.toUpperCase()}
-                  </span>
-                  <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-surface border border-surface-border text-tech-cyan">
-                    {selectedAgent.category}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 font-mono text-[11px] text-primary-muted">
-                  <span>BENCHMARK: {selectedAgent.latencyAvg}</span>
-                  <span>•</span>
-                  <span className="text-success">STATUS: {selectedAgent.status}</span>
-                </div>
-              </div>
-
-              <p className="font-sans text-xs sm:text-sm text-primary-muted mt-2 leading-relaxed">
-                {selectedAgent.description}
-              </p>
-
-              {/* Tools & Capabilities badges */}
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {selectedAgent.tools.map((tool) => (
-                  <span
-                    key={tool}
-                    className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#070A0B] border border-surface-border text-primary-muted"
-                  >
-                    {tool}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Sample Prompts Pills */}
-          <div>
-            <div className="font-mono text-[10px] text-primary-muted uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <Sparkles className="w-3 h-3 text-accent" />
-              <span>TEST BENCHMARK PROMPTS:</span>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {selectedAgent.samplePrompts.map((sp, idx) => (
-                <motion.button
-                  key={idx}
-                  type="button"
-                  whileHover={{ scale: 1.01, borderColor: "var(--accent)" }}
-                  whileTap={{ scale: 0.99 }}
-                  onClick={() => setPrompt(sp)}
-                  className="text-left font-mono text-[11px] px-2.5 py-1.5 rounded bg-surface/70 border border-surface-border hover:border-accent text-primary-muted hover:text-primary transition-colors max-w-full truncate"
-                >
-                  &quot;{sp}&quot;
-                </motion.button>
+          {/* Configured Tools */}
+          <div className="space-y-2">
+            <span className="font-mono text-[11px] text-accent uppercase tracking-wider block">
+              AUTHORIZED TOOL REGISTRY
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {selectedAgent.tools.map((t, idx) => (
+                <CallChip key={idx} toolName={t} />
               ))}
             </div>
           </div>
 
-          {/* Interactive Prompt Input Box */}
-          <div className="relative space-y-2">
-            <div className="flex items-center justify-between font-mono text-xs text-primary-muted">
-              <span>AGENT INPUT / INSTRUCTION DISPATCH</span>
-              <span>{prompt.length} CHARS</span>
-            </div>
-
-            <div className="relative">
+          {/* Specialized File / Payload Injection for Data / Security / Document Agents */}
+          {(selectedAgent.id === "data-analyst" ||
+            selectedAgent.id === "security-analyst" ||
+            selectedAgent.id === "document-analyst" ||
+            selectedAgent.id === "code-assistant") && (
+            <div className="space-y-2 pt-2 border-t border-white/10">
+              <label className="font-mono text-[11px] text-accent uppercase tracking-wider flex items-center justify-between">
+                <span>INJECT TEST PAYLOAD</span>
+                <span className="text-[10px] text-primary-muted">Optional</span>
+              </label>
               <textarea
-                rows={3}
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                placeholder="Enter technical instruction or query for this agent..."
-                disabled={isRunning}
-                className="w-full bg-[#050607] border border-surface-border text-primary font-mono text-xs p-3.5 focus:outline-none focus:border-accent transition-colors resize-none disabled:opacity-50"
+                value={customFileContent}
+                onChange={(e) => setCustomFileContent(e.target.value)}
+                placeholder={
+                  selectedAgent.id === "data-analyst"
+                    ? "Paste CSV data to compute real metrics..."
+                    : selectedAgent.id === "security-analyst"
+                    ? "Paste source code or HTTP headers to scan for vulnerabilities..."
+                    : "Enter document text or code snippet..."
+                }
+                rows={4}
+                className="w-full px-3 py-2 text-xs font-mono rounded-lg border border-white/10 bg-[#151A1B] text-primary placeholder-white/30 focus:outline-none focus:border-accent"
               />
             </div>
+          )}
 
-            {/* Control Buttons: RUN, RESET, CLEAR */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-              <div className="flex items-center gap-2">
-                <motion.button
-                  type="button"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleReset}
-                  disabled={isRunning}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface border border-surface-border hover:border-primary-muted text-primary-muted hover:text-primary font-mono text-xs transition-colors disabled:opacity-50"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  <span>RESET</span>
-                </motion.button>
-                <motion.button
-                  type="button"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleClear}
-                  disabled={isRunning}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface border border-surface-border hover:border-primary-muted text-primary-muted hover:text-primary font-mono text-xs transition-colors disabled:opacity-50"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  <span>CLEAR</span>
-                </motion.button>
-              </div>
+          {/* SLA Metrics */}
+          <div className="p-3 rounded-xl border border-white/10 bg-white/5 space-y-1.5 font-mono text-[11px]">
+            <div className="flex justify-between text-primary-muted">
+              <span>LATENCY SLA</span>
+              <span className="text-primary">{selectedAgent.latencyAvg}</span>
+            </div>
+            <div className="flex justify-between text-primary-muted">
+              <span>SECURITY LEVEL</span>
+              <span className="text-success">RESTRICTED TOOLCHAIN</span>
+            </div>
+            <div className="flex justify-between text-primary-muted">
+              <span>DATA CONFINEMENT</span>
+              <span className="text-accent">ZERO INFERENCE RETENTION</span>
+            </div>
+          </div>
+        </div>
 
-              <motion.button
+        {/* Right Interactive Execution & Output Panel */}
+        <div className="lg:col-span-8 flex flex-col justify-between p-6 bg-[#0B0D0E]">
+          {/* Header Tabs */}
+          <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+            <div className="flex items-center gap-2">
+              <button
                 type="button"
-                whileHover={!isRunning && prompt.trim() ? { scale: 1.02 } : {}}
-                whileTap={!isRunning && prompt.trim() ? { scale: 0.98 } : {}}
-                onClick={handleRun}
-                disabled={isRunning || !prompt.trim()}
-                className={`flex items-center gap-2 px-6 py-2.5 font-mono text-xs font-bold tracking-wider transition-all duration-200 amber-glow ${
-                  isRunning
-                    ? "bg-accent/40 text-[#050607] cursor-wait"
-                    : "bg-accent hover:bg-accent-light text-[#050607]"
+                onClick={() => setActiveTab("trace")}
+                className={`px-3 py-1 rounded-md font-mono text-xs transition-colors ${
+                  activeTab === "trace"
+                    ? "bg-accent/20 text-accent font-semibold border border-accent/30"
+                    : "text-primary-muted hover:text-primary"
                 }`}
               >
-                {isRunning ? (
-                  <>
-                    <Activity className="w-4 h-4 animate-spin" />
-                    <span>EXECUTING COGNITIVE LOOP...</span>
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-4 h-4 fill-current" />
-                    <span>RUN AGENT</span>
-                  </>
-                )}
-              </motion.button>
-            </div>
-          </div>
-
-          {/* Dynamic Visual Agent Logs Terminal */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between font-mono text-[10px] text-primary-muted">
-              <div className="flex items-center gap-1.5 text-accent">
-                <Terminal className="w-3.5 h-3.5" />
-                <span>DYNAMIC TELEMETRY STREAM</span>
-              </div>
-              <span>STATUS: {isRunning ? "IN PROGRESS" : executionResult ? "DONE" : "STANDBY"}</span>
-            </div>
-
-            <div
-              ref={logContainerRef}
-              className="h-32 bg-[#050607] border border-surface-border p-3 font-mono text-[11px] overflow-y-auto terminal-scroll space-y-1"
-            >
-              {currentLogs.length === 0 && !isRunning && (
-                <div className="text-primary-muted/40">
-                  Ready. Click [ RUN AGENT ] to initiate cognitive execution, tool binding, and validation loop.
-                </div>
-              )}
-              {currentLogs.map((log, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -6 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.15 }}
-                  className="flex items-start gap-2"
-                >
-                  <span className="text-primary-muted/60 shrink-0">[{log.timestamp}]</span>
-                  <span className="text-accent font-semibold shrink-0">{log.stage}:</span>
-                  <span className="text-primary">{log.message}</span>
-                  {log.tool && (
-                    <span className="text-tech-cyan text-[10px] shrink-0">({log.tool})</span>
-                  )}
-                </motion.div>
-              ))}
-              {isRunning && (
-                <div className="flex items-center gap-2 text-accent animate-pulse">
-                  <span>▶</span>
-                  <span>Processing neural step...</span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Output Display Panel */}
-          <AnimatePresence>
-            {executionResult && (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.3 }}
-                className="p-4 sm:p-5 bg-[#101415] border border-accent/40 shadow-xl space-y-4"
+                EXECUTION TRACE ({currentLogs.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("output")}
+                className={`px-3 py-1 rounded-md font-mono text-xs transition-colors ${
+                  activeTab === "output"
+                    ? "bg-accent/20 text-accent font-semibold border border-accent/30"
+                    : "text-primary-muted hover:text-primary"
+                }`}
               >
-                <div className="flex items-center justify-between pb-3 border-b border-surface-border">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-success" />
-                    <span className="font-mono text-xs font-bold text-primary uppercase">
-                      {executionResult.output.title}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 font-mono text-[10px] text-primary-muted">
-                    <span className="text-accent">TOTAL: {executionResult.totalLatencyMs}ms</span>
-                    <span>•</span>
-                    <span>MODE: {executionResult.mode}</span>
-                  </div>
-                </div>
-
-                <p className="font-sans text-xs text-primary-muted leading-relaxed">
-                  {executionResult.output.summary}
-                </p>
-
-                {/* Metrics Grid */}
-                {executionResult.output.metrics && (
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
-                    {Object.entries(executionResult.output.metrics).map(([k, v]) => (
-                      <div key={k} className="p-2 bg-[#050607] border border-surface-border rounded">
-                        <div className="font-mono text-[9px] text-primary-muted truncate">{k}</div>
-                        <div className="font-mono text-xs font-bold text-accent mt-0.5 truncate">{v}</div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Markdown Content Box */}
-                <div className="p-3 bg-[#070A0B] border border-surface-border font-sans text-xs text-primary leading-relaxed whitespace-pre-line max-h-48 overflow-y-auto terminal-scroll">
-                  {executionResult.output.contentMarkdown}
-                </div>
-
-                {/* Artifacts (Code / Tables / Waveforms) */}
-                {executionResult.output.artifacts && executionResult.output.artifacts.length > 0 && (
-                  <div className="space-y-2 pt-1">
-                    {executionResult.output.artifacts.map((art, idx) => (
-                      <div key={idx} className="border border-surface-border bg-[#050607] p-3 rounded">
-                        <div className="flex items-center justify-between font-mono text-[10px] text-tech-cyan pb-2 border-b border-surface-border/40">
-                          <span>ARTIFACT: {art.title}</span>
-                          <span className="uppercase">{art.type}</span>
-                        </div>
-                        <pre className="font-mono text-[11px] text-primary-muted/90 pt-2 overflow-x-auto">
-                          {art.content}
-                        </pre>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Live Mode API Configuration Modal */}
-      <AnimatePresence>
-        {showLiveConfig && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#050607]/80 backdrop-blur-md"
-            onClick={() => setShowLiveConfig(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="w-full max-w-md p-6 bg-[#0A0D0E] border border-surface-border shadow-2xl space-y-4"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center justify-between pb-3 border-b border-surface-border">
-                <div className="flex items-center gap-2">
-                  <Sliders className="w-4 h-4 text-tech-cyan" />
-                  <h3 className="font-mono text-xs font-bold text-primary uppercase">
-                    Live Model API Integration
-                  </h3>
-                </div>
+                STRUCTURED OUTPUT
+              </button>
+              {executionResult?.output?.artifacts && executionResult.output.artifacts.length > 0 && (
                 <button
                   type="button"
-                  onClick={() => setShowLiveConfig(false)}
-                  className="text-primary-muted hover:text-primary text-xs"
+                  onClick={() => setActiveTab("artifacts")}
+                  className={`px-3 py-1 rounded-md font-mono text-xs transition-colors ${
+                    activeTab === "artifacts"
+                      ? "bg-accent/20 text-accent font-semibold border border-accent/30"
+                      : "text-primary-muted hover:text-primary"
+                  }`}
                 >
-                  ✕
+                  ARTIFACTS ({executionResult.output.artifacts.length})
                 </button>
-              </div>
+              )}
+            </div>
 
-              <p className="font-sans text-xs text-primary-muted leading-relaxed">
-                In Live Mode, you can optionally connect your own LLM provider API key (e.g. OpenAI / Claude / Gemini).
-                Keys are strictly processed server-side in memory and never exposed in browser storage.
-                If left blank, the system defaults to high-fidelity local deterministic simulations.
-              </p>
+            {selectedAgent.id === "voice-agent" && executionResult && (
+              <button
+                type="button"
+                onClick={() => handleVoiceSpeak(executionResult.output.summary)}
+                className="flex items-center gap-1.5 px-3 py-1 rounded-md font-mono text-xs bg-tech-teal/20 text-tech-teal border border-tech-teal/40 hover:bg-tech-teal/30 transition-colors"
+              >
+                <Volume2 className="w-3.5 h-3.5" />
+                <span>{isSpeaking ? "STOP AUDIO" : "PLAY SYNTHESIS"}</span>
+              </button>
+            )}
+          </div>
 
-              <div className="space-y-1.5">
-                <label className="font-mono text-[11px] text-primary-muted">
-                  PROVIDER API KEY (OPTIONAL):
-                </label>
-                <input
-                  type="password"
-                  placeholder="sk-..."
-                  value={apiKeyInput}
-                  onChange={(e) => setApiKeyInput(e.target.value)}
-                  className="w-full bg-[#050607] border border-surface-border text-primary font-mono text-xs p-2.5 focus:outline-none focus:border-tech-cyan"
-                />
-              </div>
+          {/* Tab Content Display Area */}
+          <div className="flex-1 overflow-y-auto max-h-[420px] pr-2 space-y-4">
+            {isRunning && (
+              <LatticeLoader label={`EXECUTING ${selectedAgent.name.toUpperCase()} AGENT POD`} />
+            )}
 
-              <div className="flex items-center justify-end gap-2 pt-2">
-                <motion.button
-                  type="button"
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setShowLiveConfig(false)}
-                  className="px-4 py-2 bg-surface border border-surface-border text-primary font-mono text-xs"
-                >
-                  CANCEL
-                </motion.button>
-                <motion.button
-                  type="button"
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setShowLiveConfig(false)}
-                  className="px-4 py-2 bg-tech-cyan text-[#050607] font-mono text-xs font-bold"
-                >
-                  SAVE & ACTIVATE
-                </motion.button>
+            {!isRunning && activeTab === "trace" && (
+              <div className="space-y-1">
+                {currentLogs.length === 0 ? (
+                  <div className="py-16 text-center text-primary-muted font-mono text-xs space-y-2">
+                    <Activity className="w-6 h-6 mx-auto text-white/20" />
+                    <p>Agent standing by in idle state.</p>
+                    <p className="text-[11px] text-white/30">
+                      Select or type a command below to trigger execution.
+                    </p>
+                  </div>
+                ) : (
+                  currentLogs.map((log, index) => (
+                    <ThoughtLine
+                      key={index}
+                      stage={log.stage}
+                      message={log.message}
+                      timestamp={log.timestamp}
+                      tool={log.tool}
+                      durationMs={log.durationMs}
+                      status={log.status}
+                      isLast={index === currentLogs.length - 1}
+                    />
+                  ))
+                )}
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            )}
+
+            {!isRunning && activeTab === "output" && (
+              <div>
+                {!executionResult ? (
+                  <div className="py-16 text-center text-primary-muted font-mono text-xs">
+                    No execution results yet. Execute a query to generate an output.
+                  </div>
+                ) : (
+                  <div className="space-y-6">
+                    <div className="p-4 rounded-xl border border-accent/20 bg-accent/5 space-y-2">
+                      <span className="font-mono text-[11px] text-accent uppercase tracking-wider">
+                        PROVIDER: {executionResult.provider}
+                      </span>
+                      <h4 className="font-sans text-lg font-bold text-primary">
+                        {executionResult.output.title}
+                      </h4>
+                      <p className="text-sm text-primary/90 leading-relaxed font-sans">
+                        {executionResult.output.summary}
+                      </p>
+                    </div>
+
+                    {executionResult.output.metrics && (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {Object.entries(executionResult.output.metrics).map(([k, v]) => (
+                          <div
+                            key={k}
+                            className="p-3 rounded-lg border border-white/10 bg-[#151A1B] space-y-1"
+                          >
+                            <span className="font-mono text-[10px] text-primary-muted uppercase tracking-wider block">
+                              {k}
+                            </span>
+                            <span className="font-mono text-sm font-semibold text-accent">
+                              {String(v)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="p-4 rounded-xl border border-white/10 bg-[#111516] font-sans text-xs text-primary/80 whitespace-pre-wrap leading-relaxed">
+                      {executionResult.output.contentMarkdown}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {!isRunning && activeTab === "artifacts" && (
+              <div className="space-y-4">
+                {executionResult?.output?.artifacts?.map((art, idx) => (
+                  <div key={idx} className="p-4 rounded-xl border border-white/10 bg-[#111516] space-y-2">
+                    <div className="flex items-center justify-between font-mono text-xs">
+                      <span className="text-accent font-semibold">{art.title}</span>
+                      <span className="text-[10px] text-primary-muted uppercase">{art.type}</span>
+                    </div>
+                    <pre className="p-3 rounded-lg bg-[#080A0B] text-tech-teal font-mono text-xs overflow-x-auto max-h-60">
+                      {art.content}
+                    </pre>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Bottom Execution Bar */}
+          <div className="pt-4 border-t border-white/10 mt-4">
+            <PromptBar
+              placeholder={`Ask ${selectedAgent.name} or type task requirements...`}
+              samplePrompts={selectedAgent.samplePrompts}
+              onSubmit={handleRun}
+              isLoading={isRunning}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
+
+export default AgentLabConsole;

@@ -1,11 +1,14 @@
 import React, { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Cpu } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { AgentLabConsole } from "@/components/AgentLabConsole";
 import { AgentFilmScroll } from "@/components/AgentFilmScroll";
 import { TechnicalGrid } from "@/components/framer/TechnicalGrid";
-import { AmbientBackground } from "@/components/framer/AmbientBackground";
+import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
+import { BlurText } from "@/components/reactbits/text/BlurText";
+import { ScrollReveal } from "@/components/framer/ScrollAnimations";
 
 export const metadata: Metadata = {
   title: "Aurion Agent Lab — Working Autonomous Systems | Aurion Conclave",
@@ -13,13 +16,11 @@ export const metadata: Metadata = {
     "Working systems, not static mockups. Explore 12 specialized autonomous AI agents operating with deterministic reasoning, tool execution, and live telemetry.",
 };
 
-import { ScrollReveal } from "@/components/framer/ScrollAnimations";
-
 export default function AgentsPage() {
   return (
     <div className="relative min-h-screen bg-[#060708] overflow-hidden">
-      {/* Background: Single Sophisticated Agent Orchestration Environment */}
-      <AmbientBackground variant="ai" />
+      {/* Background: Particles — sparse Agent Lab atmosphere */}
+      <PageBackground preset="particles" />
       <TechnicalGrid crosshairs={true} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 space-y-24">
@@ -33,20 +34,19 @@ export default function AgentsPage() {
               <span className="text-primary-muted">AUTONOMOUS ORCHESTRATION</span>
             </div>
 
-            <h1 className="font-sans text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tighter text-primary leading-[0.95]">
-              AURION <br />
-              <span className="text-accent">AGENT LAB.</span>
+            <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary leading-tight">
+              Aurion <span className="text-accent">Agent Lab.</span>
             </h1>
 
-            <div className="font-mono text-sm sm:text-base text-accent font-semibold tracking-widest uppercase">
+            <div className="font-mono text-xs sm:text-sm text-accent font-semibold tracking-widest uppercase">
               WORKING SYSTEMS. NOT STATIC MOCKUPS.
             </div>
 
-            <p className="font-sans text-lg sm:text-xl text-primary-muted max-w-2xl leading-relaxed font-normal">
-              Interact with live, working implementations of our specialized autonomous workforce.
-              Select any agent from the sidebar below to trigger real cognitive loops, inspect token overhead,
-              and view deterministic verified outputs in real-time.
-            </p>
+            <BlurText
+              text="Interact with live, working implementations of our specialized autonomous workforce. Select any agent from the sidebar below to trigger real cognitive loops, inspect token overhead, and view deterministic verified outputs in real-time."
+              className="font-sans text-base sm:text-lg text-primary-muted max-w-2xl leading-relaxed font-normal"
+              delay={20}
+            />
           </div>
         </ScrollReveal>
 
@@ -69,9 +69,8 @@ export default function AgentsPage() {
                 <span className="text-primary-muted/40">•</span>
                 <span className="text-primary-muted">HORIZONTAL STORYTELLING</span>
               </div>
-              <h2 className="font-sans text-3xl sm:text-5xl font-extrabold text-primary tracking-tight">
-                SCROLL THROUGH <br />
-                <span className="text-accent">THE WORKFORCE.</span>
+              <h2 className="font-sans text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">
+                Scroll through <span className="text-accent">the workforce.</span>
               </h2>
               <p className="font-sans text-base text-primary-muted mt-3">
                 Vertical scroll coordinates reveal our agent sequence across research, documents, code, data, and zero-trust security.
@@ -89,17 +88,16 @@ export default function AgentsPage() {
               <div className="font-mono text-xs text-accent tracking-widest uppercase">
                 DEPLOY BESPOKE AGENT WORKFORCES
               </div>
-              <h3 className="font-sans text-2xl font-bold text-primary">
+              <h3 className="font-sans text-xl sm:text-2xl font-bold text-primary">
                 Ready to deploy custom autonomous swarms tailored to your proprietary data?
               </h3>
             </div>
 
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-accent hover:bg-accent-mid text-[#060708] font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 shadow-[0_4px_30px_rgba(201,148,62,0.2)] shrink-0 hover:scale-[1.02]"
-            >
-              <span>COMMENCE AGENT ARCHITECTURE</span>
-              <ArrowUpRight className="w-4 h-4" />
+            <Link href="/contact" className="shrink-0">
+              <SpecularButton variant="primary">
+                <span>COMMENCE AGENT ARCHITECTURE</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </SpecularButton>
             </Link>
           </div>
         </ScrollReveal>

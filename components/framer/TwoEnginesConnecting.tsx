@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown } from "lucide-react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { ArrowDown, Layers, Sparkles } from "lucide-react";
+import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
 
 export const TwoEnginesConnecting: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -11,7 +12,6 @@ export const TwoEnginesConnecting: React.FC = () => {
     offset: ["start 0.85", "center 0.35"],
   });
 
-  // Animated line connection progress
   const pathLength = useTransform(scrollYProgress, [0.1, 0.8], [0, 1]);
   const connectorOpacity = useTransform(scrollYProgress, [0.2, 0.6], [0.2, 1]);
 
@@ -32,38 +32,38 @@ export const TwoEnginesConnecting: React.FC = () => {
   return (
     <section
       ref={containerRef}
-      className="relative py-28 sm:py-36 bg-[#060708] border-b border-surface-border overflow-hidden"
+      className="relative py-24 sm:py-32 bg-[#060708] border-b border-warm-border overflow-hidden"
     >
       <div className="max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
-        {/* Section Header - Strictly Aligned */}
-        <div className="max-w-2xl mb-16">
-          <div className="flex items-center gap-3 font-mono text-[11px] text-accent tracking-widest uppercase mb-4">
+        {/* Section Header - Strict Clamped Typographic Hierarchy */}
+        <div className="max-w-2xl mb-14">
+          <div className="flex items-center gap-2.5 font-mono text-[11px] text-accent tracking-widest uppercase mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-accent" />
             <span>BUSINESS ARCHITECTURE</span>
-            <span className="text-primary-muted/40">•</span>
+            <span className="text-white/20">•</span>
             <span className="text-primary-muted">THE TWO ENGINES</span>
           </div>
 
-          <h2 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-extrabold text-primary tracking-tight leading-[1.04]">
+          <h2 className="font-sans text-2xl sm:text-3xl font-extrabold text-primary tracking-tight leading-[1.2]">
             TWO CONNECTED <br />
             <span className="text-accent">WINGS.</span>
           </h2>
 
-          <p className="font-sans text-base sm:text-lg text-primary-muted mt-5 leading-relaxed font-normal">
+          <p className="font-sans text-sm sm:text-base text-primary-muted mt-3 leading-relaxed font-normal">
             Our dual-wing model bridges high-stakes enterprise advisory with proprietary technology asset incubation.
             Client problems expose practical friction; validated insights evolve into proprietary software.
           </p>
         </div>
 
-        {/* Two Synchronized Vertical Panels in the Same Strict Grid */}
+        {/* Two Synchronized Vertical Panels in 12-Column Grid */}
         <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
           {/* Central Connecting SVG Line (Desktop) */}
-          <div className="hidden lg:block absolute inset-0 pointer-events-none z-10">
+          <div className="hidden lg:block absolute inset-0 pointer-events-none z-10" aria-hidden="true">
             <svg className="w-full h-full" preserveAspectRatio="none">
               <motion.path
                 d="M 48% 68% C 50% 68%, 50% 32%, 52% 32%"
                 fill="none"
-                stroke="#C9943E"
+                stroke="#C39142"
                 strokeWidth="1.5"
                 strokeDasharray="4 4"
                 style={{
@@ -74,115 +74,99 @@ export const TwoEnginesConnecting: React.FC = () => {
             </svg>
           </div>
 
-          {/* -------------------------------------------------- */}
           {/* PANEL 01: CONSULTANCY */}
-          {/* -------------------------------------------------- */}
-          <div className="p-8 sm:p-10 luxury-glass border border-surface-border hover:border-accent/40 transition-colors flex flex-col justify-between rounded-sm min-h-[580px]">
-            {/* Header: Exact Same Height Across Both */}
+          <SpotlightCard theme="dark" className="flex flex-col justify-between min-h-[520px]">
             <div>
-              <div className="flex items-center justify-between pb-6 mb-6 border-b border-surface-border">
-                <div className="flex items-baseline gap-3">
-                  <span className="font-mono text-2xl sm:text-3xl text-accent font-bold">01</span>
-                  <span className="font-mono text-xs text-primary-muted uppercase tracking-widest">
-                    WING 01
+              <div className="flex items-center justify-between pb-6 border-b border-white/10">
+                <div className="flex items-center gap-2.5">
+                  <span className="font-mono text-xs px-2.5 py-0.5 rounded bg-accent/15 border border-accent/30 text-accent font-semibold">
+                    ENGINE 01
+                  </span>
+                  <span className="font-mono text-xs text-tech-teal uppercase tracking-wider">
+                    CONSULTANCY
                   </span>
                 </div>
-                <span className="px-2.5 py-1 bg-surface border border-surface-border font-mono text-[10px] text-accent tracking-wider uppercase">
-                  ADVISORY & SYSTEMS
-                </span>
+                <Layers className="w-5 h-5 text-accent" />
               </div>
 
-              <h3 className="font-sans text-2xl sm:text-3xl font-extrabold text-primary tracking-tight mb-8">
-                CONSULTANCY
-              </h3>
+              <div className="py-6 space-y-2">
+                <h3 className="font-sans text-xl font-bold text-primary">High-Stakes Advisory & Delivery</h3>
+                <p className="text-xs sm:text-sm text-primary-muted leading-relaxed font-sans">
+                  Solving complex operational bottlenecks for enterprise organizations across AI, cloud,
+                  cybersecurity, and software architecture.
+                </p>
+              </div>
 
-              {/* Synchronized Vertical Step Progression */}
-              <div className="space-y-5">
+              {/* Step Sequence */}
+              <div className="space-y-4 pt-2">
                 {consultancySteps.map((step, idx) => (
-                  <div key={idx} className="flex flex-col items-start">
-                    <div className="flex items-center gap-3">
-                      <span className="w-2 h-2 rounded-full bg-accent shrink-0" />
-                      <div>
-                        <span className="font-sans text-base sm:text-lg text-primary font-medium tracking-tight">
-                          {step.title}
-                        </span>
-                        <span className="hidden sm:inline-block ml-3 font-mono text-[11px] text-primary-muted">
-                          // {step.note}
-                        </span>
-                      </div>
+                  <div key={idx} className="flex items-start gap-4">
+                    <span className="w-6 h-6 rounded-full flex items-center justify-center font-mono text-[11px] bg-white/5 border border-white/10 text-accent shrink-0">
+                      0{idx + 1}
+                    </span>
+                    <div>
+                      <h4 className="font-sans text-sm font-semibold text-primary">{step.title}</h4>
+                      <p className="font-mono text-[11px] text-primary-muted">{step.note}</p>
                     </div>
-
-                    {idx < consultancySteps.length - 1 && (
-                      <div className="my-2 ml-[3px] border-l border-accent/30 h-5 flex items-center">
-                        <ArrowDown className="w-3 h-3 text-accent/50 -ml-[7px]" />
-                      </div>
-                    )}
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Bottom Baseline Divider and Note: Identical Height & Baseline */}
-            <div className="mt-8 pt-6 border-t border-surface-border font-mono text-xs text-primary-muted leading-relaxed">
-              Real enterprise environments provide unmatched operational grounding, cash flow, and empirical clarity.
+            <div className="pt-6 border-t border-white/10 flex items-center justify-between font-mono text-xs text-primary-muted">
+              <span>OUTPUT</span>
+              <span className="text-accent font-semibold">PRODUCTION IP & INSIGHTS</span>
             </div>
-          </div>
+          </SpotlightCard>
 
-          {/* -------------------------------------------------- */}
           {/* PANEL 02: PRODUCT */}
-          {/* -------------------------------------------------- */}
-          <div className="p-8 sm:p-10 luxury-glass border border-surface-border hover:border-tech-teal/40 transition-colors flex flex-col justify-between rounded-sm min-h-[580px]">
-            {/* Header: Exact Same Height Across Both */}
+          <SpotlightCard theme="dark" className="flex flex-col justify-between min-h-[520px]">
             <div>
-              <div className="flex items-center justify-between pb-6 mb-6 border-b border-surface-border">
-                <div className="flex items-baseline gap-3">
-                  <span className="font-mono text-2xl sm:text-3xl text-tech-teal font-bold">02</span>
-                  <span className="font-mono text-xs text-primary-muted uppercase tracking-widest">
-                    WING 02
+              <div className="flex items-center justify-between pb-6 border-b border-white/10">
+                <div className="flex items-center gap-2.5">
+                  <span className="font-mono text-xs px-2.5 py-0.5 rounded bg-tech-teal/15 border border-tech-teal/30 text-tech-teal font-semibold">
+                    ENGINE 02
+                  </span>
+                  <span className="font-mono text-xs text-accent uppercase tracking-wider">
+                    PRODUCT R&D
                   </span>
                 </div>
-                <span className="px-2.5 py-1 bg-surface border border-surface-border font-mono text-[10px] text-tech-teal tracking-wider uppercase">
-                  PROPRIETARY IP
-                </span>
+                <Sparkles className="w-5 h-5 text-tech-teal" />
               </div>
 
-              <h3 className="font-sans text-2xl sm:text-3xl font-extrabold text-primary tracking-tight mb-8">
-                PRODUCT
-              </h3>
+              <div className="py-6 space-y-2">
+                <h3 className="font-sans text-xl font-bold text-primary">Proprietary Software Systems</h3>
+                <p className="text-xs sm:text-sm text-primary-muted leading-relaxed font-sans">
+                  Incubating sovereign software assets, autonomous agent toolchains, and scalable infrastructure
+                  born from real-world problem sets.
+                </p>
+              </div>
 
-              {/* Synchronized Vertical Step Progression */}
-              <div className="space-y-5">
+              {/* Step Sequence */}
+              <div className="space-y-4 pt-2">
                 {productSteps.map((step, idx) => (
-                  <div key={idx} className="flex flex-col items-start">
-                    <div className="flex items-center gap-3">
-                      <span className="w-2 h-2 rounded-full bg-tech-teal shrink-0" />
-                      <div>
-                        <span className="font-sans text-base sm:text-lg text-primary font-medium tracking-tight">
-                          {step.title}
-                        </span>
-                        <span className="hidden sm:inline-block ml-3 font-mono text-[11px] text-primary-muted">
-                          // {step.note}
-                        </span>
-                      </div>
+                  <div key={idx} className="flex items-start gap-4">
+                    <span className="w-6 h-6 rounded-full flex items-center justify-center font-mono text-[11px] bg-white/5 border border-white/10 text-tech-teal shrink-0">
+                      0{idx + 1}
+                    </span>
+                    <div>
+                      <h4 className="font-sans text-sm font-semibold text-primary">{step.title}</h4>
+                      <p className="font-mono text-[11px] text-primary-muted">{step.note}</p>
                     </div>
-
-                    {idx < productSteps.length - 1 && (
-                      <div className="my-2 ml-[3px] border-l border-tech-teal/30 h-5 flex items-center">
-                        <ArrowDown className="w-3 h-3 text-tech-teal/50 -ml-[7px]" />
-                      </div>
-                    )}
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Bottom Baseline Divider and Note: Identical Height & Baseline */}
-            <div className="mt-8 pt-6 border-t border-surface-border font-mono text-xs text-primary-muted leading-relaxed">
-              Validated industry friction transforms into defensible, high-margin software assets with compounding valuation.
+            <div className="pt-6 border-t border-white/10 flex items-center justify-between font-mono text-xs text-primary-muted">
+              <span>OUTPUT</span>
+              <span className="text-tech-teal font-semibold">SCALABLE SOFTWARE ASSETS</span>
             </div>
-          </div>
+          </SpotlightCard>
         </div>
       </div>
     </section>
   );
 };
+
+export default TwoEnginesConnecting;

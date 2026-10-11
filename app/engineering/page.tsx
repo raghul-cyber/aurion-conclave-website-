@@ -2,11 +2,11 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ArrowUpRight, CheckCircle2, ChevronDown, Terminal, Cpu } from "lucide-react";
-import { AmbientBackground } from "@/components/framer/AmbientBackground";
-import { TechnicalGrid } from "@/components/framer/TechnicalGrid";
-import { ScrollReveal, ScrollStagger, ScrollStaggerItem } from "@/components/framer/ScrollAnimations";
+import { motion, AnimatePresence } from "motion/react";
+import { ArrowRight, ArrowUpRight, Check, ChevronRight } from "lucide-react";
+import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
+import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 
 interface EngineeringStage {
   step: string;
@@ -50,7 +50,7 @@ const ENGINEERING_PIPELINE: EngineeringStage[] = [
     step: "04",
     name: "DESIGN",
     subtitle: "High-density editorial UI & developer experience ergonomics.",
-    deliverables: ["Design System Component Tokens", "Interactive Figma Prototypes", "Micro-Interaction Specs"],
+    deliverables: ["Design System Component Tokens", "Interactive Prototypes", "Micro-Interaction Specs"],
     duration: "2 - 3 WEEKS",
     auditStandard: "Luxury aesthetic standard, WCAG AAA accessibility, sub-16ms render budgets.",
     description: "We craft interfaces with editorial typographical confidence, restrained palettes, and immediate tactile responsiveness. Every screen is designed around data density without visual noise.",
@@ -58,50 +58,32 @@ const ENGINEERING_PIPELINE: EngineeringStage[] = [
   {
     step: "05",
     name: "ENGINEERING",
-    subtitle: "Core runtime implementation in Rust, TypeScript, and Go.",
-    deliverables: ["Production Source Code Repository", "Automated Unit & Integration Suites", "Developer CLI Tools"],
-    duration: "4 - 12 WEEKS",
-    auditStandard: "100% type safety, zero unwrapped errors, memory-safe execution.",
-    description: "Writing clean, modular, and maintainable software. We practice test-driven engineering, continuous static analysis, and zero-debt dependency management.",
+    subtitle: "Typed, modular systems development across dedicated pods.",
+    deliverables: ["Production Source Code", "Automated Unit & Integration Tests", "API Contracts"],
+    duration: "4 - 8 WEEKS",
+    auditStandard: "100% type safety, zero technical debt, continuous automated integration.",
+    description: "Multi-disciplinary engineering pods build in tightly scoped sprint increments. All code passes strict static analysis, concurrency audits, and automated mutation testing.",
   },
   {
     step: "06",
-    name: "AI / ML",
-    subtitle: "Cognitive agent orchestration & predictive model fine-tuning.",
-    deliverables: ["Quantized Model Weights", "Vector Knowledge Graphs", "Deterministic Agent Test Harness"],
-    duration: "2 - 4 WEEKS",
-    auditStandard: "Zero hallucination tolerance; 100% cited source coordinates.",
-    description: "Deploying sovereign AI pipelines, autonomous agent swarms, and RAG architectures tailored to enterprise domain constraints with mathematical evaluation harnesses.",
+    name: "TESTING & AUDIT",
+    subtitle: "Fuzzing, formal verification, and automated penetration testing.",
+    deliverables: ["Penetration Test Report", "Performance Benchmarks", "Accessibility Sign-Off"],
+    duration: "1 - 2 WEEKS",
+    auditStandard: "Independent red team approval prior to any public staging deployment.",
+    description: "We subject applications to adversarial stress tests, chaos engineering faults, and security fuzzing to ensure zero regressions under extreme production conditions.",
   },
   {
     step: "07",
-    name: "INTEGRATION",
-    subtitle: "Enterprise ERP, CRM, payment, and cloud service linkage.",
-    deliverables: ["Idempotent API Webhooks", "Transactional Outbox Syncers", "Data Reconciliation DAGs"],
-    duration: "2 - 3 WEEKS",
-    auditStandard: "Exactly-once event processing guarantees across all external boundary APIs.",
-    description: "Wiring new systems into existing enterprise infrastructure without taking downstream databases offline. We build resilient adapters and durable synchronization workflows.",
-  },
-  {
-    step: "08",
-    name: "TESTING",
-    subtitle: "Chaos engineering, penetration audits, and load stress testing.",
-    deliverables: ["Chaos Mesh Failure Reports", "Third-Party Penetration Audit", "Load Benchmark Telemetry"],
-    duration: "2 WEEKS",
-    auditStandard: "System withstands 10x projected peak volume and sudden node termination.",
-    description: "We intentionally inject network latency, terminate Kubernetes pods, simulate database splits, and launch simulated cyberattacks to guarantee extreme runtime resilience.",
-  },
-  {
-    step: "09",
     name: "DEPLOYMENT",
-    subtitle: "Deterministic GitOps releases with automated canary progression.",
-    deliverables: ["Terraform / OpenTofu Modules", "ArgoCD Application Manifests", "Canary Rollback Runbooks"],
+    subtitle: "Deterministic GitOps infrastructure & blue/green rollout.",
+    deliverables: ["Terraform State Definitions", "Kubernetes Manifests", "Canary Deployment Pipelines"],
     duration: "1 WEEK",
     auditStandard: "Zero-downtime blue/green deployment with automated traffic shifting.",
     description: "Infrastructure and application delivery managed via peer-reviewed Git commits. Releases roll out progressively with real-time error budget monitoring.",
   },
   {
-    step: "10",
+    step: "08",
     name: "OBSERVABILITY",
     subtitle: "Distributed tracing, telemetry collection, and alert budgets.",
     deliverables: ["Grafana Executive Dashboards", "OpenTelemetry Collector Config", "PagerDuty Routing Trees"],
@@ -109,216 +91,152 @@ const ENGINEERING_PIPELINE: EngineeringStage[] = [
     auditStandard: "Sub-second incident isolation from kernel to UI layer.",
     description: "We instrument every microservice, query, and user interaction with structured telemetry. When an anomaly emerges, root cause analysis takes minutes, not days.",
   },
-  {
-    step: "11",
-    name: "OPTIMIZATION",
-    subtitle: "Compute cost reduction, latency tuning, and algorithmic refinement.",
-    deliverables: ["Cloud Cost Optimization Report", "P99 Latency Profiling Traces", "Capacity Scaling Playbook"],
-    duration: "ONGOING",
-    auditStandard: "Continuous compounding efficiency; 30%+ annual compute cost reduction.",
-    description: "Software engineering does not end at production release. We continually profile memory allocation, query plans, and vector embeddings to optimize performance and reduce cloud spend.",
-  },
 ];
 
 export default function EngineeringPage() {
   const [activeStageIndex, setActiveStageIndex] = useState(0);
+  const currentStage = ENGINEERING_PIPELINE[activeStageIndex];
 
   return (
     <div className="relative min-h-screen bg-[#060708] overflow-hidden">
-      {/* Background */}
-      <TechnicalGrid crosshairs={true} />
+      {/* Grid Scan Background (Category G4) */}
+      <PageBackground preset="grid-scan" opacity={0.25} />
 
-      <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28">
-        {/* Page Hero Header with ScrollReveal */}
-        <ScrollReveal direction="up" distance={24}>
-          <div className="max-w-4xl mb-20 space-y-6">
-            <div className="inline-flex items-center gap-3 px-3 py-1.5 luxury-glass border border-surface-border font-mono text-[11px] text-accent tracking-widest uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              <span>AURION METHODOLOGY • 11 STAGES</span>
-            </div>
-
-            <h1 className="font-sans text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tighter text-primary leading-[0.95]">
-              FROM IDEA <br />
-              TO <br />
-              <span className="text-accent">PRODUCTION.</span>
-            </h1>
-
-            <p className="font-sans text-lg sm:text-xl text-primary-muted max-w-2xl leading-relaxed font-normal">
-              Our engineering delivery pipeline is built on mathematical rigor, typed contracts, and zero guesswork.
-              Explore each stage of our end-to-end delivery system below.
-            </p>
+      <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 space-y-16">
+        {/* Page Hero Header with Clamped Typography */}
+        <div className="max-w-3xl space-y-4">
+          <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full luxury-glass border border-white/10 font-mono text-[11px] text-accent tracking-widest uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+            <span>AURION METHODOLOGY • 08 STAGES</span>
           </div>
-        </ScrollReveal>
 
-        {/* Giant Vertical Engineering Pipeline */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          {/* Left Column: Vertical Pipeline Step List with Shared layoutId */}
-          <div className="lg:col-span-5 space-y-3">
+          <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary leading-[1.1]">
+            FROM IDEA TO <br />
+            <span className="text-accent">PRODUCTION.</span>
+          </h1>
+
+          <p className="font-sans text-sm sm:text-base text-primary-muted max-w-xl leading-relaxed font-normal">
+            Our engineering delivery pipeline is built on mathematical rigor, typed contracts, and zero guesswork.
+            Explore each stage of our end-to-end delivery system below.
+          </p>
+        </div>
+
+        {/* Engineering Pipeline: Stepper and Detail Panel */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left Column: Stage Selector */}
+          <div className="lg:col-span-5 space-y-2">
             {ENGINEERING_PIPELINE.map((stage, idx) => {
               const isActive = idx === activeStageIndex;
 
               return (
-                <motion.div
+                <div
                   key={stage.step}
-                  whileHover={{ x: 4 }}
-                  whileTap={{ scale: 0.98 }}
                   onClick={() => setActiveStageIndex(idx)}
-                  className={`cursor-pointer p-5 border transition-colors duration-200 relative flex items-center justify-between ${
+                  className={`cursor-pointer p-4 rounded-xl border transition-all duration-200 flex items-center justify-between ${
                     isActive
-                      ? "bg-surface-elevated border-accent shadow-[0_0_20px_rgba(201,148,62,0.15)]"
-                      : "bg-[#080A0B] border-surface-border hover:border-surface-hover opacity-85"
+                      ? "bg-accent/10 border-accent/60 text-primary shadow-sm"
+                      : "bg-[#111516] border-white/10 hover:border-white/20 text-primary-muted hover:text-primary"
                   }`}
                 >
-                  {/* Shared layoutId Active Border Highlight */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="active-stage-indicator"
-                      className="absolute inset-0 border border-accent bg-accent/5 pointer-events-none"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                  )}
-
-                  <div className="relative z-10 flex items-center gap-4">
-                    <span className="font-mono text-xs text-accent font-bold">
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-xs font-bold text-accent">
                       {stage.step}
                     </span>
                     <div>
-                      <div className="font-sans font-bold text-base text-primary tracking-tight">
+                      <div className="font-sans font-bold text-sm tracking-tight text-primary">
                         {stage.name}
                       </div>
-                      <div className="font-mono text-[10px] text-primary-muted mt-0.5">
+                      <div className="font-mono text-[10px] text-primary-muted">
                         {stage.duration}
                       </div>
                     </div>
                   </div>
 
-                  <div className="relative z-10 flex items-center gap-2">
-                    {isActive && (
-                      <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
-                    )}
-                    <ChevronDown
-                      className={`w-4 h-4 text-primary-muted transition-transform duration-200 ${
-                        isActive ? "-rotate-90 text-accent" : ""
-                      }`}
-                    />
-                  </div>
-                </motion.div>
+                  <ChevronRight
+                    className={`w-4 h-4 transition-transform ${
+                      isActive ? "text-accent translate-x-1" : "text-white/20"
+                    }`}
+                  />
+                </div>
               );
             })}
           </div>
 
-          {/* Right Column: Stage Inspection Console with AnimatePresence */}
-          <div className="lg:col-span-7 sticky top-28">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeStageIndex}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                className="p-8 sm:p-10 luxury-glass border border-surface-border space-y-8"
-              >
-                {/* Header */}
-                <div className="flex items-center justify-between pb-6 border-b border-surface-border/60">
-                  <div>
-                    <div className="font-mono text-xs text-accent font-semibold tracking-widest uppercase">
-                      STAGE {ENGINEERING_PIPELINE[activeStageIndex].step} // SPECIFICATION
-                    </div>
-                    <h2 className="font-sans text-3xl sm:text-4xl font-extrabold text-primary mt-2">
-                      {ENGINEERING_PIPELINE[activeStageIndex].name}
-                    </h2>
-                  </div>
-
-                  <div className="text-right font-mono text-xs text-primary-muted">
-                    <div className="text-accent font-bold">
-                      {ENGINEERING_PIPELINE[activeStageIndex].duration}
-                    </div>
-                    <div className="text-[10px]">TIME TO COMPLETION</div>
-                  </div>
+          {/* Right Column: Stage Inspection Deep-Dive */}
+          <div className="lg:col-span-7">
+            <SpotlightCard theme="dark" className="p-8 space-y-6">
+              <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs px-2.5 py-0.5 rounded bg-accent/20 border border-accent/40 text-accent font-semibold">
+                    STAGE {currentStage.step}
+                  </span>
+                  <span className="font-mono text-xs text-tech-teal">{currentStage.duration}</span>
                 </div>
+                <span className="font-mono text-[11px] text-primary-muted uppercase">
+                  VERIFIED SDLC
+                </span>
+              </div>
 
-                {/* Subtitle & Deep Description */}
-                <div className="space-y-4">
-                  <p className="font-sans text-base text-primary font-medium leading-relaxed">
-                    {ENGINEERING_PIPELINE[activeStageIndex].subtitle}
-                  </p>
+              <div>
+                <h3 className="font-sans text-2xl font-bold text-primary">
+                  {currentStage.name}
+                </h3>
+                <p className="font-mono text-xs text-accent mt-1">
+                  {currentStage.subtitle}
+                </p>
+                <p className="font-sans text-sm text-primary-muted mt-4 leading-relaxed font-normal">
+                  {currentStage.description}
+                </p>
+              </div>
 
-                  <p className="font-sans text-sm text-primary-muted leading-relaxed">
-                    {ENGINEERING_PIPELINE[activeStageIndex].description}
-                  </p>
-                </div>
-
-                {/* Deliverables List with Staggered Entrance */}
-                <div className="space-y-3 pt-2">
-                  <div className="font-mono text-xs text-accent tracking-widest uppercase">
-                    VERIFIED ARTIFACT DELIVERABLES:
-                  </div>
-                  <motion.div
-                    initial="hidden"
-                    animate="visible"
-                    variants={{
-                      visible: { transition: { staggerChildren: 0.05 } },
-                    }}
-                    className="grid grid-cols-1 sm:grid-cols-2 gap-3"
-                  >
-                    {ENGINEERING_PIPELINE[activeStageIndex].deliverables.map((item, idx) => (
-                      <motion.div
-                        key={idx}
-                        variants={{
-                          hidden: { opacity: 0, y: 8 },
-                          visible: { opacity: 1, y: 0 },
-                        }}
-                        className="p-3 bg-surface border border-surface-border flex items-start gap-2.5 font-sans text-xs text-primary"
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-tech-teal shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                </div>
-
-                {/* Audit Standard */}
-                <div className="p-4 bg-[#080A0B] border border-surface-border/60 font-mono text-xs space-y-1">
-                  <div className="text-tech-teal text-[10px] uppercase tracking-wider">
-                    ENGINEERING QUALITY BENCHMARK
-                  </div>
-                  <div className="text-primary-muted">
-                    {ENGINEERING_PIPELINE[activeStageIndex].auditStandard}
-                  </div>
-                </div>
-
-                {/* Action */}
-                <div className="pt-4 flex items-center justify-between">
-                  <motion.button
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() =>
-                      setActiveStageIndex(
-                        (prev) => (prev + 1) % ENGINEERING_PIPELINE.length
-                      )
-                    }
-                    className="px-4 py-2 bg-surface hover:bg-surface-elevated border border-surface-border text-primary font-mono text-xs flex items-center gap-2 transition-colors"
-                  >
-                    <span>ADVANCE TO NEXT STAGE</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-accent" />
-                  </motion.button>
-
-                  <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-                    <Link
-                      href="/contact"
-                      className="inline-flex items-center gap-2 px-5 py-2 bg-accent hover:bg-accent-mid text-[#060708] font-mono text-xs font-bold tracking-wider shadow-[0_2px_20px_rgba(201,148,62,0.2)]"
+              {/* Deliverables */}
+              <div className="space-y-2 pt-2">
+                <span className="font-mono text-[11px] text-accent uppercase tracking-wider block">
+                  KEY ARTIFACTS & DELIVERABLES
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {currentStage.deliverables.map((del, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-2 p-2.5 rounded-lg border border-white/10 bg-[#151A1B] text-xs text-primary font-sans"
                     >
-                      <span>COMMENCE DISCOVERY</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </motion.div>
+                      <Check className="w-3.5 h-3.5 text-success shrink-0" />
+                      <span>{del}</span>
+                    </div>
+                  ))}
                 </div>
-              </motion.div>
-            </AnimatePresence>
+              </div>
+
+              {/* Audit Standard */}
+              <div className="p-4 rounded-xl border border-white/10 bg-[#151A1B] space-y-1">
+                <span className="font-mono text-[10px] text-primary-muted uppercase tracking-wider block">
+                  RIGOR & AUDIT STANDARD
+                </span>
+                <p className="font-mono text-xs text-accent">{currentStage.auditStandard}</p>
+              </div>
+            </SpotlightCard>
           </div>
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="p-8 rounded-2xl luxury-glass border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-1.5">
+            <span className="font-mono text-xs text-accent tracking-widest uppercase block">
+              COLLABORATIVE ENGINEERING DISCOVERY
+            </span>
+            <h3 className="font-sans text-xl font-bold text-primary">
+              Ready to execute your next enterprise software milestone with zero ambiguity?
+            </h3>
+          </div>
+
+          <Link href="/contact">
+            <SpecularButton variant="primary">
+              <span>START A DISCOVERY SPRINT</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </SpecularButton>
+          </Link>
         </div>
       </div>
     </div>
   );
 }
-

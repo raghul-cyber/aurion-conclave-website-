@@ -1,10 +1,11 @@
 import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Workflow, Zap, CheckCircle2 } from "lucide-react";
-import { AmbientBackground } from "@/components/framer/AmbientBackground";
-import { TechnicalGrid } from "@/components/framer/TechnicalGrid";
+import { ArrowUpRight, Workflow } from "lucide-react";
+import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
 import { ArchitectureDiagram, PipelineStep } from "@/components/framer/ArchitectureDiagram";
+import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
+import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 
 export const metadata: Metadata = {
   title: "Workflow Automation & Durable Orchestration | Aurion Conclave",
@@ -58,32 +59,31 @@ const AUTOMATION_CAPABILITIES = [
   },
   {
     title: "BILLING & LEDGER AUTOMATION",
-    desc: "Multi-currency subscription reconciliation, usage-based metering aggregation, and automated tax calculations.",
-    tech: ["Stripe Metering", "TaxJar", "QuickBooks Online", "Double-Entry Bookkeeping"],
+    desc: "Automated recurring invoice generation, subscription reconciliation, multi-currency revenue attribution, and tax routing.",
+    tech: ["Stripe Invoicing", "Double-Entry Accounting", "Webhook Verification"],
   },
   {
-    title: "AI-POWERED TRIAGE",
-    desc: "Cognitive routing of enterprise customer requests, IT tickets, and compliance documents to appropriate teams.",
-    tech: ["Classification Agents", "Zendesk API", "Slack Workflows", "Email Parsing"],
+    title: "COGNITIVE EVENT ROUTERS",
+    desc: "AI-assisted triage routing incoming customer requests, document verification triggers, and fraud escalations.",
+    tech: ["Vector Classification", "Deterministic Routing", "OpenAPI Bridges"],
   },
   {
-    title: "INFRASTRUCTURE RUNBOOKS",
-    desc: "Self-healing cloud clusters that automatically isolate failing pods, rotate credentials, and mitigate DDoS.",
-    tech: ["Kubernetes Operators", "Bash / Python", "AWS Lambda", "PagerDuty"],
+    title: "RELIABILITY RECONCILIATION",
+    desc: "Automated nightly drift verification ensuring operational databases and accounting records stay in parity.",
+    tech: ["Checksum Auditing", "Automated Diff Heuristics", "Slack / PagerDuty Alerts"],
   },
   {
-    title: "ETL WORKFLOW CHOREOGRAPHY",
-    desc: "Coordinated data ingestion DAGs ensuring dependent reporting tables only update after raw checks pass.",
-    tech: ["Airflow", "Dagster", "Prefect", "dbt Cloud"],
+    title: "HUMAN-IN-THE-LOOP BRIDGES",
+    desc: "Workflows that pause safely for executive approval, compliance sign-off, or physical confirmation before progressing.",
+    tech: ["Temporal Signals", "JWT Approval Links", "Encrypted Form Bridges"],
   },
 ];
 
 export default function AutomationServicesPage() {
   return (
     <div className="relative min-h-screen bg-[#060708] overflow-hidden">
-      {/* Background: Process Loops */}
-      <AmbientBackground variant="automation" />
-      <TechnicalGrid crosshairs={true} />
+      {/* Beams Background (Category G4) */}
+      <PageBackground preset="beams" opacity={0.25} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28">
         {/* Breadcrumb */}
@@ -95,97 +95,95 @@ export default function AutomationServicesPage() {
           <span className="text-accent">AUTOMATION</span>
         </div>
 
-        {/* Hero Header */}
-        <div className="max-w-4xl mb-20 space-y-6">
-          <div className="inline-flex items-center gap-3 px-3 py-1.5 luxury-glass border border-surface-border font-mono text-[11px] text-accent tracking-widest uppercase">
+        {/* Hero Header with Clamped Typography */}
+        <div className="max-w-3xl mb-16 space-y-4">
+          <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full luxury-glass border border-white/10 font-mono text-[11px] text-accent tracking-widest uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            <span>OPERATIONAL RESILIENCE • DURABLE CHOREOGRAPHY</span>
+            <span>OPERATIONAL SYSTEMS • DURABLE CHOREOGRAPHY</span>
           </div>
 
-          <h1 className="font-sans text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tighter text-primary leading-[0.95]">
-            REPETITION <br />
-            SHOULD <br />
-            BECOME <br />
-            <span className="text-accent">SYSTEM.</span>
+          <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary leading-[1.1]">
+            AUTOMATION WITHOUT <br />
+            <span className="text-accent">STATE DRIFT.</span>
           </h1>
 
-          <p className="font-sans text-lg sm:text-xl text-primary-muted max-w-2xl leading-relaxed font-normal">
-            Manual operational tasks are an architectural liability. We replace human transcription and brittle scripts
-            with durable, self-healing state machines that never lose an event.
+          <p className="font-sans text-sm sm:text-base text-primary-muted max-w-xl leading-relaxed font-normal">
+            We engineer mission-critical workflow engines that survive hardware failures, network timeouts,
+            and third-party API disruptions with zero data loss.
           </p>
         </div>
 
-        {/* Process Loop Architecture Diagram */}
-        <div className="mb-24">
+        {/* Automation Workflow Progression */}
+        <div className="mb-20">
           <ArchitectureDiagram
-            title="DURABLE PROCESS EXECUTION LOOP"
+            title="DURABLE WORKFLOW TOPOLOGY (TRIGGER → LOGIC → ACTION → VALIDATION → RESULT)"
             steps={AUTOMATION_LOOP}
           />
         </div>
 
-        {/* Core Capabilities */}
-        <div className="mb-24">
-          <div className="flex items-center gap-3 font-mono text-[11px] text-accent tracking-widest uppercase mb-4">
+        {/* Capabilities Grid */}
+        <div className="mb-20">
+          <div className="flex items-center gap-2.5 font-mono text-[11px] text-accent tracking-widest uppercase mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-            <span>AUTOMATION PILLARS</span>
+            <span>AUTOMATION DISCIPLINES</span>
           </div>
-          <h2 className="font-sans text-3xl sm:text-4xl font-extrabold text-primary mb-12">
-            ZERO-LOSS ENTERPRISE FLOWS
+          <h2 className="font-sans text-2xl sm:text-3xl font-extrabold text-primary mb-10">
+            DURABLE ORCHESTRATION SUITE
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {AUTOMATION_CAPABILITIES.map((cap, idx) => (
-              <div
-                key={cap.title}
-                className="p-8 luxury-glass border border-surface-border hover:border-accent/40 transition-all duration-300 flex flex-col justify-between"
+            {AUTOMATION_CAPABILITIES.map((item, idx) => (
+              <SpotlightCard
+                key={item.title}
+                theme="dark"
+                className="p-6 sm:p-8 flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-surface-border/50 font-mono text-xs text-accent">
-                    <span>FLOW // 0{idx + 1}</span>
+                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/10 font-mono text-xs text-accent">
+                    <span>WORKFLOW // 0{idx + 1}</span>
                     <Workflow className="w-4 h-4 text-tech-teal" />
                   </div>
 
-                  <h3 className="font-sans font-bold text-xl text-primary">
-                    {cap.title}
+                  <h3 className="font-sans font-bold text-lg text-primary mb-2">
+                    {item.title}
                   </h3>
 
-                  <p className="font-sans text-sm text-primary-muted mt-4 leading-relaxed">
-                    {cap.desc}
+                  <p className="font-sans text-xs sm:text-sm text-primary-muted leading-relaxed font-normal">
+                    {item.desc}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-surface-border/40 flex flex-wrap gap-2">
-                  {cap.tech.map((t) => (
+                <div className="pt-6 border-t border-white/10 flex flex-wrap gap-1.5 mt-6">
+                  {item.tech.map((t) => (
                     <span
                       key={t}
-                      className="px-2 py-0.5 bg-surface border border-surface-border font-mono text-[10px] text-accent/80"
+                      className="font-mono text-[10px] text-accent/80 px-2 py-0.5 rounded bg-white/5 border border-white/10"
                     >
                       {t}
                     </span>
                   ))}
                 </div>
-              </div>
+              </SpotlightCard>
             ))}
           </div>
         </div>
 
         {/* Bottom CTA */}
-        <div className="p-8 sm:p-12 luxury-glass border border-surface-border flex flex-col md:flex-row md:items-center justify-between gap-8">
-          <div className="space-y-2">
-            <div className="font-mono text-xs text-accent tracking-widest uppercase">
-              REDUCE OPERATIONAL OVERHEAD
-            </div>
-            <h3 className="font-sans text-2xl font-bold text-primary">
-              Eliminate repetitive human overhead through state-machine automation.
+        <div className="p-8 rounded-2xl luxury-glass border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-1.5">
+            <span className="font-mono text-xs text-accent tracking-widest uppercase block">
+              DURABLE PIPELINE ARCHITECTURE
+            </span>
+            <h3 className="font-sans text-xl font-bold text-primary">
+              Ready to eliminate brittle scripts and migrate to durable state machines?
             </h3>
           </div>
 
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-accent hover:bg-accent-mid text-[#060708] font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 shadow-[0_4px_30px_rgba(201,148,62,0.2)] shrink-0"
-          >
-            <span>AUTOMATE A WORKFLOW</span>
-            <ArrowUpRight className="w-4 h-4" />
+          <Link href="/contact">
+            <SpecularButton variant="primary">
+              <span>DESIGN AUTOMATION PIPELINE</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </SpecularButton>
           </Link>
         </div>
       </div>

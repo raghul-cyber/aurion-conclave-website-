@@ -10,64 +10,49 @@ import { HomePhilosophyAndFinal } from "@/components/framer/HomePhilosophyAndFin
 export default function HomePage() {
   return (
     <div className="relative w-full overflow-hidden bg-[#050607]">
-      {/* -------------------------------------------------- */}
-      {/* 01 / HOME HERO (CENTERED COMPOSITION + NETWORK BEHIND) */}
-      {/* -------------------------------------------------- */}
+      {/* 01 / HOME HERO (CENTERED COMPOSITION + WEB THREADS BACKGROUND) */}
       <HomeHeroCentered />
 
-      {/* -------------------------------------------------- */}
-      {/* 02 / HOME SECTION 02: QUIET CENTERED EDITORIAL STATEMENT */}
-      {/* -------------------------------------------------- */}
+      {/* 02 / HOME SECTION 02: EDITORIAL STATEMENT */}
       <HomeEditorialStatement />
 
-      {/* -------------------------------------------------- */}
-      {/* 03 / HOME SECTION 03: TWO ENGINES (SYNCHRONIZED PANELS) */}
-      {/* -------------------------------------------------- */}
+      {/* 03 / HOME SECTION 03: TWO ENGINES (CONSULTANCY & PRODUCT) */}
       <TwoEnginesConnecting />
 
-      {/* -------------------------------------------------- */}
-      {/* 04 / HOME SECTION 04: CAPABILITIES (EDITORIAL ROWS) */}
-      {/* -------------------------------------------------- */}
+      {/* 04 / HOME SECTION 04: CAPABILITIES (07 CORE DISCIPLINES) */}
       <HomeCapabilities />
 
-      {/* -------------------------------------------------- */}
-      {/* 05 / HOME SECTION 05: AGENT LAB PREVIEW (CENTERED HEADING) */}
-      {/* -------------------------------------------------- */}
-      <section className="relative py-28 sm:py-36 bg-[#060708] border-b border-surface-border overflow-hidden">
+      {/* 05 / HOME SECTION 05: AGENT LAB PREVIEW (REAL RUNTIME INTERACTION) */}
+      <section className="relative py-24 sm:py-32 bg-[#060708] border-b border-warm-border overflow-hidden">
         <div className="max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
-          <div className="max-w-3xl mx-auto text-center mb-16 space-y-4">
-            <div className="inline-flex items-center gap-3 px-3 py-1 bg-surface border border-surface-border font-mono text-[11px] text-accent tracking-widest uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+          <div className="max-w-2xl mx-auto text-center mb-14 space-y-3">
+            <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full luxury-glass border border-white/10 font-mono text-[11px] text-accent tracking-widest uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
               <span>AURION AGENT LAB</span>
-              <span className="text-primary-muted/40">•</span>
+              <span className="text-white/20">•</span>
               <span className="text-primary-muted">AUTONOMOUS RUNTIME</span>
             </div>
 
-            <h2 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-extrabold text-primary tracking-tight leading-[1.04]">
-              INTELLIGENCE <br />
-              YOU CAN <br />
+            <h2 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary tracking-tight leading-[1.15]">
+              INTELLIGENCE YOU CAN <br />
               <span className="text-accent">INTERACT WITH.</span>
             </h2>
 
-            <p className="font-sans text-base sm:text-lg text-primary-muted leading-relaxed font-normal max-w-xl mx-auto">
+            <p className="font-sans text-xs sm:text-sm text-primary-muted leading-relaxed font-normal max-w-lg mx-auto">
               Explore working browser demonstrations of our specialized autonomous agents.
-              Select an agent below to inspect live reasoning steps, execution benchmarks, and deterministic outputs.
+              Select an agent to inspect live reasoning steps, tool invocation metrics, and verifiable outputs.
             </p>
           </div>
 
-          {/* Single Giant Live Interface with 6-Agent Switcher */}
+          {/* Live Interface with Full Agent Lab Switcher */}
           <HomeAgentPreview />
         </div>
       </section>
 
-      {/* -------------------------------------------------- */}
       {/* 06 / HOME SECTION 06: PRODUCTS (VERIFIED ASSETS) */}
-      {/* -------------------------------------------------- */}
       <HomeProductsSection />
 
-      {/* -------------------------------------------------- */}
       {/* 07 & 08 / HOME SECTIONS 07 & 08: PHILOSOPHY & FINAL CTA */}
-      {/* -------------------------------------------------- */}
       <HomePhilosophyAndFinal />
     </div>
   );

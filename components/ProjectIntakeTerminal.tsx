@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, Shield, ArrowRight, RotateCcw, AlertTriangle } from "lucide-react";
+import { Stepper } from "@/components/reactbits/components/Stepper";
+import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 
 export const ProjectIntakeTerminal: React.FC = () => {
   const [projectType, setProjectType] = useState<string>("AI");
@@ -14,6 +16,14 @@ export const ProjectIntakeTerminal: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submissionResult, setSubmissionResult] = useState<any | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const INTAKE_STEPS = [
+    { id: "category", label: "Category" },
+    { id: "stage", label: "Maturity" },
+    { id: "details", label: "Details & Transmit" },
+  ];
+
+  const currentStep = name && email ? 2 : stage ? 1 : 0;
 
   const PROJECT_TYPES = [
     "AI",
@@ -81,6 +91,11 @@ export const ProjectIntakeTerminal: React.FC = () => {
     <div className="w-full">
       {/* Intake Terminal Container */}
       <div className="luxury-glass border border-surface-border p-6 sm:p-12 font-mono text-xs rounded-sm">
+        {/* Stepper Progress */}
+        <div className="mb-10 max-w-xl mx-auto">
+          <Stepper steps={INTAKE_STEPS} currentStep={currentStep} />
+        </div>
+
         <AnimatePresence mode="wait">
           {submissionResult ? (
             /* Success State */
@@ -304,12 +319,11 @@ export const ProjectIntakeTerminal: React.FC = () => {
                   <span>MUTUAL NDA & SECURITY ENCRYPTED TRANSMISSION</span>
                 </div>
 
-                <motion.button
+                <SpecularButton
                   type="submit"
                   disabled={isSubmitting}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-accent hover:bg-accent-mid text-[#060708] font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 shadow-[0_4px_30px_rgba(201,148,62,0.25)] disabled:opacity-50"
+                  variant="primary"
+                  className="w-full sm:w-auto px-8 py-3 text-xs tracking-widest uppercase disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <span>TRANSMITTING...</span>
@@ -319,7 +333,7 @@ export const ProjectIntakeTerminal: React.FC = () => {
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
-                </motion.button>
+                </SpecularButton>
               </div>
             </motion.form>
           )}

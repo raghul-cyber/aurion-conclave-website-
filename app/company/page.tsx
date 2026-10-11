@@ -3,8 +3,10 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { motion } from "framer-motion";
-import { AmbientBackground } from "@/components/framer/AmbientBackground";
+import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
+import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
+import { BlurText } from "@/components/reactbits/text/BlurText";
 import { TechnicalGrid } from "@/components/framer/TechnicalGrid";
 import { ScrollReveal, ScrollStagger, ScrollStaggerItem } from "@/components/framer/ScrollAnimations";
 
@@ -44,11 +46,11 @@ const PHILOSOPHY_PILLARS = [
 export default function CompanyPage() {
   return (
     <div className="relative min-h-screen bg-[#060708] overflow-hidden">
-      {/* Background: Slow Orbital Geometry */}
-      <AmbientBackground variant="company" />
+      {/* Background: Ghost Fibers atmospheric field */}
+      <PageBackground preset="ghost-fibers" />
       <TechnicalGrid crosshairs={true} />
 
-      <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 space-y-24">
+      <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 space-y-20">
         {/* Editorial Hero Header with ScrollReveal */}
         <ScrollReveal direction="up" distance={24}>
           <div className="max-w-4xl space-y-6">
@@ -57,19 +59,16 @@ export default function CompanyPage() {
               <span>AURION PHILOSOPHY • CORPORATE EVOLUTION</span>
             </div>
 
-            <h1 className="font-sans text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tighter text-primary leading-[0.95]">
-              BUILDING A <br />
-              TECHNOLOGY <br />
-              COMPANY <br />
-              AROUND REAL <br />
-              <span className="text-accent">PROBLEMS.</span>
+            <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary leading-tight">
+              Building a technology company <br />
+              around <span className="text-accent">real problems.</span>
             </h1>
 
-            <p className="font-sans text-lg sm:text-xl text-primary-muted max-w-2xl leading-relaxed font-normal">
-              Most technology companies start with abstract pitch decks or venture debt.
-              We started with real problems. Our dual-wing model combines client advisory with proprietary software incubation,
-              compounding enterprise value without speculative dilution.
-            </p>
+            <BlurText
+              text="Most technology companies start with abstract pitch decks or venture debt. We started with real problems. Our dual-wing model combines client advisory with proprietary software incubation, compounding enterprise value without speculative dilution."
+              className="font-sans text-base sm:text-lg text-primary-muted max-w-2xl leading-relaxed font-normal"
+              delay={20}
+            />
           </div>
         </ScrollReveal>
 
@@ -83,17 +82,17 @@ export default function CompanyPage() {
           <ScrollStagger staggerDelay={0.08} className="grid grid-cols-1 gap-6">
             {PHILOSOPHY_PILLARS.map((p) => (
               <ScrollStaggerItem key={p.name}>
-                <motion.div
-                  whileHover={{ y: -4, borderColor: "rgba(201, 148, 62, 0.5)" }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  className="p-8 sm:p-12 luxury-glass border border-surface-border transition-colors duration-300 rounded-sm shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+                <SpotlightCard
+                  spotlightColor="rgba(195, 145, 66, 0.2)"
+                  intensity={0.3}
+                  className="p-8 sm:p-10 border border-surface-border/80 bg-[#0d1011]/90 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
                 >
                   <div className="flex flex-col md:flex-row md:items-baseline justify-between pb-6 mb-6 border-b border-surface-border/60 gap-4">
                     <div className="flex items-baseline gap-6">
                       <span className="font-mono text-xl sm:text-2xl text-accent font-bold">
                         {p.number}
                       </span>
-                      <h2 className="font-sans text-3xl sm:text-4xl font-extrabold text-primary tracking-tight">
+                      <h2 className="font-sans text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">
                         {p.name}
                       </h2>
                     </div>
@@ -106,7 +105,7 @@ export default function CompanyPage() {
                   <p className="font-sans text-base sm:text-lg text-primary-muted leading-relaxed max-w-4xl">
                     {p.desc}
                   </p>
-                </motion.div>
+                </SpotlightCard>
               </ScrollStaggerItem>
             ))}
           </ScrollStagger>
@@ -114,12 +113,16 @@ export default function CompanyPage() {
 
         {/* The Long-Term Evolution Thesis with ScrollReveal */}
         <ScrollReveal direction="up" distance={20}>
-          <div className="p-8 sm:p-12 luxury-glass border border-surface-border space-y-6 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+          <SpotlightCard
+            spotlightColor="rgba(100, 142, 139, 0.25)"
+            intensity={0.25}
+            className="p-8 sm:p-12 border border-surface-border bg-[#0d1011]/90 space-y-6 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+          >
             <div className="font-mono text-xs text-accent tracking-widest uppercase">
               THE LONG-TERM ASYMMETRY
             </div>
 
-            <h3 className="font-sans text-2xl sm:text-3xl font-extrabold text-primary">
+            <h3 className="font-sans text-xl sm:text-2xl font-bold text-primary">
               From Consultancy with a Product Wing → To a Product Company with Consultancy Grounding.
             </h3>
 
@@ -127,7 +130,7 @@ export default function CompanyPage() {
               Software consultancies typically hit scaling ceilings governed by headcount. Product companies often lose touch with customer operational reality.
               Aurion Conclave resolves this contradiction: our client work serves as our radar for real-world pain, while our proprietary software assets scale globally.
             </p>
-          </div>
+          </SpotlightCard>
         </ScrollReveal>
 
         {/* Bottom CTA with ScrollReveal */}
@@ -137,20 +140,17 @@ export default function CompanyPage() {
               <div className="font-mono text-xs text-accent tracking-widest uppercase">
                 JOIN OUR JOURNEY
               </div>
-              <h3 className="font-sans text-2xl font-bold text-primary">
+              <h3 className="font-sans text-xl sm:text-2xl font-bold text-primary">
                 Partner with an engineering organization that builds for the real world.
               </h3>
             </div>
 
-            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-accent hover:bg-accent-mid text-[#060708] font-mono text-xs font-bold tracking-widest uppercase transition-colors shadow-[0_4px_30px_rgba(201,148,62,0.2)] shrink-0"
-              >
+            <Link href="/contact" className="shrink-0">
+              <SpecularButton variant="primary">
                 <span>START A CONVERSATION</span>
                 <ArrowUpRight className="w-4 h-4" />
-              </Link>
-            </motion.div>
+              </SpecularButton>
+            </Link>
           </div>
         </ScrollReveal>
       </div>

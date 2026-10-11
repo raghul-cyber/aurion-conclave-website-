@@ -1,9 +1,10 @@
 import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, ShieldCheck, Lock, Eye, KeyRound } from "lucide-react";
-import { AmbientBackground } from "@/components/framer/AmbientBackground";
-import { TechnicalGrid } from "@/components/framer/TechnicalGrid";
+import { ArrowUpRight, ShieldCheck } from "lucide-react";
+import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
+import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 
 export const metadata: Metadata = {
   title: "Zero-Trust Cybersecurity & Cryptographic Architecture | Aurion Conclave",
@@ -57,9 +58,8 @@ const SECURITY_PILLARS = [
 export default function CybersecurityServicesPage() {
   return (
     <div className="relative min-h-screen bg-[#060708] overflow-hidden">
-      {/* Background: Extremely Subtle Secure Network Topology (No hacker imagery, no skulls, no cyberpunk) */}
-      <AmbientBackground variant="security" />
-      <TechnicalGrid crosshairs={true} />
+      {/* Scanner Background (Category G4) */}
+      <PageBackground preset="scanner" opacity={0.25} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28">
         {/* Breadcrumb */}
@@ -71,89 +71,87 @@ export default function CybersecurityServicesPage() {
           <span className="text-accent">CYBERSECURITY</span>
         </div>
 
-        {/* Hero Header */}
-        <div className="max-w-4xl mb-20 space-y-6">
-          <div className="inline-flex items-center gap-3 px-3 py-1.5 luxury-glass border border-surface-border font-mono text-[11px] text-accent tracking-widest uppercase">
+        {/* Hero Header with Clamped Typography */}
+        <div className="max-w-3xl mb-16 space-y-4">
+          <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full luxury-glass border border-white/10 font-mono text-[11px] text-accent tracking-widest uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            <span>ZERO-TRUST ARCHITECTURE • MATHEMATICAL ATTESTATION</span>
+            <span>CRYPTOGRAPHIC DEFENSE • ZERO-TRUST ARCHITECTURE</span>
           </div>
 
-          <h1 className="font-sans text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tighter text-primary leading-[0.95]">
-            BUILD <br />
-            SYSTEMS <br />
-            THAT <br />
-            <span className="text-accent">CAN BE TRUSTED.</span>
+          <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary leading-[1.1]">
+            DEFENSE THROUGH <br />
+            <span className="text-accent">MATHEMATICAL PROOF.</span>
           </h1>
 
-          <p className="font-sans text-lg sm:text-xl text-primary-muted max-w-2xl leading-relaxed font-normal">
-            Security is not an afterthought layer or a compliance badge. We engineer cryptographic zero-trust architectures
-            where every workload, API call, and memory region is continuously verified.
+          <p className="font-sans text-sm sm:text-base text-primary-muted max-w-xl leading-relaxed font-normal">
+            We build zero-trust security postures based on cryptographic identity, kernel-level eBPF observability,
+            and continuous policy verification. No fear-based marketing — only rigorous, verifiable defensive engineering.
           </p>
         </div>
 
-        {/* Security Pillars Grid */}
-        <div className="mb-24">
-          <div className="flex items-center gap-3 font-mono text-[11px] text-accent tracking-widest uppercase mb-4">
+        {/* Pillars Grid */}
+        <div className="mb-20">
+          <div className="flex items-center gap-2.5 font-mono text-[11px] text-accent tracking-widest uppercase mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-            <span>DISCIPLINE SPECIFICATIONS</span>
+            <span>SECURITY DISCIPLINES</span>
           </div>
-          <h2 className="font-sans text-3xl sm:text-4xl font-extrabold text-primary mb-12">
-            THE 8 DEFENSE TIERS
+          <h2 className="font-sans text-2xl sm:text-3xl font-extrabold text-primary mb-10">
+            ZERO-TRUST ARCHITECTURE TOPOLOGY
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {SECURITY_PILLARS.map((pillar, idx) => (
-              <div
-                key={pillar.name}
-                className="p-8 luxury-glass border border-surface-border hover:border-accent/40 transition-all duration-300 flex flex-col justify-between"
+            {SECURITY_PILLARS.map((item, idx) => (
+              <SpotlightCard
+                key={item.name}
+                theme="dark"
+                className="p-6 flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-surface-border/50 font-mono text-xs text-accent">
-                    <span>TIER // 0{idx + 1}</span>
+                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10 font-mono text-xs text-accent">
+                    <span>PILLAR // 0{idx + 1}</span>
                     <ShieldCheck className="w-4 h-4 text-tech-teal" />
                   </div>
 
-                  <h3 className="font-sans font-bold text-lg text-primary">
-                    {pillar.name}
+                  <h3 className="font-sans font-bold text-base text-primary mb-2">
+                    {item.name}
                   </h3>
 
-                  <p className="font-sans text-xs text-primary-muted mt-3 leading-relaxed">
-                    {pillar.desc}
+                  <p className="font-sans text-xs text-primary-muted leading-relaxed font-normal">
+                    {item.desc}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-surface-border/40 flex flex-wrap gap-1.5">
-                  {pillar.tech.map((t) => (
+                <div className="pt-4 border-t border-white/10 flex flex-wrap gap-1 mt-4">
+                  {item.tech.map((t) => (
                     <span
                       key={t}
-                      className="px-2 py-0.5 bg-surface border border-surface-border font-mono text-[9px] text-tech-teal"
+                      className="font-mono text-[9px] text-accent/80 px-1.5 py-0.5 rounded bg-white/5 border border-white/10"
                     >
                       {t}
                     </span>
                   ))}
                 </div>
-              </div>
+              </SpotlightCard>
             ))}
           </div>
         </div>
 
-        {/* Security Advisory Callout */}
-        <div className="p-8 sm:p-12 luxury-glass border border-surface-border flex flex-col md:flex-row md:items-center justify-between gap-8">
-          <div className="space-y-2">
-            <div className="font-mono text-xs text-accent tracking-widest uppercase">
-              ENTERPRISE SECURITY AUDIT
-            </div>
-            <h3 className="font-sans text-2xl font-bold text-primary">
-              Subject your architecture to rigorous zero-trust verification.
+        {/* Bottom CTA */}
+        <div className="p-8 rounded-2xl luxury-glass border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-1.5">
+            <span className="font-mono text-xs text-accent tracking-widest uppercase block">
+              ZERO-TRUST ARCHITECTURE AUDIT
+            </span>
+            <h3 className="font-sans text-xl font-bold text-primary">
+              Ready to verify your application and cloud security against zero-trust standards?
             </h3>
           </div>
 
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-accent hover:bg-accent-mid text-[#060708] font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 shadow-[0_4px_30px_rgba(201,148,62,0.2)] shrink-0"
-          >
-            <span>COMMENCE SECURITY AUDIT</span>
-            <ArrowUpRight className="w-4 h-4" />
+          <Link href="/contact">
+            <SpecularButton variant="primary">
+              <span>ENGAGE SECURITY POD</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </SpecularButton>
           </Link>
         </div>
       </div>

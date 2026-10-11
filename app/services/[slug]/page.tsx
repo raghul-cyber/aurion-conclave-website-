@@ -2,7 +2,10 @@ import React from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ALL_SERVICES } from "@/data/services";
-import { ArrowLeft, ArrowUpRight, CheckCircle2, Cpu, Clock, ShieldCheck, Layers } from "lucide-react";
+import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
+import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
+import { ArrowLeft, ArrowUpRight, CheckCircle2, Cpu, Clock } from "lucide-react";
 
 export async function generateStaticParams() {
   return ALL_SERVICES.map((s) => ({ slug: s.id }));
@@ -21,8 +24,11 @@ export default async function ServiceDetailPage({
   }
 
   return (
-    <div className="relative min-h-screen py-16 bg-[#050607]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <div className="relative min-h-screen py-16 bg-[#050607] overflow-hidden">
+      {/* Background: Pattern Waves */}
+      <PageBackground preset="pattern-waves" />
+
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Navigation Breadcrumb */}
         <div>
           <Link
@@ -45,7 +51,7 @@ export default async function ServiceDetailPage({
             </span>
           </div>
 
-          <h1 className="font-sans text-3xl sm:text-5xl font-extrabold text-primary">
+          <h1 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary tracking-tight">
             {service.name}
           </h1>
 
@@ -60,7 +66,11 @@ export default async function ServiceDetailPage({
 
         {/* Architecture & Delivery Model */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 bg-[#0A0D0E] border border-surface-border space-y-3 rounded-sm">
+          <SpotlightCard
+            spotlightColor="rgba(100, 142, 139, 0.25)"
+            intensity={0.25}
+            className="p-6 bg-[#0A0D0E]/90 border border-surface-border space-y-3 rounded-sm"
+          >
             <div className="flex items-center gap-2 font-mono text-xs text-tech-cyan">
               <Cpu className="w-4 h-4" />
               <span>SYSTEM ARCHITECTURE TOPOLOGY</span>
@@ -68,9 +78,13 @@ export default async function ServiceDetailPage({
             <p className="font-mono text-xs text-primary leading-relaxed">
               {service.architecture}
             </p>
-          </div>
+          </SpotlightCard>
 
-          <div className="p-6 bg-[#0A0D0E] border border-surface-border space-y-3 rounded-sm">
+          <SpotlightCard
+            spotlightColor="rgba(195, 145, 66, 0.25)"
+            intensity={0.25}
+            className="p-6 bg-[#0A0D0E]/90 border border-surface-border space-y-3 rounded-sm"
+          >
             <div className="flex items-center gap-2 font-mono text-xs text-accent">
               <Clock className="w-4 h-4" />
               <span>DELIVERY MODEL & CADENCE</span>
@@ -78,7 +92,7 @@ export default async function ServiceDetailPage({
             <p className="font-mono text-xs text-primary leading-relaxed">
               {service.deliveryModel}
             </p>
-          </div>
+          </SpotlightCard>
         </div>
 
         {/* Core Capabilities */}
@@ -90,7 +104,7 @@ export default async function ServiceDetailPage({
             {service.capabilities.map((cap) => (
               <div
                 key={cap}
-                className="flex items-center gap-3 p-4 bg-[#0A0D0E] border border-surface-border text-xs font-mono text-primary"
+                className="flex items-center gap-3 p-4 bg-[#0A0D0E]/90 border border-surface-border text-xs font-mono text-primary"
               >
                 <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
                 <span>{cap}</span>
@@ -123,7 +137,7 @@ export default async function ServiceDetailPage({
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {service.metrics.map((m) => (
-                <div key={m.label} className="p-3 bg-[#0A0D0E] border border-surface-border rounded">
+                <div key={m.label} className="p-3 bg-[#0A0D0E]/90 border border-surface-border rounded">
                   <div className="font-mono text-[10px] text-primary-muted">{m.label}</div>
                   <div className="font-mono text-sm font-bold text-accent mt-0.5">{m.value}</div>
                 </div>
@@ -141,7 +155,7 @@ export default async function ServiceDetailPage({
             {service.useCases.map((uc) => (
               <div
                 key={uc}
-                className="p-4 bg-[#0A0D0E] border border-surface-border font-mono text-xs text-primary-muted flex items-start gap-3"
+                className="p-4 bg-[#0A0D0E]/90 border border-surface-border font-mono text-xs text-primary-muted flex items-start gap-3"
               >
                 <span className="text-accent mt-0.5">◈</span>
                 <span className="text-primary">{uc}</span>
@@ -151,7 +165,7 @@ export default async function ServiceDetailPage({
         </div>
 
         {/* Call to Action */}
-        <div className="p-8 bg-[#101415] border border-accent/40 rounded flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="p-8 bg-[#101415]/90 border border-accent/40 rounded flex flex-col sm:flex-row items-center justify-between gap-6 shadow-[0_0_30px_rgba(201,148,62,0.08)]">
           <div>
             <h4 className="font-sans text-xl font-bold text-primary">
               Ready to architect this system?
@@ -163,10 +177,12 @@ export default async function ServiceDetailPage({
 
           <Link
             href={`/contact?service=${encodeURIComponent(service.name)}`}
-            className="flex items-center gap-2 px-6 py-3.5 bg-accent hover:bg-accent-light text-[#050607] font-mono text-xs font-bold tracking-wider transition-colors amber-glow shrink-0"
+            className="shrink-0"
           >
-            <span>DISCUSS THIS SPECIFICATION</span>
-            <ArrowUpRight className="w-4 h-4" />
+            <SpecularButton variant="primary">
+              <span>DISCUSS THIS SPECIFICATION</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </SpecularButton>
           </Link>
         </div>
       </div>

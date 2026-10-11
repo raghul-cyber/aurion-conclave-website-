@@ -1,9 +1,10 @@
 import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Cloud, Server, Shield, Activity, Network } from "lucide-react";
-import { AmbientBackground } from "@/components/framer/AmbientBackground";
-import { TechnicalGrid } from "@/components/framer/TechnicalGrid";
+import { ArrowUpRight, Cloud, Server } from "lucide-react";
+import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
+import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 
 export const metadata: Metadata = {
   title: "Cloud Infrastructure & Platform Architecture | Aurion Conclave",
@@ -47,9 +48,8 @@ const CLOUD_COMPONENTS = [
 export default function CloudServicesPage() {
   return (
     <div className="relative min-h-screen bg-[#060708] overflow-hidden">
-      {/* Background: Abstract Cloud Infrastructure Diagram Topology */}
-      <AmbientBackground variant="cloud" />
-      <TechnicalGrid crosshairs={true} />
+      {/* Floating Lines Background (Category G4) */}
+      <PageBackground preset="floating-lines" opacity={0.25} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28">
         {/* Breadcrumb */}
@@ -61,88 +61,87 @@ export default function CloudServicesPage() {
           <span className="text-accent">CLOUD & INFRASTRUCTURE</span>
         </div>
 
-        {/* Hero Header */}
-        <div className="max-w-4xl mb-20 space-y-6">
-          <div className="inline-flex items-center gap-3 px-3 py-1.5 luxury-glass border border-surface-border font-mono text-[11px] text-accent tracking-widest uppercase">
+        {/* Hero Header with Clamped Typography */}
+        <div className="max-w-3xl mb-16 space-y-4">
+          <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full luxury-glass border border-white/10 font-mono text-[11px] text-accent tracking-widest uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            <span>DISTRIBUTED COMPUTE • 99.99% AVAILABILITY SLA</span>
+            <span>CLOUD ARCHITECTURE • MISSION CRITICAL</span>
           </div>
 
-          <h1 className="font-sans text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tighter text-primary leading-[0.95]">
+          <h1 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary leading-[1.1]">
             INFRASTRUCTURE <br />
-            WITHOUT <br />
-            <span className="text-accent">THE NOISE.</span>
+            <span className="text-accent">AS AN ENGINE.</span>
           </h1>
 
-          <p className="font-sans text-lg sm:text-xl text-primary-muted max-w-2xl leading-relaxed font-normal">
-            We eliminate fragile manual server setups. Every cluster, VPC, and deployment pipeline is codified,
-            resilient to regional disasters, and mathematically optimized for compute efficiency.
+          <p className="font-sans text-sm sm:text-base text-primary-muted max-w-xl leading-relaxed font-normal">
+            We build sovereign, resilient cloud platforms engineered for zero downtime, deterministic automated deployments,
+            and cost-optimized elastic scale.
           </p>
         </div>
 
-        {/* Animated Infrastructure Topology Grid */}
-        <div className="mb-24">
-          <div className="flex items-center gap-3 font-mono text-[11px] text-accent tracking-widest uppercase mb-4">
+        {/* Cloud Components Grid */}
+        <div className="mb-20">
+          <div className="flex items-center gap-2.5 font-mono text-[11px] text-accent tracking-widest uppercase mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-            <span>INFRASTRUCTURE PILLARS</span>
+            <span>PLATFORM DOMAINS</span>
           </div>
-          <h2 className="font-sans text-3xl sm:text-4xl font-extrabold text-primary mb-12">
-            HYPERSCALE ARCHITECTURE
+          <h2 className="font-sans text-2xl sm:text-3xl font-extrabold text-primary mb-10">
+            DISTRIBUTED COMPUTE TOPOLOGY
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {CLOUD_COMPONENTS.map((comp, idx) => (
-              <div
-                key={comp.name}
-                className="p-8 luxury-glass border border-surface-border hover:border-accent/40 transition-all duration-300 flex flex-col justify-between"
+            {CLOUD_COMPONENTS.map((item, idx) => (
+              <SpotlightCard
+                key={item.name}
+                theme="dark"
+                className="p-6 sm:p-8 flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-surface-border/50 font-mono text-xs text-accent">
+                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/10 font-mono text-xs text-accent">
                     <span>LAYER // 0{idx + 1}</span>
-                    <Server className="w-4 h-4 text-tech-teal" />
+                    <Cloud className="w-4 h-4 text-tech-teal" />
                   </div>
 
-                  <h3 className="font-sans font-bold text-xl text-primary">
-                    {comp.name}
+                  <h3 className="font-sans font-bold text-lg text-primary mb-2">
+                    {item.name}
                   </h3>
 
-                  <p className="font-sans text-sm text-primary-muted mt-4 leading-relaxed">
-                    {comp.desc}
+                  <p className="font-sans text-xs sm:text-sm text-primary-muted leading-relaxed font-normal">
+                    {item.desc}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-surface-border/40 flex flex-wrap gap-2">
-                  {comp.tech.map((t) => (
+                <div className="pt-6 border-t border-white/10 flex flex-wrap gap-1.5 mt-6">
+                  {item.tech.map((t) => (
                     <span
                       key={t}
-                      className="px-2 py-0.5 bg-surface border border-surface-border font-mono text-[10px] text-tech-teal"
+                      className="font-mono text-[10px] text-accent/80 px-2 py-0.5 rounded bg-white/5 border border-white/10"
                     >
                       {t}
                     </span>
                   ))}
                 </div>
-              </div>
+              </SpotlightCard>
             ))}
           </div>
         </div>
 
-        {/* Infrastructure Metric Callout */}
-        <div className="p-8 sm:p-12 luxury-glass border border-surface-border flex flex-col md:flex-row md:items-center justify-between gap-8">
-          <div className="space-y-2">
-            <div className="font-mono text-xs text-accent tracking-widest uppercase">
-              ZERO-DOWNTIME COMMITMENT
-            </div>
-            <h3 className="font-sans text-2xl font-bold text-primary">
-              Our automated multi-region failovers ensure your services remain online 24/7/365.
+        {/* Bottom CTA */}
+        <div className="p-8 rounded-2xl luxury-glass border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-1.5">
+            <span className="font-mono text-xs text-accent tracking-widest uppercase block">
+              PRODUCTION CLOUD READINESS
+            </span>
+            <h3 className="font-sans text-xl font-bold text-primary">
+              Ready to upgrade your infrastructure with typed GitOps pipelines?
             </h3>
           </div>
 
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-accent hover:bg-accent-mid text-[#060708] font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 shadow-[0_4px_30px_rgba(201,148,62,0.2)] shrink-0"
-          >
-            <span>ARCHITECT YOUR CLOUD</span>
-            <ArrowUpRight className="w-4 h-4" />
+          <Link href="/contact">
+            <SpecularButton variant="primary">
+              <span>ENGAGE CLOUD POD</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </SpecularButton>
           </Link>
         </div>
       </div>
