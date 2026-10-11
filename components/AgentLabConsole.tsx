@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { AGENT_REGISTRY, AgentDefinition } from "@/data/agents";
 import { AgentEngine, AgentExecutionLog, AgentExecutionResult } from "@/lib/agentEngine";
 import {
@@ -111,16 +112,23 @@ export const AgentLabConsole: React.FC<AgentLabConsoleProps> = ({ initialAgentId
 
         {/* Mode Switcher & System Telemetry */}
         <div className="flex items-center gap-3 self-end sm:self-center">
-          <div className="flex items-center bg-[#050607] border border-surface-border p-1 rounded font-mono text-[11px]">
+          <div className="relative flex items-center bg-[#050607] border border-surface-border p-1 rounded font-mono text-[11px]">
             <button
               type="button"
               onClick={() => setMode("DEMO")}
-              className={`px-3 py-1 rounded transition-colors ${
+              className={`relative px-3 py-1 rounded transition-colors z-10 ${
                 mode === "DEMO"
-                  ? "bg-accent text-[#050607] font-bold"
+                  ? "text-[#050607] font-bold"
                   : "text-primary-muted hover:text-primary"
               }`}
             >
+              {mode === "DEMO" && (
+                <motion.div
+                  layoutId="agent-mode-pill"
+                  className="absolute inset-0 bg-accent rounded z-[-1]"
+                  transition={{ type: "spring", bounce: 0.15, duration: 0.3 }}
+                />
+              )}
               DEMO MODE
             </button>
             <button
@@ -129,12 +137,19 @@ export const AgentLabConsole: React.FC<AgentLabConsoleProps> = ({ initialAgentId
                 setMode("LIVE");
                 setShowLiveConfig(true);
               }}
-              className={`px-3 py-1 rounded transition-colors ${
+              className={`relative px-3 py-1 rounded transition-colors z-10 ${
                 mode === "LIVE"
-                  ? "bg-tech-cyan text-[#050607] font-bold"
+                  ? "text-[#050607] font-bold"
                   : "text-primary-muted hover:text-primary"
               }`}
             >
+              {mode === "LIVE" && (
+                <motion.div
+                  layoutId="agent-mode-pill"
+                  className="absolute inset-0 bg-tech-cyan rounded z-[-1]"
+                  transition={{ type: "spring", bounce: 0.15, duration: 0.3 }}
+                />
+              )}
               LIVE API MODE
             </button>
           </div>
@@ -161,14 +176,17 @@ export const AgentLabConsole: React.FC<AgentLabConsoleProps> = ({ initialAgentId
               <div
                 key={agent.id}
                 onClick={() => setSelectedAgent(agent)}
-                className={`p-3 rounded cursor-pointer transition-all duration-150 flex items-start gap-3 ${
-                  isSelected
-                    ? "bg-[#101415] border border-accent/40 shadow-[0_0_15px_rgba(217,164,65,0.1)]"
-                    : "hover:bg-surface/50 border border-transparent"
-                }`}
+                className="relative p-3 rounded cursor-pointer transition-colors duration-150 flex items-start gap-3"
               >
+                {isSelected && (
+                  <motion.div
+                    layoutId="agent-rail-active-pill"
+                    className="absolute inset-0 bg-[#101415] border border-accent/40 shadow-[0_0_15px_rgba(217,164,65,0.1)] rounded pointer-events-none"
+                    transition={{ type: "spring", bounce: 0.15, duration: 0.35 }}
+                  />
+                )}
                 <div
-                  className={`font-mono text-[11px] font-bold px-1.5 py-0.5 rounded border shrink-0 ${
+                  className={`relative z-10 font-mono text-[11px] font-bold px-1.5 py-0.5 rounded border shrink-0 transition-colors ${
                     isSelected
                       ? "bg-accent text-[#050607] border-accent"
                       : "bg-[#050607] text-primary-muted border-surface-border"
@@ -176,10 +194,10 @@ export const AgentLabConsole: React.FC<AgentLabConsoleProps> = ({ initialAgentId
                 >
                   {agent.code}
                 </div>
-                <div className="min-w-0 flex-1">
+                <div className="relative z-10 min-w-0 flex-1">
                   <div className="flex items-center justify-between">
                     <span
-                      className={`font-mono text-xs font-semibold truncate ${
+                      className={`font-mono text-xs font-semibold truncate transition-colors ${
                         isSelected ? "text-accent" : "text-primary"
                       }`}
                     >
@@ -198,40 +216,48 @@ export const AgentLabConsole: React.FC<AgentLabConsoleProps> = ({ initialAgentId
 
         {/* Right Column: Execution Workspace */}
         <div className="lg:col-span-8 flex flex-col justify-between bg-[#0A0D0E] p-4 sm:p-6 space-y-6">
-          {/* Agent Meta & Capabilities */}
-          <div>
-            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-surface-border/60">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold text-accent">
-                  {selectedAgent.code} / {selectedAgent.name.toUpperCase()}
-                </span>
-                <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-surface border border-surface-border text-tech-cyan">
-                  {selectedAgent.category}
-                </span>
+          {/* Agent Meta & Capabilities with AnimatePresence */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedAgent.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+            >
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-surface-border/60">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs font-bold text-accent">
+                    {selectedAgent.code} / {selectedAgent.name.toUpperCase()}
+                  </span>
+                  <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-surface border border-surface-border text-tech-cyan">
+                    {selectedAgent.category}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 font-mono text-[11px] text-primary-muted">
+                  <span>BENCHMARK: {selectedAgent.latencyAvg}</span>
+                  <span>•</span>
+                  <span className="text-success">STATUS: {selectedAgent.status}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2 font-mono text-[11px] text-primary-muted">
-                <span>BENCHMARK: {selectedAgent.latencyAvg}</span>
-                <span>•</span>
-                <span className="text-success">STATUS: {selectedAgent.status}</span>
+
+              <p className="font-sans text-xs sm:text-sm text-primary-muted mt-2 leading-relaxed">
+                {selectedAgent.description}
+              </p>
+
+              {/* Tools & Capabilities badges */}
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {selectedAgent.tools.map((tool) => (
+                  <span
+                    key={tool}
+                    className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#070A0B] border border-surface-border text-primary-muted"
+                  >
+                    {tool}
+                  </span>
+                ))}
               </div>
-            </div>
-
-            <p className="font-sans text-xs sm:text-sm text-primary-muted mt-2 leading-relaxed">
-              {selectedAgent.description}
-            </p>
-
-            {/* Tools & Capabilities badges */}
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {selectedAgent.tools.map((tool) => (
-                <span
-                  key={tool}
-                  className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#070A0B] border border-surface-border text-primary-muted"
-                >
-                  {tool}
-                </span>
-              ))}
-            </div>
-          </div>
+            </motion.div>
+          </AnimatePresence>
 
           {/* Sample Prompts Pills */}
           <div>
@@ -241,14 +267,16 @@ export const AgentLabConsole: React.FC<AgentLabConsoleProps> = ({ initialAgentId
             </div>
             <div className="flex flex-wrap gap-2">
               {selectedAgent.samplePrompts.map((sp, idx) => (
-                <button
+                <motion.button
                   key={idx}
                   type="button"
+                  whileHover={{ scale: 1.01, borderColor: "var(--accent)" }}
+                  whileTap={{ scale: 0.99 }}
                   onClick={() => setPrompt(sp)}
                   className="text-left font-mono text-[11px] px-2.5 py-1.5 rounded bg-surface/70 border border-surface-border hover:border-accent text-primary-muted hover:text-primary transition-colors max-w-full truncate"
                 >
                   &quot;{sp}&quot;
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
@@ -274,34 +302,40 @@ export const AgentLabConsole: React.FC<AgentLabConsoleProps> = ({ initialAgentId
             {/* Control Buttons: RUN, RESET, CLEAR */}
             <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
               <div className="flex items-center gap-2">
-                <button
+                <motion.button
                   type="button"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={handleReset}
                   disabled={isRunning}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface border border-surface-border hover:border-primary-muted text-primary-muted hover:text-primary font-mono text-xs transition-colors disabled:opacity-50"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>RESET</span>
-                </button>
-                <button
+                </motion.button>
+                <motion.button
                   type="button"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={handleClear}
                   disabled={isRunning}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface border border-surface-border hover:border-primary-muted text-primary-muted hover:text-primary font-mono text-xs transition-colors disabled:opacity-50"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>CLEAR</span>
-                </button>
+                </motion.button>
               </div>
 
-              <button
+              <motion.button
                 type="button"
+                whileHover={!isRunning && prompt.trim() ? { scale: 1.02 } : {}}
+                whileTap={!isRunning && prompt.trim() ? { scale: 0.98 } : {}}
                 onClick={handleRun}
                 disabled={isRunning || !prompt.trim()}
                 className={`flex items-center gap-2 px-6 py-2.5 font-mono text-xs font-bold tracking-wider transition-all duration-200 amber-glow ${
                   isRunning
                     ? "bg-accent/40 text-[#050607] cursor-wait"
-                    : "bg-accent hover:bg-accent-light text-[#050607] hover:scale-[1.02] active:scale-[0.98]"
+                    : "bg-accent hover:bg-accent-light text-[#050607]"
                 }`}
               >
                 {isRunning ? (
@@ -315,7 +349,7 @@ export const AgentLabConsole: React.FC<AgentLabConsoleProps> = ({ initialAgentId
                     <span>RUN AGENT</span>
                   </>
                 )}
-              </button>
+              </motion.button>
             </div>
           </div>
 
@@ -339,14 +373,20 @@ export const AgentLabConsole: React.FC<AgentLabConsoleProps> = ({ initialAgentId
                 </div>
               )}
               {currentLogs.map((log, index) => (
-                <div key={index} className="flex items-start gap-2">
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.15 }}
+                  className="flex items-start gap-2"
+                >
                   <span className="text-primary-muted/60 shrink-0">[{log.timestamp}]</span>
                   <span className="text-accent font-semibold shrink-0">{log.stage}:</span>
                   <span className="text-primary">{log.message}</span>
                   {log.tool && (
                     <span className="text-tech-cyan text-[10px] shrink-0">({log.tool})</span>
                   )}
-                </div>
+                </motion.div>
               ))}
               {isRunning && (
                 <div className="flex items-center gap-2 text-accent animate-pulse">
@@ -358,128 +398,147 @@ export const AgentLabConsole: React.FC<AgentLabConsoleProps> = ({ initialAgentId
           </div>
 
           {/* Output Display Panel */}
-          {executionResult && (
-            <div className="p-4 sm:p-5 bg-[#101415] border border-accent/40 shadow-xl space-y-4 animate-in fade-in duration-200">
-              <div className="flex items-center justify-between pb-3 border-b border-surface-border">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-success" />
-                  <span className="font-mono text-xs font-bold text-primary uppercase">
-                    {executionResult.output.title}
-                  </span>
+          <AnimatePresence>
+            {executionResult && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.3 }}
+                className="p-4 sm:p-5 bg-[#101415] border border-accent/40 shadow-xl space-y-4"
+              >
+                <div className="flex items-center justify-between pb-3 border-b border-surface-border">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-success" />
+                    <span className="font-mono text-xs font-bold text-primary uppercase">
+                      {executionResult.output.title}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 font-mono text-[10px] text-primary-muted">
+                    <span className="text-accent">TOTAL: {executionResult.totalLatencyMs}ms</span>
+                    <span>•</span>
+                    <span>MODE: {executionResult.mode}</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 font-mono text-[10px] text-primary-muted">
-                  <span className="text-accent">TOTAL: {executionResult.totalLatencyMs}ms</span>
-                  <span>•</span>
-                  <span>MODE: {executionResult.mode}</span>
-                </div>
-              </div>
 
-              <p className="font-sans text-xs text-primary-muted leading-relaxed">
-                {executionResult.output.summary}
-              </p>
+                <p className="font-sans text-xs text-primary-muted leading-relaxed">
+                  {executionResult.output.summary}
+                </p>
 
-              {/* Metrics Grid */}
-              {executionResult.output.metrics && (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
-                  {Object.entries(executionResult.output.metrics).map(([k, v]) => (
-                    <div key={k} className="p-2 bg-[#050607] border border-surface-border rounded">
-                      <div className="font-mono text-[9px] text-primary-muted truncate">{k}</div>
-                      <div className="font-mono text-xs font-bold text-accent mt-0.5 truncate">{v}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Markdown Content Box */}
-              <div className="p-3 bg-[#070A0B] border border-surface-border font-sans text-xs text-primary leading-relaxed whitespace-pre-line max-h-48 overflow-y-auto terminal-scroll">
-                {executionResult.output.contentMarkdown}
-              </div>
-
-              {/* Artifacts (Code / Tables / Waveforms) */}
-              {executionResult.output.artifacts && executionResult.output.artifacts.length > 0 && (
-                <div className="space-y-2 pt-1">
-                  {executionResult.output.artifacts.map((art, idx) => (
-                    <div key={idx} className="border border-surface-border bg-[#050607] p-3 rounded">
-                      <div className="flex items-center justify-between font-mono text-[10px] text-tech-cyan pb-2 border-b border-surface-border/40">
-                        <span>ARTIFACT: {art.title}</span>
-                        <span className="uppercase">{art.type}</span>
+                {/* Metrics Grid */}
+                {executionResult.output.metrics && (
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+                    {Object.entries(executionResult.output.metrics).map(([k, v]) => (
+                      <div key={k} className="p-2 bg-[#050607] border border-surface-border rounded">
+                        <div className="font-mono text-[9px] text-primary-muted truncate">{k}</div>
+                        <div className="font-mono text-xs font-bold text-accent mt-0.5 truncate">{v}</div>
                       </div>
-                      <pre className="font-mono text-[11px] text-primary-muted/90 pt-2 overflow-x-auto">
-                        {art.content}
-                      </pre>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                )}
+
+                {/* Markdown Content Box */}
+                <div className="p-3 bg-[#070A0B] border border-surface-border font-sans text-xs text-primary leading-relaxed whitespace-pre-line max-h-48 overflow-y-auto terminal-scroll">
+                  {executionResult.output.contentMarkdown}
                 </div>
-              )}
-            </div>
-          )}
+
+                {/* Artifacts (Code / Tables / Waveforms) */}
+                {executionResult.output.artifacts && executionResult.output.artifacts.length > 0 && (
+                  <div className="space-y-2 pt-1">
+                    {executionResult.output.artifacts.map((art, idx) => (
+                      <div key={idx} className="border border-surface-border bg-[#050607] p-3 rounded">
+                        <div className="flex items-center justify-between font-mono text-[10px] text-tech-cyan pb-2 border-b border-surface-border/40">
+                          <span>ARTIFACT: {art.title}</span>
+                          <span className="uppercase">{art.type}</span>
+                        </div>
+                        <pre className="font-mono text-[11px] text-primary-muted/90 pt-2 overflow-x-auto">
+                          {art.content}
+                        </pre>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
       {/* Live Mode API Configuration Modal */}
-      {showLiveConfig && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#050607]/80 backdrop-blur-md"
-          onClick={() => setShowLiveConfig(false)}
-        >
-          <div
-            className="w-full max-w-md p-6 bg-[#0A0D0E] border border-surface-border shadow-2xl space-y-4"
-            onClick={(e) => e.stopPropagation()}
+      <AnimatePresence>
+        {showLiveConfig && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#050607]/80 backdrop-blur-md"
+            onClick={() => setShowLiveConfig(false)}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-surface-border">
-              <div className="flex items-center gap-2">
-                <Sliders className="w-4 h-4 text-tech-cyan" />
-                <h3 className="font-mono text-xs font-bold text-primary uppercase">
-                  Live Model API Integration
-                </h3>
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="w-full max-w-md p-6 bg-[#0A0D0E] border border-surface-border shadow-2xl space-y-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between pb-3 border-b border-surface-border">
+                <div className="flex items-center gap-2">
+                  <Sliders className="w-4 h-4 text-tech-cyan" />
+                  <h3 className="font-mono text-xs font-bold text-primary uppercase">
+                    Live Model API Integration
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowLiveConfig(false)}
+                  className="text-primary-muted hover:text-primary text-xs"
+                >
+                  ✕
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => setShowLiveConfig(false)}
-                className="text-primary-muted hover:text-primary text-xs"
-              >
-                ✕
-              </button>
-            </div>
 
-            <p className="font-sans text-xs text-primary-muted leading-relaxed">
-              In Live Mode, you can optionally connect your own LLM provider API key (e.g. OpenAI / Claude / Gemini).
-              Keys are strictly processed server-side in memory and never exposed in browser storage.
-              If left blank, the system defaults to high-fidelity local deterministic simulations.
-            </p>
+              <p className="font-sans text-xs text-primary-muted leading-relaxed">
+                In Live Mode, you can optionally connect your own LLM provider API key (e.g. OpenAI / Claude / Gemini).
+                Keys are strictly processed server-side in memory and never exposed in browser storage.
+                If left blank, the system defaults to high-fidelity local deterministic simulations.
+              </p>
 
-            <div className="space-y-1.5">
-              <label className="font-mono text-[11px] text-primary-muted">
-                PROVIDER API KEY (OPTIONAL):
-              </label>
-              <input
-                type="password"
-                placeholder="sk-..."
-                value={apiKeyInput}
-                onChange={(e) => setApiKeyInput(e.target.value)}
-                className="w-full bg-[#050607] border border-surface-border text-primary font-mono text-xs p-2.5 focus:outline-none focus:border-tech-cyan"
-              />
-            </div>
+              <div className="space-y-1.5">
+                <label className="font-mono text-[11px] text-primary-muted">
+                  PROVIDER API KEY (OPTIONAL):
+                </label>
+                <input
+                  type="password"
+                  placeholder="sk-..."
+                  value={apiKeyInput}
+                  onChange={(e) => setApiKeyInput(e.target.value)}
+                  className="w-full bg-[#050607] border border-surface-border text-primary font-mono text-xs p-2.5 focus:outline-none focus:border-tech-cyan"
+                />
+              </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => setShowLiveConfig(false)}
-                className="px-4 py-2 bg-surface border border-surface-border text-primary font-mono text-xs"
-              >
-                CANCEL
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowLiveConfig(false)}
-                className="px-4 py-2 bg-tech-cyan text-[#050607] font-mono text-xs font-bold"
-              >
-                SAVE & ACTIVATE
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <motion.button
+                  type="button"
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setShowLiveConfig(false)}
+                  className="px-4 py-2 bg-surface border border-surface-border text-primary font-mono text-xs"
+                >
+                  CANCEL
+                </motion.button>
+                <motion.button
+                  type="button"
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setShowLiveConfig(false)}
+                  className="px-4 py-2 bg-tech-cyan text-[#050607] font-mono text-xs font-bold"
+                >
+                  SAVE & ACTIVATE
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

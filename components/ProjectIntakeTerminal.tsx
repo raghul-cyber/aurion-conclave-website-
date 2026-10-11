@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { Terminal, Send, CheckCircle2, Shield, ArrowRight, RotateCcw, AlertTriangle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle2, Shield, ArrowRight, RotateCcw, AlertTriangle } from "lucide-react";
 
 export const ProjectIntakeTerminal: React.FC = () => {
-  const [projectType, setProjectType] = useState<string>("AI AGENT");
+  const [projectType, setProjectType] = useState<string>("AI");
   const [stage, setStage] = useState<string>("MVP");
-  const [needs, setNeeds] = useState<string[]>(["DEVELOPMENT", "FULL DELIVERY"]);
   const [name, setName] = useState<string>("");
   const [company, setCompany] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -16,16 +16,13 @@ export const ProjectIntakeTerminal: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const PROJECT_TYPES = [
-    "AI SYSTEM",
-    "AI AGENT",
+    "AI",
     "SOFTWARE",
     "CLOUD",
-    "ML SYSTEM",
+    "ML",
     "AUTOMATION",
-    "DATA PLATFORM",
-    "MOBILE APP",
-    "WEB PLATFORM",
-    "ENTERPRISE SYSTEM",
+    "DATA",
+    "SECURITY",
     "OTHER",
   ];
 
@@ -33,25 +30,9 @@ export const ProjectIntakeTerminal: React.FC = () => {
     "IDEA",
     "PROTOTYPE",
     "MVP",
-    "EXISTING SYSTEM",
+    "PRODUCTION",
     "SCALING",
   ];
-
-  const NEEDS_OPTIONS = [
-    "ARCHITECTURE",
-    "DEVELOPMENT",
-    "AI",
-    "CLOUD",
-    "AUTOMATION",
-    "FULL DELIVERY",
-    "CONSULTING",
-  ];
-
-  const toggleNeed = (item: string) => {
-    setNeeds((prev) =>
-      prev.includes(item) ? prev.filter((n) => n !== item) : [...prev, item]
-    );
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,7 +50,6 @@ export const ProjectIntakeTerminal: React.FC = () => {
         body: JSON.stringify({
           projectType,
           stage,
-          needs,
           name,
           company,
           email,
@@ -98,254 +78,253 @@ export const ProjectIntakeTerminal: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="relative py-24 bg-[#070A0B] border-t border-surface-border overflow-hidden">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="flex items-center justify-center gap-2 font-mono text-xs text-accent uppercase tracking-widest mb-3">
-            <span>AURION / PROJECT INGRESS</span>
-            <span>•</span>
-            <span className="text-tech-cyan">INITIALIZE SYSTEM</span>
-          </div>
-
-          <h2 className="font-sans text-3xl sm:text-5xl font-extrabold text-primary tracking-tight">
-            START A TECHNOLOGY PROJECT.
-          </h2>
-
-          <p className="font-sans text-sm sm:text-base text-primary-muted mt-4 leading-relaxed">
-            Provide the high-level boundaries of your system requirement. Our Principal Systems Architect
-            reviews incoming briefs and responds with an indicative technical blueprint and feasibility review.
-          </p>
-        </div>
-
-        {/* Intake Terminal Card */}
-        <div className="relative bg-[#0A0D0E] border border-surface-border shadow-2xl p-6 sm:p-10 font-mono text-xs">
+    <div className="w-full">
+      {/* Intake Terminal Container */}
+      <div className="luxury-glass border border-surface-border p-6 sm:p-12 font-mono text-xs rounded-sm">
+        <AnimatePresence mode="wait">
           {submissionResult ? (
-            /* Cinematic Confirmation Screen */
-            <div className="p-6 bg-[#050607] border border-accent/40 rounded space-y-6 animate-in zoom-in-95 duration-200">
-              <div className="flex items-center justify-between pb-4 border-b border-surface-border">
+            /* Success State */
+            <motion.div
+              key="success-state"
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="p-8 sm:p-12 bg-[#080A0B] border border-accent/40 space-y-8"
+            >
+              <div className="flex items-center justify-between pb-6 border-b border-surface-border">
                 <div className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-success" />
-                  <span className="font-bold text-sm text-primary uppercase">
-                    PROJECT INTAKE ACCEPTED
+                  <CheckCircle2 className="w-6 h-6 text-accent" />
+                  <span className="font-sans font-extrabold text-2xl sm:text-3xl text-primary tracking-tight">
+                    TRANSMISSION RECEIVED.
                   </span>
                 </div>
-                <span className="text-accent font-bold">
-                  {submissionResult.ticketId}
+                <span className="text-accent font-bold text-sm">
+                  {submissionResult.ticketId || "ACK-2026"}
                 </span>
               </div>
 
-              <div className="space-y-3 font-sans text-xs text-primary-muted leading-relaxed">
-                <p>
-                  Thank you, <strong className="text-primary">{name}</strong>. Your project specification has been
-                  ingested into the Aurion Conclave technical review pipeline.
-                </p>
-                <div className="p-4 bg-[#0A0D0E] border border-surface-border font-mono text-[11px] space-y-2">
-                  <div className="flex justify-between">
-                    <span>TICKET ID:</span>
-                    <span className="text-accent">{submissionResult.ticketId}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>STATUS:</span>
-                    <span className="text-success">{submissionResult.status}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>ASSIGNED ARCHITECT:</span>
-                    <span className="text-primary">{submissionResult.leadArchitect}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>ESTIMATED SLA:</span>
-                    <span className="text-tech-cyan">{submissionResult.estimatedResponse}</span>
-                  </div>
+              <div className="space-y-4">
+                <div className="font-sans text-xl sm:text-2xl font-bold text-accent">
+                  WE'LL REVIEW THE SYSTEM.
                 </div>
-                <p>
-                  An initial architectural triage brief has been dispatched to{" "}
-                  <strong className="text-primary">{email}</strong>.
+                <p className="font-sans text-sm text-primary-muted leading-relaxed">
+                  Thank you, <strong className="text-primary">{name}</strong>. Your project brief has been ingested
+                  into our architectural discovery pipeline. A Principal Systems Engineer will review your requirements
+                  and contact you at <strong className="text-primary">{email}</strong> within 24 hours.
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-surface-border flex justify-end">
-                <button
+              <div className="pt-6 border-t border-surface-border flex justify-end">
+                <motion.button
                   type="button"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={handleReset}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-surface hover:bg-surface-elevated border border-surface-border text-primary font-mono text-xs transition-colors"
+                  className="flex items-center gap-2 px-6 py-3 bg-surface hover:bg-surface-elevated border border-surface-border text-primary font-mono text-xs transition-colors"
                 >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  <span>INITIALIZE ANOTHER BRIEF</span>
-                </button>
+                  <RotateCcw className="w-3.5 h-3.5 text-accent" />
+                  <span>START ANOTHER INTAKE</span>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
           ) : (
-            /* Interactive Diagnostic Questionnaire */
-            <form onSubmit={handleSubmit} className="space-y-8">
-              {/* Question 1: What are you building? */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2 text-accent">
-                  <span className="font-bold">QUESTION 01 //</span>
-                  <span className="text-primary">WHAT ARE YOU BUILDING?</span>
+            /* 3-Step Project Intake Diagnostic Form */
+            <motion.form
+              key="form-state"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onSubmit={handleSubmit}
+              className="space-y-12"
+            >
+              {/* STEP 01 */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-surface-border">
+                  <div className="flex items-center gap-3">
+                    <span className="text-accent font-bold text-sm">STEP 01 //</span>
+                    <span className="font-sans font-bold text-lg text-primary tracking-tight">
+                      WHAT ARE YOU BUILDING?
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-primary-muted uppercase">SYSTEM CATEGORY</span>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {PROJECT_TYPES.map((pt) => {
                     const isSelected = projectType === pt;
                     return (
-                      <button
+                      <motion.button
                         key={pt}
                         type="button"
+                        whileHover={{ y: -1 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => setProjectType(pt)}
-                        className={`px-3 py-2 rounded text-[11px] transition-all border ${
+                        className={`relative p-3.5 text-center font-mono text-xs tracking-wider transition-all border rounded-sm ${
                           isSelected
-                            ? "bg-accent text-[#050607] font-bold border-accent shadow-[0_0_12px_rgba(217,164,65,0.25)]"
-                            : "bg-[#050607] text-primary-muted border-surface-border hover:border-accent hover:text-primary"
+                            ? "bg-accent text-[#060708] font-bold border-accent shadow-[0_2px_16px_rgba(201,148,62,0.25)]"
+                            : "bg-[#080A0B] text-primary-muted border-surface-border hover:border-accent hover:text-primary"
                         }`}
                       >
-                        {pt}
-                      </button>
+                        {isSelected && (
+                          <motion.span
+                            layoutId="intake-type-pill"
+                            className="absolute inset-0 bg-accent rounded-sm z-[-1]"
+                            transition={{ type: "spring", bounce: 0.15, duration: 0.3 }}
+                          />
+                        )}
+                        <span className="relative z-10">{pt}</span>
+                      </motion.button>
                     );
                   })}
                 </div>
               </div>
 
-              {/* Question 2: What stage? */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2 text-accent">
-                  <span className="font-bold">QUESTION 02 //</span>
-                  <span className="text-primary">WHAT LIFECYCLE STAGE?</span>
+              {/* STEP 02 */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-surface-border">
+                  <div className="flex items-center gap-3">
+                    <span className="text-accent font-bold text-sm">STEP 02 //</span>
+                    <span className="font-sans font-bold text-lg text-primary tracking-tight">
+                      CURRENT STAGE?
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-primary-muted uppercase">MATURITY LEVEL</span>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
                   {STAGES.map((st) => {
                     const isSelected = stage === st;
                     return (
-                      <button
+                      <motion.button
                         key={st}
                         type="button"
+                        whileHover={{ y: -1 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => setStage(st)}
-                        className={`px-3 py-2 rounded text-[11px] transition-all border ${
+                        className={`relative p-3.5 text-center font-mono text-xs tracking-wider transition-all border rounded-sm ${
                           isSelected
-                            ? "bg-tech-cyan text-[#050607] font-bold border-tech-cyan shadow-[0_0_12px_rgba(97,199,192,0.25)]"
-                            : "bg-[#050607] text-primary-muted border-surface-border hover:border-tech-cyan hover:text-primary"
+                            ? "bg-tech-teal text-[#060708] font-bold border-tech-teal shadow-[0_2px_16px_rgba(118,191,185,0.25)]"
+                            : "bg-[#080A0B] text-primary-muted border-surface-border hover:border-tech-teal hover:text-primary"
                         }`}
                       >
-                        {st}
-                      </button>
+                        {isSelected && (
+                          <motion.span
+                            layoutId="intake-stage-pill"
+                            className="absolute inset-0 bg-tech-teal rounded-sm z-[-1]"
+                            transition={{ type: "spring", bounce: 0.15, duration: 0.3 }}
+                          />
+                        )}
+                        <span className="relative z-10">{st}</span>
+                      </motion.button>
                     );
                   })}
                 </div>
               </div>
 
-              {/* Question 3: What do you need? */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2 text-accent">
-                  <span className="font-bold">QUESTION 03 //</span>
-                  <span className="text-primary">WHAT CAPABILITIES DO YOU NEED?</span>
+              {/* STEP 03 */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-surface-border">
+                  <div className="flex items-center gap-3">
+                    <span className="text-accent font-bold text-sm">STEP 03 //</span>
+                    <span className="font-sans font-bold text-lg text-primary tracking-tight">
+                      YOUR DETAILS
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-primary-muted uppercase">CONTACT & BRIEF</span>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
-                  {NEEDS_OPTIONS.map((nd) => {
-                    const isSelected = needs.includes(nd);
-                    return (
-                      <button
-                        key={nd}
-                        type="button"
-                        onClick={() => toggleNeed(nd)}
-                        className={`px-3 py-2 rounded text-[11px] transition-all border ${
-                          isSelected
-                            ? "bg-primary text-[#050607] font-bold border-primary"
-                            : "bg-[#050607] text-primary-muted border-surface-border hover:border-primary-muted hover:text-primary"
-                        }`}
-                      >
-                        {isSelected ? "✓ " : ""}{nd}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+                <div className="space-y-4 pt-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-primary-muted text-[11px]">NAME *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Elena Rostova"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="w-full bg-[#080A0B] border border-surface-border text-primary p-3 focus:outline-none focus:border-accent text-xs transition-colors"
+                      />
+                    </div>
 
-              {/* Contact Information Fields */}
-              <div className="pt-4 border-t border-surface-border/60 space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-primary-muted text-[11px]">COMPANY</label>
+                      <input
+                        type="text"
+                        placeholder="Apex Logistics Technologies"
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
+                        className="w-full bg-[#080A0B] border border-surface-border text-primary p-3 focus:outline-none focus:border-accent text-xs transition-colors"
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-1.5">
-                    <label className="text-primary-muted text-[11px]">YOUR NAME *</label>
+                    <label className="text-primary-muted text-[11px]">EMAIL *</label>
                     <input
-                      type="text"
+                      type="email"
                       required
-                      placeholder="e.g. Elena Rostova"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full bg-[#050607] border border-surface-border text-primary p-2.5 focus:outline-none focus:border-accent"
+                      placeholder="elena@apexlogistics.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full bg-[#080A0B] border border-surface-border text-primary p-3 focus:outline-none focus:border-accent text-xs transition-colors"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-primary-muted text-[11px]">COMPANY / VENTURE</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Apex Logistics Technologies"
-                      value={company}
-                      onChange={(e) => setCompany(e.target.value)}
-                      className="w-full bg-[#050607] border border-surface-border text-primary p-2.5 focus:outline-none focus:border-accent"
+                    <label className="text-primary-muted text-[11px]">PROJECT BRIEF</label>
+                    <textarea
+                      rows={4}
+                      placeholder="Describe the operational problem, computational bottleneck, volume requirements, or timeline..."
+                      value={brief}
+                      onChange={(e) => setBrief(e.target.value)}
+                      className="w-full bg-[#080A0B] border border-surface-border text-primary p-3 focus:outline-none focus:border-accent resize-none text-xs transition-colors"
                     />
                   </div>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-primary-muted text-[11px]">WORK EMAIL *</label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="elena@apexlogistics.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-[#050607] border border-surface-border text-primary p-2.5 focus:outline-none focus:border-accent"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-primary-muted text-[11px]">PROJECT BRIEF / ARCHITECTURAL GOALS</label>
-                  <textarea
-                    rows={4}
-                    placeholder="Describe the operational challenge, data volumes, latency goals, or existing infrastructure..."
-                    value={brief}
-                    onChange={(e) => setBrief(e.target.value)}
-                    className="w-full bg-[#050607] border border-surface-border text-primary p-2.5 focus:outline-none focus:border-accent resize-none"
-                  />
                 </div>
               </div>
 
               {errorMsg && (
-                <div className="p-3 bg-alert/15 border border-alert text-alert flex items-center gap-2 text-xs">
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-4 bg-alert/15 border border-alert text-alert flex items-center gap-2 text-xs"
+                >
                   <AlertTriangle className="w-4 h-4 shrink-0" />
                   <span>{errorMsg}</span>
-                </div>
+                </motion.div>
               )}
 
-              {/* Submit CTA */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+              {/* Bottom Actions */}
+              <div className="pt-4 border-t border-surface-border flex flex-col sm:flex-row items-center justify-between gap-6">
                 <div className="flex items-center gap-2 text-primary-muted text-[11px]">
-                  <Shield className="w-3.5 h-3.5 text-tech-cyan" />
-                  <span>NON-DISCLOSURE GUARANTEE BY DEFAULT</span>
+                  <Shield className="w-3.5 h-3.5 text-tech-teal" />
+                  <span>MUTUAL NDA & SECURITY ENCRYPTED TRANSMISSION</span>
                 </div>
 
-                <button
+                <motion.button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 bg-accent hover:bg-accent-light text-[#050607] font-bold tracking-wider transition-all amber-glow hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-accent hover:bg-accent-mid text-[#060708] font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 shadow-[0_4px_30px_rgba(201,148,62,0.25)] disabled:opacity-50"
                 >
                   {isSubmitting ? (
-                    <span>TRANSMITTING INTAKE PACKET...</span>
+                    <span>TRANSMITTING...</span>
                   ) : (
                     <>
-                      <span>INITIALIZE PROJECT</span>
+                      <span>START THE CONVERSATION</span>
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
-                </button>
+                </motion.button>
               </div>
-            </form>
+            </motion.form>
           )}
-        </div>
+        </AnimatePresence>
       </div>
-    </section>
+    </div>
   );
 };

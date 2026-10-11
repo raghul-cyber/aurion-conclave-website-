@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { MotionConfig } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CustomCursor } from "@/components/CustomCursor";
 import { CommandPalette } from "@/components/CommandPalette";
+import { ScrollProgressIndicator } from "@/components/framer/ScrollProgressIndicator";
 
 export const ClientShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
@@ -16,7 +18,15 @@ export const ClientShell: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   return (
-    <>
+    <MotionConfig
+      reducedMotion="user"
+      transition={{
+        type: "spring",
+        bounce: 0.15,
+        visualDuration: 0.35,
+      }}
+    >
+      <ScrollProgressIndicator />
       <CustomCursor />
       <Navbar onOpenCommandPalette={() => setCommandPaletteOpen(true)} />
       <main className="min-h-screen pt-20">
@@ -27,6 +37,7 @@ export const ClientShell: React.FC<{ children: React.ReactNode }> = ({ children 
         isOpen={commandPaletteOpen}
         onClose={() => setCommandPaletteOpen(false)}
       />
-    </>
+    </MotionConfig>
   );
 };
+
