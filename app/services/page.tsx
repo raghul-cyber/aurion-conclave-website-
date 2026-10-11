@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
+import { ContourTide } from "@/components/reactbits/backgrounds/ContourTide";
 import { ServiceMatrix } from "@/components/ServiceMatrix";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 
@@ -15,8 +15,8 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#0a0d0e] via-[#0e1213] to-[#0a0d0e] overflow-hidden">
-      {/* Spectral Drape Background from React Bits Pro */}
-      <SpectralDrape opacity={0.85} />
+      {/* Contour Tide Background from React Bits Pro (Ocean of particles rolling in waves) */}
+      <ContourTide opacity={0.85} />
 
       {/* Main Content Area */}
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28">

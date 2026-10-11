@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, Database } from "lucide-react";
-import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
+import { ContourTide } from "@/components/reactbits/backgrounds/ContourTide";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 
@@ -48,8 +48,8 @@ const DATA_CAPABILITIES = [
 export default function DataServicesPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#111415] via-[#0b0e0f] to-[#060708] overflow-hidden">
-      {/* Spectral Drape Background from React Bits Pro */}
-      <SpectralDrape opacity={0.85} />
+      {/* Background Contour Tide from React Bits Pro */}
+      <ContourTide opacity={0.85} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28">
         {/* Breadcrumb */}

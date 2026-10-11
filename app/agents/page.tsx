@@ -5,7 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import { AgentLabConsole } from "@/components/AgentLabConsole";
 import { AgentFilmScroll } from "@/components/AgentFilmScroll";
 import { TechnicalGrid } from "@/components/framer/TechnicalGrid";
-import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
+import { GlyphTide } from "@/components/reactbits/backgrounds/GlyphTide";
 import { GlyphOrb } from "@/components/reactbits/components/GlyphOrb";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 import { BlurText } from "@/components/reactbits/text/BlurText";
@@ -20,8 +20,8 @@ export const metadata: Metadata = {
 export default function AgentsPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#090c0d] via-[#0d1011] to-[#07090a] overflow-hidden">
-      {/* Spectral Drape Background from React Bits Pro */}
-      <SpectralDrape opacity={0.85} />
+      {/* Background Glyph Tide from React Bits Pro */}
+      <GlyphTide />
       <TechnicalGrid crosshairs={true} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 space-y-24">

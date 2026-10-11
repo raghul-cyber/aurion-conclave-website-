@@ -2,7 +2,7 @@ import React from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ALL_SERVICES } from "@/data/services";
-import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
+import { MosaicWaves } from "@/components/reactbits/backgrounds/MosaicWaves";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 import { ArrowLeft, ArrowUpRight, CheckCircle2, Cpu, Clock } from "lucide-react";
@@ -25,8 +25,8 @@ export default async function ServiceDetailPage({
 
   return (
     <div className="relative min-h-screen py-16 bg-gradient-to-b from-[#111415] via-[#0b0e0f] to-[#060708] overflow-hidden">
-      {/* Spectral Drape Background from React Bits Pro */}
-      <SpectralDrape opacity={0.85} />
+      {/* Background Mosaic Waves from React Bits Pro */}
+      <MosaicWaves opacity={0.85} />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Navigation Breadcrumb */}

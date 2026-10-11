@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ShieldCheck, ArrowUpRight } from "lucide-react";
-import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
+import { AsciiWaves } from "@/components/reactbits/backgrounds/AsciiWaves";
 import { GlyphOrb } from "@/components/reactbits/components/GlyphOrb";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
@@ -59,8 +59,14 @@ const SECURITY_PILLARS = [
 export default function CybersecurityServicesPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#111415] via-[#0b0e0f] to-[#060708] overflow-hidden">
-      {/* Spectral Drape Background from React Bits Pro */}
-      <SpectralDrape opacity={0.85} />
+      {/* ASCII Waves Background */}
+      <AsciiWaves
+        characters=" 01#@%*░▒▓"
+        color="#648E8B"
+        accentColor="#D9B874"
+        opacity={0.8}
+        hasCursorInteraction={true}
+      />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28">
         {/* Breadcrumb */}

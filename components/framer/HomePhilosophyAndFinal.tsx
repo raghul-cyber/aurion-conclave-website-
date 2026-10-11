@@ -7,6 +7,7 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { AurionCore } from "@/components/AurionCore";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
+import { TypographicWall } from "@/components/reactbits/text/TypographicWall";
 
 export const HomePhilosophyAndFinal: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -48,8 +49,16 @@ export const HomePhilosophyAndFinal: React.FC = () => {
 
       {/* SECTION 08 / RESTRAINED FINAL CTA */}
       <section className="relative min-h-[70vh] flex items-center justify-center bg-gradient-to-b from-[#080a0b] via-[#0d1011] to-[#060708] border-b border-warm-border overflow-hidden">
-        {/* Background Spectral Drape from React Bits Pro */}
-        <SpectralDrape opacity={0.8} />
+        {/* Background Typographic Wall from React Bits Pro */}
+        <TypographicWall
+          words={[
+            "AURION CONCLAVE",
+            "START A PROJECT",
+            "LET'S BUILD SOMETHING USEFUL",
+            "DISCOVERY AND RIGOR"
+          ]}
+          opacity={0.65}
+        />
         {/* Subtle 3D Aurion Core in background */}
         <motion.div
           style={{ scale: backgroundScale }}
