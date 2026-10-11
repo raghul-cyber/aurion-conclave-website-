@@ -12,8 +12,8 @@ import { SpecularButton } from "@/components/reactbits/components/SpecularButton
 export const HomeHeroCentered: React.FC = () => {
   return (
     <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center border-b border-surface-border overflow-hidden bg-gradient-to-b from-[#111415] via-[#0a0d0e] to-[#060708]">
-      {/* 01: Spectral Drape from React Bits Pro (Glowing drape of dots folding in 3D) */}
-      <SpectralDrape opacity={0.9} />
+      {/* 01: Spectral Drape from React Bits Pro (Glowing drape of dots folding in 3D, spread edge-to-edge in Hero) */}
+      <SpectralDrape opacity={0.9} spreadMultiplier={2.4} spreadYMultiplier={2.2} />
 
       {/* Centered Hero Content Container (Max width 1280px, strictly clamped typography) */}
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 flex flex-col items-center text-center">
