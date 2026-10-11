@@ -1,30 +1,15 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowLeft, Compass, Cpu, Layers } from "lucide-react";
-import { TypographicWall } from "@/components/reactbits/text/TypographicWall";
+import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
 
 export default function NotFound() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#111415] via-[#0b0e0f] to-[#060708] flex items-center justify-center p-6 sm:p-12 overflow-hidden">
-      {/* Typographic Wall Background */}
-      <TypographicWall
-        words={[
-          "404",
-          "NOT_FOUND",
-          "TRAJECTORY",
-          "UNREACHABLE",
-          "COORDINATE",
-          "DISCONNECTED",
-          "AURION",
-          "CONCLAVE",
-          "SIGNAL_LOST",
-        ]}
-        color="#648E8B"
-        highlightColor="#D9B874"
-        opacity={0.8}
-      />
+      {/* Spectral Drape Background from React Bits Pro */}
+      <SpectralDrape opacity={0.85} />
 
       <div className="relative z-10 max-w-2xl w-full text-center space-y-8">
         <SpotlightCard

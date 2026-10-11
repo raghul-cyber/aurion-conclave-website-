@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { ContourTide } from "@/components/reactbits/backgrounds/ContourTide";
+import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
 import { IndustryListMotion } from "@/components/framer/IndustryListMotion";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 
@@ -15,13 +15,8 @@ export const metadata: Metadata = {
 export default function IndustriesPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#0a0d0e] via-[#0f1314] to-[#080a0b] overflow-hidden">
-      {/* Contour Tide Background */}
-      <ContourTide
-        color="#D9B874"
-        accentColor="#648E8B"
-        opacity={0.85}
-        interactive={true}
-      />
+      {/* Spectral Drape Background from React Bits Pro */}
+      <SpectralDrape opacity={0.85} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 space-y-16">
         {/* Editorial Hero Header with Clamped Typography */}

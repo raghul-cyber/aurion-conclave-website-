@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ScrollReveal } from "@/components/reactbits/text/ScrollReveal";
-import { TypographicWall } from "@/components/reactbits/text/TypographicWall";
+import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
 
 export const HomeEditorialStatement: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -19,18 +19,8 @@ export const HomeEditorialStatement: React.FC = () => {
       ref={sectionRef}
       className="relative py-24 sm:py-32 bg-gradient-to-b from-[#060708] via-[#0d1011] to-[#0a0d0e] border-b border-surface-border overflow-hidden"
     >
-      {/* Background Typographic Wall from React Bits Pro (Wall of scrambling glyphs decoding words) */}
-      <TypographicWall
-        words={[
-          "AURION CONCLAVE",
-          "CONSULTING IS NOT THE END",
-          "WE ENGINEER USEFUL SYSTEMS",
-          "SOFTWARE • AI • PLATFORMS",
-          "REAL WORLD PROBLEMS",
-          "DETERMINISTIC ARCHITECTURE"
-        ]}
-        opacity={0.75}
-      />
+      {/* Spectral Drape Background from React Bits Pro */}
+      <SpectralDrape opacity={0.85} />
       {/* Background subtle strands */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
         {[0, 1, 2].map((i) => (

@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Box } from "lucide-react";
-import { MosaicWaves } from "@/components/reactbits/backgrounds/MosaicWaves";
+import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
 
@@ -54,8 +54,8 @@ const SOFTWARE_DOMAINS = [
 export default function SoftwareServicesPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#111415] via-[#0b0e0f] to-[#060708] overflow-hidden">
-      {/* Background Mosaic Waves from React Bits Pro */}
-      <MosaicWaves opacity={0.85} />
+      {/* Spectral Drape Background from React Bits Pro */}
+      <SpectralDrape opacity={0.85} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28">
         {/* Breadcrumb */}

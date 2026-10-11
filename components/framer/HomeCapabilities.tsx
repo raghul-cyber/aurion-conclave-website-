@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { ShinyText } from "@/components/reactbits/text/ShinyText";
-import { MosaicWaves } from "@/components/reactbits/backgrounds/MosaicWaves";
+import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
 
 interface CapabilityFamily {
   number: string;
@@ -81,8 +81,8 @@ export const HomeCapabilities: React.FC = () => {
 
   return (
     <section className="relative py-24 sm:py-32 bg-gradient-to-b from-[#0a0d0e] via-[#0d1011] to-[#0a0d0e] border-b border-surface-border overflow-hidden transition-colors duration-700">
-      {/* Background Mosaic Waves from React Bits Pro (Waves rolling through a mosaic of shifting tiles) */}
-      <MosaicWaves opacity={0.85} />
+      {/* Spectral Drape Background from React Bits Pro */}
+      <SpectralDrape opacity={0.85} />
       {/* Dynamic Subtle Ambient Atmosphere */}
       <AnimatePresence>
         {activeCapability && (

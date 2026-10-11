@@ -7,7 +7,7 @@ import { HomeAgentPreview } from "@/components/framer/HomeAgentPreview";
 import { HomeProductsSection } from "@/components/framer/HomeProductsSection";
 import { HomePhilosophyAndFinal } from "@/components/framer/HomePhilosophyAndFinal";
 
-import { GlyphTide } from "@/components/reactbits/backgrounds/GlyphTide";
+import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
 import { GlyphOrb } from "@/components/reactbits/components/GlyphOrb";
 
 export default function HomePage() {
@@ -27,8 +27,8 @@ export default function HomePage() {
 
       {/* 05 / HOME SECTION 05: AGENT LAB PREVIEW (REAL RUNTIME INTERACTION) */}
       <section className="relative py-24 sm:py-32 bg-gradient-to-b from-[#090c0d] via-[#0e1213] to-[#090c0d] border-b border-surface-border overflow-hidden">
-        {/* Background Glyph Tide from React Bits Pro (ASCII tide that floods and drains the shore) */}
-        <GlyphTide />
+        {/* Background Spectral Drape from React Bits Pro */}
+        <SpectralDrape opacity={0.85} />
         <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
           <div className="max-w-2xl mx-auto text-center mb-14 space-y-4 flex flex-col items-center">
             {/* 3D Turning ASCII Planet from React Bits Pro */}

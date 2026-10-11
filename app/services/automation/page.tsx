@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, Workflow } from "lucide-react";
-import { GlyphTide } from "@/components/reactbits/backgrounds/GlyphTide";
+import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
 import { ArchitectureDiagram, PipelineStep } from "@/components/framer/ArchitectureDiagram";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
@@ -82,8 +82,8 @@ const AUTOMATION_CAPABILITIES = [
 export default function AutomationServicesPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#111415] via-[#0b0e0f] to-[#060708] overflow-hidden">
-      {/* Background Glyph Tide from React Bits Pro */}
-      <GlyphTide />
+      {/* Spectral Drape Background from React Bits Pro */}
+      <SpectralDrape opacity={0.85} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28">
         {/* Breadcrumb */}

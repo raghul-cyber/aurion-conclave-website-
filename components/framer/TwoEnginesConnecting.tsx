@@ -4,7 +4,7 @@ import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, Layers, Sparkles } from "lucide-react";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
-import { AsciiWaves } from "@/components/reactbits/backgrounds/AsciiWaves";
+import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
 
 export const TwoEnginesConnecting: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,8 +35,8 @@ export const TwoEnginesConnecting: React.FC = () => {
       ref={containerRef}
       className="relative py-24 sm:py-32 bg-gradient-to-b from-[#0a0d0e] via-[#0e1213] to-[#0a0d0e] border-b border-surface-border overflow-hidden"
     >
-      {/* Background Ascii Waves from React Bits Pro (Waves made of ASCII characters) */}
-      <AsciiWaves characters=" .:-+*=%@#" opacity={0.8} />
+      {/* Spectral Drape Background from React Bits Pro */}
+      <SpectralDrape opacity={0.85} />
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
         {/* Section Header - Strict Clamped Typographic Hierarchy */}
         <div className="max-w-2xl mb-14">

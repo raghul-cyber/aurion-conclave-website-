@@ -5,13 +5,13 @@ import Link from "next/link";
 import { PRODUCTS } from "@/data/products";
 import { ArrowUpRight } from "lucide-react";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
-import { ContourTide } from "@/components/reactbits/backgrounds/ContourTide";
+import { SpectralDrape } from "@/components/reactbits/backgrounds/SpectralDrape";
 
 export const HomeProductsSection: React.FC = () => {
   return (
     <section className="relative py-24 sm:py-32 bg-gradient-to-b from-[#0a0d0e] via-[#0d1011] to-[#080a0b] border-b border-surface-border overflow-hidden">
-      {/* Background Contour Tide from React Bits Pro (An ocean of particles rolling in waves) */}
-      <ContourTide opacity={0.85} />
+      {/* Spectral Drape Background from React Bits Pro */}
+      <SpectralDrape opacity={0.85} />
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-8 border-b border-white/10">
