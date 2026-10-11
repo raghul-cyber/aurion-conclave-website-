@@ -11,6 +11,8 @@ export interface SpectralDrapeProps {
   speed?: number;
   className?: string;
   opacity?: number;
+  spreadMultiplier?: number;
+  spreadYMultiplier?: number;
   children?: React.ReactNode;
 }
 
@@ -23,12 +25,15 @@ export const SpectralDrape: React.FC<SpectralDrapeProps> = ({
   speed = 0.018,
   className = "",
   opacity = 0.85,
+  spreadMultiplier = 1.05,
+  spreadYMultiplier = 0.95,
   children,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const mouseRef = useRef({ x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 });
+  const isSpread = spreadMultiplier > 1.2 || spreadYMultiplier > 1.2;
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -83,8 +88,8 @@ export const SpectralDrape: React.FC<SpectralDrapeProps> = ({
     }
 
     let frame = 0;
-    const cols = density;
-    const rows = Math.floor(density * 0.7);
+    const cols = isSpread ? Math.max(68, Math.round(density * 1.55)) : density;
+    const rows = isSpread ? Math.max(46, Math.round(density * 1.08)) : Math.floor(density * 0.7);
 
     const render = () => {
       frame++;
@@ -101,14 +106,17 @@ export const SpectralDrape: React.FC<SpectralDrapeProps> = ({
       const fov = 380;
       const cameraZ = 280;
 
+      const worldW = isSpread ? width * spreadMultiplier + 260 : width * spreadMultiplier;
+      const worldH = isSpread ? height * spreadYMultiplier + 180 : height * spreadYMultiplier;
+
       // Render 3D folding drape grid
       for (let r = 0; r < rows; r++) {
         const v = r / (rows - 1); // 0 to 1
-        const yWorld = (v - 0.5) * (height * 0.95);
+        const yWorld = (v - 0.5) * worldH;
 
         for (let c = 0; c < cols; c++) {
           const u = c / (cols - 1); // 0 to 1
-          const xWorld = (u - 0.5) * (width * 1.05);
+          const xWorld = (u - 0.5) * worldW;
 
           // 3D folding cloth wave harmonics
           const fold1 = Math.sin(u * Math.PI * 3.2 + t) * Math.cos(v * Math.PI * 2.1 + t * 0.7);
@@ -129,7 +137,7 @@ export const SpectralDrape: React.FC<SpectralDrapeProps> = ({
           const projX = width / 2 + rotX * scale;
           const projY = height / 2 + rotY * scale;
 
-          if (scale > 0 && projX >= -10 && projX <= width + 10 && projY >= -10 && projY <= height + 10) {
+          if (scale > 0 && projX >= -20 && projX <= width + 20 && projY >= -20 && projY <= height + 20) {
             // Depth brightness calculation
             const depthFactor = Math.max(0.2, Math.min(1, (zWorld + 80) / 160));
             const isHighlight = (c + r) % 5 === 0;
@@ -168,7 +176,7 @@ export const SpectralDrape: React.FC<SpectralDrapeProps> = ({
         window.removeEventListener("pointermove", handlePointerMove);
       }
     };
-  }, [interactive, color, accentColor, dotSize, density, speed, reducedMotion]);
+  }, [interactive, color, accentColor, dotSize, density, speed, reducedMotion, spreadMultiplier, spreadYMultiplier, isSpread]);
 
   return (
     <div
@@ -181,8 +189,9 @@ export const SpectralDrape: React.FC<SpectralDrapeProps> = ({
       <div
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
-          background:
-            "radial-gradient(ellipse 90% 65% at 50% -10%, rgba(217, 184, 116, 0.25), rgba(100, 142, 139, 0.12) 50%, transparent 80%)",
+          background: isSpread
+            ? "radial-gradient(ellipse 130% 90% at 50% 25%, rgba(217, 184, 116, 0.28), rgba(100, 142, 139, 0.14) 55%, transparent 85%)"
+            : "radial-gradient(ellipse 90% 65% at 50% -10%, rgba(217, 184, 116, 0.25), rgba(100, 142, 139, 0.12) 50%, transparent 80%)",
         }}
       />
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
