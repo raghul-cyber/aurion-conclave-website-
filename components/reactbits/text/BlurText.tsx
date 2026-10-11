@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, type Transition } from "motion/react";
-import { useEffect, useRef, useState, useMemo } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
+import { motion, type Transition } from "framer-motion";
 
 export type BlurTextProps = {
   text?: string;
@@ -17,12 +17,12 @@ export type BlurTextProps = {
 
 export const BlurText: React.FC<BlurTextProps> = ({
   text = "",
-  delay = 50,
+  delay = 30,
   className = "",
   animateBy = "words",
   direction = "top",
-  threshold = 0.1,
-  rootMargin = "0px",
+  threshold = 0.05,
+  rootMargin = "50px",
   onAnimationComplete,
   stepDuration = 0.35,
 }) => {
@@ -31,6 +31,11 @@ export const BlurText: React.FC<BlurTextProps> = ({
   const ref = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
+    // Immediate fallback ensures text is NEVER invisible if observer is delayed
+    const timer = setTimeout(() => {
+      setInView(true);
+    }, 80);
+
     if (!ref.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -42,43 +47,40 @@ export const BlurText: React.FC<BlurTextProps> = ({
       { threshold, rootMargin }
     );
     observer.observe(ref.current);
-    return () => observer.disconnect();
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
   }, [threshold, rootMargin]);
 
   const defaultFrom = useMemo(
     () =>
       direction === "top"
-        ? { filter: "blur(10px)", opacity: 0, y: -25 }
-        : { filter: "blur(10px)", opacity: 0, y: 25 },
+        ? { filter: "blur(8px)", opacity: 0, y: -16 }
+        : { filter: "blur(8px)", opacity: 0, y: 16 },
     [direction]
   );
 
   const defaultTo = useMemo(
-    () => [
-      {
-        filter: "blur(4px)",
-        opacity: 0.6,
-        y: direction === "top" ? 3 : -3,
-      },
-      { filter: "blur(0px)", opacity: 1, y: 0 },
-    ],
-    [direction]
+    () => ({ filter: "blur(0px)", opacity: 1, y: 0 }),
+    []
   );
 
   return (
     <p ref={ref} className={`blur-text ${className} inline-flex flex-wrap`}>
       {elements.map((segment, index) => {
         const spanTransition: Transition = {
-          duration: stepDuration * 2,
+          duration: stepDuration,
           delay: (index * delay) / 1000,
-          ease: "easeOut",
+          ease: [0.16, 1, 0.3, 1],
         };
 
         return (
           <motion.span
             key={index}
             initial={defaultFrom}
-            animate={inView ? defaultTo[1] : defaultFrom}
+            animate={inView ? defaultTo : defaultFrom}
             transition={spanTransition}
             onAnimationComplete={
               index === elements.length - 1 ? onAnimationComplete : undefined

@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <div className="relative min-h-screen bg-[#060708] overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#0a0d0e] via-[#0e1213] to-[#0a0d0e] overflow-hidden">
       {/* Pattern Waves Background (Category G4) */}
-      <PageBackground preset="pattern-waves" opacity={0.25} />
+      <PageBackground preset="pattern-waves" opacity={0.85} />
 
       {/* Main Content Area */}
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28">

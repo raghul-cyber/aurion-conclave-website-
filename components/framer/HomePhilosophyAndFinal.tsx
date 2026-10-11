@@ -2,10 +2,11 @@
 
 import React, { useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { AurionCore } from "@/components/AurionCore";
 import { SpecularButton } from "@/components/reactbits/components/SpecularButton";
+import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
 
 export const HomePhilosophyAndFinal: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -19,8 +20,10 @@ export const HomePhilosophyAndFinal: React.FC = () => {
   return (
     <div ref={containerRef} className="relative w-full">
       {/* SECTION 07 / PRODUCT EVOLUTION PRINCIPLE */}
-      <section className="relative py-24 sm:py-32 bg-[#080A0B] border-b border-warm-border overflow-hidden">
-        <div className="max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
+      <section className="relative py-24 sm:py-32 bg-gradient-to-b from-[#080a0b] via-[#0c0f10] to-[#080a0b] border-b border-surface-border overflow-hidden">
+        {/* Background Ghost Fibers Atmosphere */}
+        <PageBackground preset="ghost-fibers" opacity={0.85} />
+        <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
           <div className="max-w-3xl space-y-8">
             <div className="flex items-center gap-2.5 font-mono text-[11px] text-accent tracking-widest uppercase">
               <span className="w-1.5 h-1.5 rounded-full bg-accent" />

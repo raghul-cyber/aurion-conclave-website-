@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, Layers, Sparkles } from "lucide-react";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
+import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
 
 export const TwoEnginesConnecting: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -32,9 +33,11 @@ export const TwoEnginesConnecting: React.FC = () => {
   return (
     <section
       ref={containerRef}
-      className="relative py-24 sm:py-32 bg-[#060708] border-b border-warm-border overflow-hidden"
+      className="relative py-24 sm:py-32 bg-gradient-to-b from-[#0a0d0e] via-[#0e1213] to-[#0a0d0e] border-b border-surface-border overflow-hidden"
     >
-      <div className="max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
+      {/* Background Beams Atmosphere */}
+      <PageBackground preset="beams" opacity={0.85} />
+      <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
         {/* Section Header - Strict Clamped Typographic Hierarchy */}
         <div className="max-w-2xl mb-14">
           <div className="flex items-center gap-2.5 font-mono text-[11px] text-accent tracking-widest uppercase mb-3">

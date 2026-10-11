@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="relative min-h-screen bg-[#060708] overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#0b0e0f] via-[#0f1314] to-[#090b0c] overflow-hidden">
       {/* Background: Dot Field ambient environment */}
-      <PageBackground preset="dot-field" />
+      <PageBackground preset="dot-field" opacity={0.85} />
       <TechnicalGrid crosshairs={true} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 py-20 lg:py-28 space-y-16">

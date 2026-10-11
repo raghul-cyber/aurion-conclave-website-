@@ -49,7 +49,7 @@ async function runTests() {
   console.log(`-> Receptionist finished in ${recRes.totalLatencyMs}ms with ${recRes.logs.length} stages (Provider: ${recRes.provider})`);
 
   console.log("[Test 5] Running end-to-end AgentEngine execution for Data Analyst with CSV payload...");
-  const dataRes = await AgentEngine.executeAgent("data-analyst", "Calculate latency metrics", sampleCsv);
+  const dataRes = await AgentEngine.executeAgent("data-analyst", "Calculate latency metrics", "LIVE", { fileContent: sampleCsv });
   if (!dataRes.output.metrics || !dataRes.output.artifacts) {
     throw new Error("Data Analyst failed to attach metrics or artifacts");
   }

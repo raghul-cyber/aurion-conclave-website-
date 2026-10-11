@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 interface SpecularButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
 import { BlurText } from "@/components/reactbits/text/BlurText";
@@ -11,9 +11,9 @@ import { SpecularButton } from "@/components/reactbits/components/SpecularButton
 
 export const HomeHeroCentered: React.FC = () => {
   return (
-    <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center border-b border-warm-border overflow-hidden bg-[#060708]">
+    <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center border-b border-surface-border overflow-hidden bg-gradient-to-b from-[#111415] via-[#0a0d0e] to-[#060708]">
       {/* 01: Looping Connected Network Background (Web Threads preset) */}
-      <PageBackground preset="web-threads" opacity={0.28} />
+      <PageBackground preset="web-threads" opacity={0.9} />
 
       {/* Centered Hero Content Container (Max width 1280px, strictly clamped typography) */}
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 flex flex-col items-center text-center">

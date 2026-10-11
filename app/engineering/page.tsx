@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ArrowUpRight, Check, ChevronRight } from "lucide-react";
 import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
 import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
@@ -98,9 +98,9 @@ export default function EngineeringPage() {
   const currentStage = ENGINEERING_PIPELINE[activeStageIndex];
 
   return (
-    <div className="relative min-h-screen bg-[#060708] overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#111415] via-[#0b0e0f] to-[#060708] overflow-hidden">
       {/* Grid Scan Background (Category G4) */}
-      <PageBackground preset="grid-scan" opacity={0.25} />
+      <PageBackground preset="grid-scan" opacity={0.85} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 space-y-16">
         {/* Page Hero Header with Clamped Typography */}

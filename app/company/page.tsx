@@ -45,9 +45,9 @@ const PHILOSOPHY_PILLARS = [
 
 export default function CompanyPage() {
   return (
-    <div className="relative min-h-screen bg-[#060708] overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#0b0e0f] via-[#0f1314] to-[#090b0c] overflow-hidden">
       {/* Background: Ghost Fibers atmospheric field */}
-      <PageBackground preset="ghost-fibers" />
+      <PageBackground preset="ghost-fibers" opacity={0.85} />
       <TechnicalGrid crosshairs={true} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28 space-y-20">

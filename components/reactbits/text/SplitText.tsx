@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useInView } from "motion/react";
+import { motion, useInView } from "framer-motion";
 
 export interface SplitTextProps {
   text: string;
@@ -21,7 +21,13 @@ export const SplitText: React.FC<SplitTextProps> = ({
   splitBy = "words",
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
+  const isInView = useInView(ref, { once: true, margin: "50px 0px" });
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 120);
+    return () => clearTimeout(timer);
+  }, []);
 
   const units = splitBy === "words" ? text.split(" ") : text.split("");
 
@@ -33,7 +39,7 @@ export const SplitText: React.FC<SplitTextProps> = ({
         <span key={i} className="inline-block overflow-hidden">
           <motion.span
             initial={{ opacity: 0, y: "100%" }}
-            animate={isInView ? { opacity: 1, y: "0%" } : { opacity: 0, y: "100%" }}
+            animate={isInView || mounted ? { opacity: 1, y: "0%" } : { opacity: 0, y: "100%" }}
             transition={{
               duration,
               delay: (i * delay) / 1000,

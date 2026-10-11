@@ -42,9 +42,9 @@ export default async function AgentDetailPage({
   }
 
   return (
-    <div className="relative min-h-screen py-16 bg-[#050607] overflow-hidden">
+    <div className="relative min-h-screen py-16 bg-gradient-to-b from-[#111415] via-[#0b0e0f] to-[#060708] overflow-hidden">
       {/* Background: Particles */}
-      <PageBackground preset="particles" />
+      <PageBackground preset="particles" opacity={0.85} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div>

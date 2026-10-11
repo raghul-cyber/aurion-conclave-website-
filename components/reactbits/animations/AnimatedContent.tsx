@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useInView } from "motion/react";
+import { motion, useInView } from "framer-motion";
 
 interface AnimatedContentProps {
   children: React.ReactNode;
@@ -23,7 +23,7 @@ export const AnimatedContent: React.FC<AnimatedContentProps> = ({
   className = "",
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-5% 0px" });
+  const isInView = useInView(ref, { once: true, margin: "50px 0px" });
 
   const axis = direction === "vertical" ? "y" : "x";
   const offset = reverse ? -distance : distance;

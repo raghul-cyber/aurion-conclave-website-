@@ -7,9 +7,11 @@ import { HomeAgentPreview } from "@/components/framer/HomeAgentPreview";
 import { HomeProductsSection } from "@/components/framer/HomeProductsSection";
 import { HomePhilosophyAndFinal } from "@/components/framer/HomePhilosophyAndFinal";
 
+import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
+
 export default function HomePage() {
   return (
-    <div className="relative w-full overflow-hidden bg-[#050607]">
+    <div className="relative w-full overflow-hidden bg-[#060708]">
       {/* 01 / HOME HERO (CENTERED COMPOSITION + WEB THREADS BACKGROUND) */}
       <HomeHeroCentered />
 
@@ -23,8 +25,10 @@ export default function HomePage() {
       <HomeCapabilities />
 
       {/* 05 / HOME SECTION 05: AGENT LAB PREVIEW (REAL RUNTIME INTERACTION) */}
-      <section className="relative py-24 sm:py-32 bg-[#060708] border-b border-warm-border overflow-hidden">
-        <div className="max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
+      <section className="relative py-24 sm:py-32 bg-gradient-to-b from-[#090c0d] via-[#0e1213] to-[#090c0d] border-b border-surface-border overflow-hidden">
+        {/* Background Particles Atmosphere */}
+        <PageBackground preset="particles" opacity={0.75} />
+        <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
           <div className="max-w-2xl mx-auto text-center mb-14 space-y-3">
             <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full luxury-glass border border-white/10 font-mono text-[11px] text-accent tracking-widest uppercase">
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />

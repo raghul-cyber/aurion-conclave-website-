@@ -7,9 +7,9 @@ import { SpotlightCard } from "@/components/reactbits/components/SpotlightCard";
 
 export default function NotFound() {
   return (
-    <div className="relative min-h-screen bg-[#060708] flex items-center justify-center p-6 sm:p-12 overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#111415] via-[#0b0e0f] to-[#060708] flex items-center justify-center p-6 sm:p-12 overflow-hidden">
       {/* Background: Scanner / radar */}
-      <PageBackground preset="scanner" />
+      <PageBackground preset="scanner" opacity={0.85} />
 
       <div className="relative z-10 max-w-2xl w-full text-center space-y-8">
         <SpotlightCard

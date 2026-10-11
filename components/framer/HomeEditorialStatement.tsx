@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ScrollReveal } from "@/components/reactbits/text/ScrollReveal";
+import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
 
 export const HomeEditorialStatement: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -16,8 +17,10 @@ export const HomeEditorialStatement: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 sm:py-32 bg-[#060708] border-b border-warm-border overflow-hidden"
+      className="relative py-24 sm:py-32 bg-gradient-to-b from-[#060708] via-[#0d1011] to-[#0a0d0e] border-b border-surface-border overflow-hidden"
     >
+      {/* Background Silk Ambient Wave */}
+      <PageBackground preset="silk" opacity={0.85} />
       {/* Background subtle strands */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
         {[0, 1, 2].map((i) => (
@@ -35,7 +38,7 @@ export const HomeEditorialStatement: React.FC = () => {
         ))}
       </div>
 
-      <div className="relative max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
+      <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           {/* Subtle Eyebrow */}
           <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full luxury-glass border border-white/10 font-mono text-[11px] text-accent tracking-widest uppercase">

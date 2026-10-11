@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { ShinyText } from "@/components/reactbits/text/ShinyText";
+import { PageBackground } from "@/components/reactbits/backgrounds/PageBackground";
 
 interface CapabilityFamily {
   number: string;
@@ -79,7 +80,9 @@ export const HomeCapabilities: React.FC = () => {
   const activeCapability = activeIdx !== null ? CAPABILITY_FAMILIES[activeIdx] : null;
 
   return (
-    <section className="relative py-24 sm:py-32 bg-[#080A0B] border-b border-warm-border overflow-hidden transition-colors duration-700">
+    <section className="relative py-24 sm:py-32 bg-gradient-to-b from-[#0a0d0e] via-[#0d1011] to-[#0a0d0e] border-b border-surface-border overflow-hidden transition-colors duration-700">
+      {/* Background Grid Motion */}
+      <PageBackground preset="grid-motion" opacity={0.85} />
       {/* Dynamic Subtle Ambient Atmosphere */}
       <AnimatePresence>
         {activeCapability && (
@@ -97,7 +100,7 @@ export const HomeCapabilities: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div className="relative max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
+      <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 pb-8 border-b border-white/10">
           <div>

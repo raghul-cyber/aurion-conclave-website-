@@ -81,9 +81,9 @@ const ML_DOMAINS = [
 
 export default function MachineLearningPage() {
   return (
-    <div className="relative min-h-screen bg-[#060708] overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#111415] via-[#0b0e0f] to-[#060708] overflow-hidden">
       {/* Threads Background (Category G4) */}
-      <PageBackground preset="threads" opacity={0.25} />
+      <PageBackground preset="threads" opacity={0.85} />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 w-full py-20 lg:py-28">
         {/* Breadcrumb */}
