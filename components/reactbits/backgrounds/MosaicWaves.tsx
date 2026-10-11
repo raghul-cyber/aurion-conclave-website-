@@ -92,10 +92,10 @@ export const MosaicWaves: React.FC<MosaicWavesProps> = ({
       const rows = Math.ceil(height / step) + 1;
       const time = frame * waveSpeed;
 
-      for (let r = -1; r <= rows + 1; r++) {
+      for (let r = 0; r < rows; r++) {
         const yBase = r * step;
 
-        for (let c = -1; c <= cols + 1; c++) {
+        for (let c = 0; c < cols; c++) {
           const xBase = c * step;
 
           // Propagate wave diagonal & radial
@@ -173,12 +173,11 @@ export const MosaicWaves: React.FC<MosaicWavesProps> = ({
       style={{ opacity }}
       aria-hidden="true"
     >
-      {/* Geometric Ambient Shimmer Glow - Fully spread edge-to-edge */}
       <div
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 130% 90% at 50% 20%, rgba(217, 184, 116, 0.22), rgba(100, 142, 139, 0.12) 55%, transparent 85%)",
+            "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(217, 184, 116, 0.2), rgba(100, 142, 139, 0.1) 50%, transparent 80%)",
         }}
       />
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />

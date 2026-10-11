@@ -167,12 +167,11 @@ export const AsciiWaves: React.FC<AsciiWavesProps> = ({
       style={{ opacity }}
       aria-hidden="true"
     >
-      {/* ASCII Ambient Wave Glow - Fully spread edge-to-edge */}
       <div
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 130% 90% at 50% 25%, rgba(100, 142, 139, 0.22), rgba(217, 184, 116, 0.14) 55%, transparent 85%)",
+            "radial-gradient(circle 800px at 50% 20%, rgba(100, 142, 139, 0.22), rgba(217, 184, 116, 0.14) 50%, transparent 80%)",
         }}
       />
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />

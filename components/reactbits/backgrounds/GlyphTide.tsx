@@ -235,12 +235,11 @@ export const GlyphTide: React.FC<GlyphTideProps> = ({
       style={style}
       aria-hidden="true"
     >
-      {/* Glyph Tide Ambient Tidal Glow - Fully spread edge-to-edge */}
       <div
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 130% 90% at 50% 80%, rgba(100, 142, 139, 0.22), rgba(217, 184, 116, 0.12) 55%, transparent 85%)",
+            "radial-gradient(ellipse 90% 70% at 50% 100%, rgba(100, 142, 139, 0.22), rgba(217, 184, 116, 0.12) 50%, transparent 80%)",
         }}
       />
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />

@@ -206,12 +206,11 @@ export const TypographicWall: React.FC<TypographicWallProps> = ({
       style={{ opacity }}
       aria-hidden="true"
     >
-      {/* Typographic Ambient Matrix Glow - Fully spread edge-to-edge */}
       <div
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 130% 90% at 50% 20%, rgba(217, 184, 116, 0.20), rgba(100, 142, 139, 0.12) 55%, transparent 85%)",
+            "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(217, 184, 116, 0.18), rgba(25, 30, 30, 0.1) 60%, transparent 85%)",
         }}
       />
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
